@@ -5,13 +5,14 @@
   >
     <div class="flex flex-col justify-center items-center box-border">
       <h1 class="text-xl mb-7">Inicio de Sesión</h1>
-      <form class="flex flex-col justify-center items-center my-3">
+      <form  [formGroup]="loginForm" class="flex flex-col justify-center items-center my-3" (submit)="login($event)" >
         <div class="flex flex-col my-4">
           <input
             placeholder="Usuario"
             type="text"
             id="username"
             class="border rounded-lg h-8 w-64 pl-2"
+            formControlName="username"
           />
         </div>
         <div class="flex flex-col my-4">
@@ -20,6 +21,7 @@
             type="text"
             id="password"
             class="border rounded-lg h-8 w-64 pl-2"
+            formControlName="password"
           />
         </div>
         <button
