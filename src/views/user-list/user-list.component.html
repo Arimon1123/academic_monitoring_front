@@ -1,0 +1,28 @@
+<main class="flex flex-col justify-center items-center w-screen">
+    <h1 class="font-serif my-6">Lista de usuarios</h1>
+    <ul class="my-6">
+        @for( user of userList; track user.id){
+        <li>
+            <div class="flex flex-row border rounded-md w-96 h-32 items-center mb-5">
+                <img src="../../assets/user.svg" class="w-12 mx-4">
+                <div class="flex flex-col w-3/4">
+                    <span>Nombre: {{user.name}}</span>
+                    <span> Apellido: {{user.lastname}}</span>
+                    <span>Email: {{user.email}}</span>
+                    <span>Tel: {{user.phone}}</span>
+                    @if(user.role == 'ADMINISTRATIVE'){
+                    <span class="flex justify-center text-white border rounded-lg bg-green-400">Administrativo</span>
+                    }
+                    @if(user.role == 'TEACHER'){
+                    <span class="flex justify-center text-white border rounded-lg bg-blue-500">Profesor</span>
+                    }
+                    @if(user.role == 'FATHER'){
+                    <span class="flex justify-center text-white border rounded-lg bg-purple-500"> Padre</span>
+                    }
+                </div>
+            </div>
+        </li>
+        }
+    </ul>
+
+</main>
