@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../service/user.service';
-import { UserCreateDTO } from '../../models/userCreateDTO';
+import { UserCreateDTO } from '../../models/UserCreateDTO';
 
 
 @Component({

@@ -1,28 +1,55 @@
-<main class="flex flex-col justify-center items-center w-screen">
-    <h1 class="font-serif my-6">Lista de usuarios</h1>
-    <ul class="my-6">
-        @for( user of userList; track user.id){
-        <li>
-            <div class="flex flex-row border rounded-md w-96 h-32 items-center mb-5">
-                <img src="../../assets/user.svg" class="w-12 mx-4">
-                <div class="flex flex-col w-3/4">
-                    <span>Nombre: {{user.name}}</span>
-                    <span> Apellido: {{user.lastname}}</span>
-                    <span>Email: {{user.email}}</span>
-                    <span>Tel: {{user.phone}}</span>
-                    @if(user.role == 'ADMINISTRATIVE'){
-                    <span class="flex justify-center text-white border rounded-lg bg-green-400">Administrativo</span>
-                    }
-                    @if(user.role == 'TEACHER'){
-                    <span class="flex justify-center text-white border rounded-lg bg-blue-500">Profesor</span>
-                    }
-                    @if(user.role == 'FATHER'){
-                    <span class="flex justify-center text-white border rounded-lg bg-purple-500"> Padre</span>
-                    }
-                </div>
-            </div>
-        </li>
+<main class="flex flex-col box-border justify-center items-center">
+  <h1 class="my-6">Lista de usuarios</h1>
+  <ul class="my-6 h-96 overflow-y-scroll">
+    @for( user of userList; track user.id){
+    <li class="flex flex-row mb-2 py-2 px-3 items-center box-border border rounded-md ">
+        @if(user.imageUrl){
+        <a [href]="user.imageUrl" target="_blank" class="w-full">
+          <img [src]="user.imageUrl" title="Foto de usuario" class="w-16 aspect-square mx-4 rounded-full border border-gray-800" />
+        </a>
+        }@else {
+        <img src="../../assets/user.svg" class="w-16 mx-4 rounded-full" />
         }
-    </ul>
-
+        <div class="flex flex-col ml-5 w-full">
+          <div class="flex flex-col w-80">
+            <span>Nombre: {{ user.name }}</span>
+            <span> Apellido: {{ user.lastname }}</span>
+            <span>Email: {{ user.email }}</span>
+            <span>Tel: {{ user.phone }}</span>
+            <div class="flex flex-col">
+              @if(user.role == 'ADMINISTRATIVE'){
+              <span
+                class="flex w-full justify-center text-white border rounded-lg bg-green-400 mb-2"
+                >Administrativo</span
+              >
+              } @if(user.role == 'TEACHER'){
+              <span
+                class="flex w-full justify-center text-white border rounded-lg bg-blue-500 mb-2"
+                >Profesor</span
+              >
+              } @if(user.role == 'FATHER'){
+              <span
+                class="flex w-full justify-center text-white border rounded-lg bg-purple-500 mb-2"
+              >
+                Padre</span
+              >
+              }
+              <div class="flex flex-row justify-between">
+                <button
+                  class="border rounded-md w-5/12 bg-gray-600 text-white text-sm p-2 hover:bg-white hover:text-black transition"
+                >
+                  Bloquear Acceso
+                </button>
+                <button
+                  class="border rounded-md w-5/12 bg-red-600 text-white text-sm p-2"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </li>
+    }
+  </ul>
 </main>

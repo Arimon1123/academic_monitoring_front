@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserCreateDTO } from '../models/userCreateDTO';
 import { environment } from '../environments/environment.development';
+import { UserCreateDTO } from '../models/UserCreateDTO';
 
 @Injectable({
   providedIn: 'root'

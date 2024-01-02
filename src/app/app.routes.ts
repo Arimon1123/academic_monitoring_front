@@ -8,10 +8,10 @@ export const routes: Routes = [
         path: 'login', component: LoginComponent
     },
     {
-        path: 'users', component: UsersComponent
+        path: '', component: UsersComponent
     },
     {
-        path: 'userList', component: UserListComponent
+        path: 'userList', component: UserListComponent 
     }
 
 ];

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { UserCreateDTO } from '../../models/userCreateDTO';
 import { UserService } from '../../service/user.service';
+import { UserDataDTO } from '../../models/UserDataDTO';
 
 @Component({
   selector: 'app-user-list',
@@ -10,13 +10,14 @@ import { UserService } from '../../service/user.service';
   styleUrl: './user-list.component.css'
 })
 export class UserListComponent {
-  userList: UserCreateDTO[] = [];
+  userList: UserDataDTO[] = [];
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.userService.getUserList().subscribe((data: any) => {
       console.log(data);
-      this.userList = data;
+  
+      this.userList = data.content;
     });
   }
 
