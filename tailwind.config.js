@@ -28,6 +28,9 @@ module.exports = {
       },
       gridTemplateColumns: {
         '2A': '3fr 1fr',
+        'navbar': '3rem 1fr',
+        'sidebar': '10vw 90vw',
+        'main': '1fr',
       },
     }
   },

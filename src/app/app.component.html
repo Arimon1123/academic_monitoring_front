@@ -1,2 +1,8 @@
-<app-navbar></app-navbar>
-<router-outlet></router-outlet>
+<app-navbar (menuStateEmitter)="toggleMenu($event)"></app-navbar>
+<div class="flex flex-row w-screen ">
+    <app-sidebar class="w-[10vw]" [@slideInOut]="sideMenuState"></app-sidebar>
+    <div [@slideInOut]="sideMenuState" class="border  flex justify-center"
+        [ngClass]="sideMenuState==='out' ? 'w-screen' : 'w-[90vw]'">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-<main class="flex flex-col justify-start items-center w-3/4 h-3/4">
+<main class="flex flex-col justify-start items-center  h-3/4">
     <a routerLink="/userList" href="/userList"> Lista de usuarios </a>
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()"
         class="grid grid-cols-2A gap-5 border w-full p-5 min-w-fit center place-content-center place-self-center">
@@ -56,11 +56,11 @@
                     <option value="FATHER">Padre</option>
                 </select>
             </div>
-            <button class="h-8 w-full border rounded-md bg-primary text-bg-color ">Enviar</button>
-        </div>
-        <div class="flex justify-center items-center h-full w-full border rounded-md">
 
-            <label class="flex flex-col w-3/4 text-center">
+        </div>
+        <div class="flex justify-center  h-full w-full border rounded-md">
+
+            <label class="flex flex-col w-3/4 text-center mt-10">
                 <img src="../../assets/user.svg">
                 <span
                     class="flex justify-center items-center text-white border rounded-md bg-active h-8 hover:bg-primary transition">
@@ -69,5 +69,6 @@
 
             </label>
         </div>
+        <button class="h-8  border rounded-md bg-primary text-bg-color col-span-2 ">Enviar</button>
     </form>
 </main>

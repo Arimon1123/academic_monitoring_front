@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Route, Router } from '@angular/router';
 
 @Component({
@@ -6,11 +7,19 @@ import { Route, Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrl: './navbar.component.css',
+
 })
 export class NavbarComponent {
   constructor(private router: Router) { }
   ngOnInit(): void {
     console.log(this.router.url);
+  }
+  @Output() menuStateEmitter = new EventEmitter<string>();
+  menuState = 'out';
+
+  toggleMenu() {
+    this.menuState = this.menuState === 'out' ? 'in' : 'out';
+    this.menuStateEmitter.emit(this.menuState);
   }
 }
