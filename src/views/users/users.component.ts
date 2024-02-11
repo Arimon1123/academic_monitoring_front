@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { UserCreateDTO } from '../../models/UserCreateDTO';
+import { Subject, debounce, debounceTime, map } from 'rxjs';
 
 
 @Component({
@@ -14,6 +15,13 @@ import { UserCreateDTO } from '../../models/UserCreateDTO';
 export class UsersComponent {
 
   constructor(private userService: UserService) { }
+
+  showPassword = false;
+  imageFile: File | null = null;
+  userImage: string = "../../assets/user.svg";
+  hasImage = false;
+  usernameIsAvailable = true;
+  subject = new Subject();
 
   userForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
@@ -38,7 +46,12 @@ export class UsersComponent {
         password: this.userForm.controls.password.value!,
         role: this.userForm.controls.role.value!,
       }
-      this.userService.createUser(user).subscribe((data: any) => {
+      const formData = new FormData();
+      formData.append('user', JSON.stringify(user));
+      if (this.hasImage) {
+        formData.append('image', this.imageFile as Blob);
+      }
+      this.userService.createUser(formData).subscribe((data: any) => {
         alert("Usuario creado")
         this.userForm.reset();
       });
@@ -47,4 +60,28 @@ export class UsersComponent {
     }
 
   }
+
+  onFileSelected(event: any) {
+    this.imageFile = event.target.files[0];
+    console.log(this.imageFile);
+    this.hasImage = true;
+    const reader = new FileReader();
+    reader.readAsDataURL(this.imageFile as Blob);
+    reader.onload = () => {
+      this.userImage = reader.result as string;
+    }
+  }
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
+  // usernameCheck = (($event: any) => {
+  //   this.subject.next($event);
+  //   this.subject.pipe(debounceTime(500)).subscribe((value: any) => {
+  //     this.userService.checkUsername(value).subscribe((data: any) => {
+  //       this.usernameIsAvailable = data;
+  //       console.log(data);
+  //     });
+  //   })
+  // })
 }
