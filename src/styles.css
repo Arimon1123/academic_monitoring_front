@@ -10,3 +10,25 @@
         font-family: 'Roboto', sans-serif;
     }
 }
+
+/* Estilos para el scrollbar */
+::-webkit-scrollbar {
+    width: 6px; /* Ancho del scrollbar */
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color del fondo del scrollbar */
+  }
+  
+  /* Thumb */
+  ::-webkit-scrollbar-thumb {
+    background: #888; /* Color de la barra del scrollbar */
+    border-radius: 4px; /* Borde redondeado */
+  }
+  
+  /* Thumb al estar hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Cambia el color de la barra al hacer hover */
+  }
+  
