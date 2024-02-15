@@ -13,17 +13,17 @@ export class UserService {
 
 
   createUser(formData: any) {
-    return this.http.post(`${environment.API_URL}/user/save`, formData, { responseType: 'json' });
+    return this.http.post(`${environment.API_URL}/user`, formData, { responseType: 'json' });
   }
 
   getUserList() {
-    return this.http.get(`${environment.API_URL}/user`, { responseType: 'json' });
+    return this.http.get(`${environment.API_URL}/user?role=`, { responseType: 'json' });
   }
   checkUsername(username: string) {
     return this.http.get(`${environment.API_URL}/user/${username}/available`, { responseType: 'json' });
   }
 
   blockUser(id: number) {
-    
+
   }
 }

@@ -30,7 +30,7 @@ export class UsersComponent {
     phone: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(10),]),
     address: new FormControl('', [Validators.required, Validators.minLength(4)]),
     username: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    ci: new FormControl('', [Validators.required, Validators.minLength(4)]),
     role: new FormControl('', [Validators.required, Validators.minLength(4)]),
   });
 
@@ -43,7 +43,7 @@ export class UsersComponent {
         phone: this.userForm.controls.phone.value!,
         address: this.userForm.controls.address.value!,
         username: this.userForm.controls.username.value!,
-        password: this.userForm.controls.password.value!,
+        ci: this.userForm.controls.ci.value!,
         role: this.userForm.controls.role.value!,
       }
       const formData = new FormData();

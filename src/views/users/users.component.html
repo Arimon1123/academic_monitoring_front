@@ -1,9 +1,9 @@
 <main class="flex flex-col justify-center items-center w-full ">
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()"
-    class="grid sm:grid-cols-2A grid-cols-1 gap-5 w-full lg:w-3/4 place-content-center border rounded-md bg-bg-color pr-2 pb-2">
-    <div class="flex flex-col  rounded-md w-full p-5  min-w-fit">
+        class="grid sm:grid-cols-2A grid-cols-1 gap-5 w-full lg:w-3/4 place-content-center border rounded-md bg-bg-color pr-2 pb-2">
+        <div class="flex flex-col  rounded-md w-full p-5  min-w-fit">
             <h1 class="my-4 text-2xl text-gray-600">Registro de usuario</h1>
-            <div class="flex flex-col justify-between lg:flex-row " >
+            <div class="flex flex-col justify-between lg:flex-row ">
                 <div class="flex flex-col my-3 mr-0 lg:mr-3  box-content w-full">
                     <label for="name">Nombres</label>
                     <input name="name" type="text"
@@ -18,15 +18,21 @@
             </div>
             <div class="flex flex-col justify-between lg:flex-row">
                 <div class="flex flex-col my-3 mr-0 lg:mr-3 box-content w-full">
-                    <label for="email">Email</label>
-                    <input name="email" type="email" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
-                        formControlName="email">
+                    <label for="ci">CI</label>
+                    <input name=ci type="ci" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
+                        formControlName="ci">
                 </div>
                 <div class="flex flex-col my-3 w-full">
                     <label for="phone">Teléfono</label>
                     <input name="phone" type="tel" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
                         formControlName="phone">
                 </div>
+
+            </div>
+            <div class="flex flex-col my-3 mr-0 lg:mr-3 box-content wull">
+                <label for="email">Email</label>
+                <input name="email" type="email" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
+                    formControlName="email">
             </div>
             <div class="flex flex-col my-3">
                 <label for="address">Dirección</label>

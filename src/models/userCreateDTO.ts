@@ -5,7 +5,7 @@ export interface UserCreateDTO {
     email?: string;
     phone?: string;
     username?: string;
-    password?: string;
+    ci?: string;
     address?: string;
     role?: string;
 }
