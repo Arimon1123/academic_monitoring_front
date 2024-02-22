@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
+import { firstValueFrom } from 'rxjs';
 
 
 
@@ -13,17 +14,19 @@ export class UserService {
 
 
   createUser(formData: any) {
-    return this.http.post(`${environment.API_URL}/user`, formData, { responseType: 'json' });
+    return this.http.post(`${environment.API_URL}/user`, formData, { responseType: 'json', withCredentials: true });
   }
 
   getUserList() {
-    return this.http.get(`${environment.API_URL}/user?role=`, { responseType: 'json' });
+    return this.http.get(`${environment.API_URL}/user?role=`, { responseType: 'json', withCredentials: true });
   }
   checkUsername(username: string) {
-    return this.http.get(`${environment.API_URL}/user/${username}/available`, { responseType: 'json' });
+    return this.http.get(`${environment.API_URL}/user/${username}/available`, { responseType: 'json', withCredentials: true });
   }
-
   blockUser(id: number) {
 
+  }
+  userDetails() {
+    return this.http.get(`${environment.API_URL}/auth/details`, { responseType: 'json', withCredentials: true });
   }
 }

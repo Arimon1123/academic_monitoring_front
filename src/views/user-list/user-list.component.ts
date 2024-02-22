@@ -16,9 +16,19 @@ export class UserListComponent {
   ngOnInit(): void {
     this.userService.getUserList().subscribe((data: any) => {
       console.log(data);
-  
+
       this.userList = data.content;
     });
   }
+  // blockUser(id: number) {
+  //   this.userService.blockUser(id).subscribe((data: any) => {
+  //     alert("Usuario bloqueado");
+  //   });
+  // }
+  // deleteUser(id: number) {
+  //   this.userService.deleteUser(id).subscribe((data: any) => {
+  //     alert("Usuario eliminado");
+  //   });
+  // }
 
 }

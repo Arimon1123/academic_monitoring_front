@@ -1,35 +1,21 @@
-<main class="h-screen w-screen flex justify-center items-center">
-  <section
-    class="h-80 w-72 border border-black rounded p-2 bg-bg-color"
-  >
-    <div class="flex flex-col justify-center items-center box-border">
-      <h1 class="text-xl mb-7">Inicio de Sesión</h1>
-      <form  [formGroup]="loginForm" class="flex flex-col justify-center items-center my-3" (submit)="login($event)" >
+<main class="h-[80vh] flex justify-center items-center">
+  <section class=" border border-black rounded bg-[#F9F9F9]">
+    <div class="flex flex-col justify-center items-center box-border py-7 px-5">
+      <h1 class="text-xl mb-3">Inicio de Sesión</h1>
+      <form [formGroup]="loginForm" class="flex flex-col justify-center items-center mb-3" (submit)="login($event)">
         <div class="flex flex-col my-4">
-          <input
-            placeholder="Usuario"
-            type="text"
-            id="username"
-            class="border rounded-lg h-8 w-64 pl-2"
-            formControlName="username"
-          />
+          <input placeholder="Usuario" type="text" id="username"
+            class="border border-[#BCBCBC] rounded-lg h-8 w-52 pl-2 placeholder-gray-400" formControlName="username" />
         </div>
         <div class="flex flex-col my-4">
-          <input
-            placeholder="Contraseña"
-            type="text"
-            id="password"
-            class="border rounded-lg h-8 w-64 pl-2"
-            formControlName="password"
-          />
+          <input placeholder="Contraseña" type="text" id="password" type="password"
+            class="border border-[#BCBCBC] rounded-lg h-8 w-52 pl-2 placeholder-gray-400" formControlName="password" />
         </div>
-        <button
-          class="border border-blue-950 rounded bg-blue-950 text-white p-1 w-64"
-        >
+        <button class="border border-blue-950 rounded-xl bg-blue-950  text-white  w-52">
           Iniciar Sesión
         </button>
       </form>
-      <a>Olvidaste tu contraseña?</a>
+
     </div>
   </section>
 </main>

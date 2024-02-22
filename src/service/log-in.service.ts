@@ -4,13 +4,14 @@ import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
-  
+
 })
 export class LogInService {
   API_URL = 'http://localhost:8080';
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
+  login(user: any) {
+    //make accept text/plain
+    return this.http.post(`${this.API_URL}/authenticate`, user, { responseType: 'text', withCredentials: true });
 
-  login(user: any){
-    return this.http.post(`${this.API_URL}/authenticate`, user);
   }
 }
