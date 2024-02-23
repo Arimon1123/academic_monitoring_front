@@ -1,0 +1,16 @@
+{
+    "roles": [
+        {
+            "id": 1,
+            "role": "ADMINISTRATIVE"
+        },
+        {
+            "id": 2,
+            "role": "TEACHER"
+        },
+        {
+            "id": 3,
+            "role": "FATHER"
+        }
+    ]
+}

@@ -4,7 +4,7 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { initFlowbite } from 'flowbite';
-import { AuthServiceService } from '../service/auth-service.service';
+import { AuthService } from '../service/auth-service.service';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { AuthServiceService } from '../service/auth-service.service';
 })
 export class AppComponent {
   title = 'frontend_academic_monitoring';
-  constructor(private authService: AuthServiceService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
   ngOnInit() {
     initFlowbite();
   }

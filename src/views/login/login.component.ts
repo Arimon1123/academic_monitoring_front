@@ -3,7 +3,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { LogInService } from '../../service/log-in.service';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { AuthServiceService } from '../../service/auth-service.service';
+import { AuthService } from '../../service/auth-service.service';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
 
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  constructor(private loginService: AuthServiceService, private userService: UserService, private router: Router) { }
+  constructor(private loginService: AuthService, private userService: UserService, private router: Router) { }
   loginForm: FormGroup = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(5), Validators.pattern('^[a-zA-Z0-9]+$')]),
     password: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(5), Validators.pattern('^[a-zA-Z0-9]+$')]),

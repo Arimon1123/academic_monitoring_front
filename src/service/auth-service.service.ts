@@ -6,7 +6,7 @@ import { environment } from '../environments/environment.development';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthServiceService {
+export class AuthService {
   API_URL = environment.API_URL + "/auth";
 
   constructor(private http: HttpClient) { }

@@ -11,7 +11,8 @@
           <input placeholder="Contraseña" type="text" id="password" type="password"
             class="border border-[#BCBCBC] rounded-lg h-8 w-52 pl-2 placeholder-gray-400" formControlName="password" />
         </div>
-        <button class="border border-blue-950 rounded-xl bg-blue-950  text-white  w-52">
+        <button class="border border-blue-950 rounded-xl bg-blue-950  text-white  w-52 disabled:opacity-50"
+          [disabled]="this.loginForm.invalid">
           Iniciar Sesión
         </button>
       </form>

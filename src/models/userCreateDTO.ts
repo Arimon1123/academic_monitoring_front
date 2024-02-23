@@ -7,5 +7,5 @@ export interface UserCreateDTO {
     username?: string;
     ci?: string;
     address?: string;
-    role?: string;
+    role?: any;
 }

@@ -1,21 +1,35 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { Inject, inject } from '@angular/core';
-import { UserService } from '../service/user.service';
-import { AuthServiceService } from '../service/auth-service.service';
+import { inject } from '@angular/core';
+import { AuthService } from '../service/auth-service.service';
+
 
 
 export const authGuard: CanActivateFn = (route, state) => {
 
-  const authService = inject(AuthServiceService);
-  const userService = inject(UserService);
+  const authService = inject(AuthService);
   const router = inject(Router);
   const isLogged = authService.isLoggedIn();
   const userDetails = localStorage.getItem('userDetails');
+  if (!userDetails) {
+    return false;
+  }
   const user = JSON.parse(userDetails?.toString() || '{}');
-  if (isLogged && user.role === 'ADMINISTRATIVE') {
+  const requiredRoles = route.data['roles'];
+  const userRoles = user.role.map((role: any) => role.role);
+  let isRequiredRole = false;
+  userRoles.map((role: any) => {
+    if (requiredRoles.indexOf(role) !== -1) {
+      isRequiredRole = true;
+    }
+  });
+  if (isLogged && isRequiredRole) {
+    console.log('isLogged', isLogged);
     return true;
   } else {
-    router.navigate(['/login']);
+    console.log('isLogged NOT ', isLogged);
+    console.log('isRequiredRole NOT ', isRequiredRole);
+    router.navigate(['/unauthorized']);
+    return false;
   }
-  return false;
+
 };
