@@ -5,11 +5,13 @@ import { UserListComponent } from '../views/user-list/user-list.component';
 import { authGuard } from '../guard/auth.guard';
 import { UnauthorizedComponent } from '../views/unauthorized/unauthorized.component';
 import { ModalComponent } from '../components/modal/modal.component';
+import { logGuard } from '../guard/log.guard';
+import { HomeComponent } from '../views/home/home.component';
 ;
 
 export const routes: Routes = [
     {
-        path: 'login', component: LoginComponent
+        path: 'login', component: LoginComponent ,
     },
     {
         path: 'userRegister', component: UsersComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE'] }
@@ -22,6 +24,9 @@ export const routes: Routes = [
     },
     {
         path: 'modal', component: ModalComponent
+    },
+    {
+        path: '', component: HomeComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE','FATHER','TEACHER'] }
     }
 
 ];

@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../service/user.service';
-import { UserCreateDTO } from '../../models/UserCreateDTO';
 import { PersonService } from '../../service/person-service.service';
 import { ModalComponent } from '../../components/modal/modal.component';
 import roles from "../../consts/consts.json";
+import { UserCreateDTO } from '../../models/userCreateDTO';
 
 
 

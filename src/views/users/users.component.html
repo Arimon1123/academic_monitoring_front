@@ -68,14 +68,6 @@
                     formControlName="address"></textarea>
 
             </div>
-            <!-- <div class="flex flex-col my-3">
-                <label for="username">Usuario</label>
-                <input name="username" type="text" class="h-8 border border-gray-400 rounded-md pl-3 outline-none "
-                    formControlName="username">
-                @if(userForm.get('username')?.invalid && userForm.get('username')?.touched){
-                <span class="text-red-600 text-sm">Usuario Invalido</span>
-                }
-            </div> -->
             <div class="flex flex-col my-3">
                 <label for="password_confirm">Rol</label>
                 <select name="role" class=" border border-gray-400 rounded-md pl-3 outline-none" formControlName="role"
@@ -123,12 +115,8 @@
         <button
             class="h-8  border rounded-md bg-primary text-bg-color col-span-1 disabled:opacity-50 transition disabled:hover:bg-primary hover:bg-selected hover:text-white w-3/4 mt-5"
             [disabled]="requestSend || userForm.invalid">Enviar</button>
-
-
-
     </form>
 </main>
-
 <app-modal #modal>
     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
         <button type="button" (click)="closeModal()"
@@ -140,7 +128,6 @@
             <span class="sr-only">Close modal</span>
         </button>
         <div class="p-4 md:p-5 text-center">
-
             <h3 class="mb-5 mt-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                 {{message}}
             </h3>
