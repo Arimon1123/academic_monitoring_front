@@ -51,6 +51,9 @@
           <img src="../../assets/user.svg" class="max-w-[4rem]">
           }
           <div class="flex flex-col">
+            <span class="text-clip text-center text-white px-2 py-1 rounded-md"
+              [ngClass]="{'bg-red-600':user.status !== 1 , 'bg-green-400':user.status ===1}">{{user.status === 1 ?
+              'activo' : 'bloqueado'}} </span>
             <span class="text-clip text-center">{{user.name}} </span>
             <span class="text-clip text-center">{{user.lastname}}</span>
           </div>
@@ -81,8 +84,16 @@
           </div>
           <h3>Acciones</h3>
           <div class="flex flex-row border justify-around rounded-md py-3">
-            <button class="bg-primary text-white px-4 py-1 border rounded-md">Editar</button>
-            <button class="bg-red-500 text-white px-4 py-1 border rounded-md">Eliminar</button>
+            <button class="bg-primary text-white px-4 py-1 border rounded-md"
+              (click)="editUser(user.id)">Editar</button>
+            @if(user.status === 1){
+            <button class="bg-red-500 text-white px-4 py-1 border rounded-md"
+              (click)="showBlockModal(user.username,user.status)">Bloquear Usuario</button>
+            }
+            @if(user.status !== 1){
+            <button class="bg-green-500 text-white px-4 py-1 border rounded-md"
+              (click)="showBlockModal(user.username,user.status)">Desbloquear Usuario</button>
+            }
           </div>
         </div>
       </li>
@@ -117,3 +128,31 @@
   </div>
   }
 </main>
+
+<app-modal #modal>
+  <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+    <button type="button" (click)="closeModal()"
+      class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+      </svg>
+      <span class="sr-only">Close modal</span>
+    </button>
+    <div class="p-4 md:p-5 text-center">
+      <h3 class="mb-5 mt-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+        {{message}}
+      </h3>
+      <div class="flex flex-row justify-around">
+        <button type="button" (click)="blockAction()"
+          class="text-white bg-primary hover:bg-selected focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+          Aceptar
+        </button>
+        <button type="button" (click)="closeModal()"
+          class="text-white bg-gray-400 hover:bg-gray-300 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</app-modal>

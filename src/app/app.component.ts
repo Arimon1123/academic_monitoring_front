@@ -17,10 +17,16 @@ import { AuthService } from '../service/auth-service.service';
 })
 export class AppComponent {
   title = 'frontend_academic_monitoring';
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {
+    this.router.events.subscribe(() => {
+      initFlowbite();
+    });
+  }
   ngOnInit() {
     initFlowbite();
   }
+
+
 
   logout() {
     localStorage.removeItem('isLogged');

@@ -30,10 +30,24 @@ export class UserService {
   checkUsername(username: string) {
     return this.http.get(`${this.API_URL}/user/${username}/available`, { responseType: 'json', withCredentials: true });
   }
-  blockUser(id: number) {
 
+
+  blockUser(username: string) {
+    return this.http.put(`${this.API_URL}/user/block/${username}`, null, { responseType: 'json', withCredentials: true });
   }
+
+  unblockUser(username: string) {
+    return this.http.put(`${this.API_URL}/user/unblock/${username}`, null, { responseType: 'json', withCredentials: true });
+  }
+
+
   userDetails() {
     return this.http.get(`${this.API_URL}/auth/details`, { responseType: 'json', withCredentials: true });
+  }
+  getUser(id: number) {
+    return this.http.get(`${this.API_URL}/user/${id}`, { responseType: 'json', withCredentials: true });
+  }
+  updateUser(user: any) {
+    return this.http.put(`${this.API_URL}/user`, user, { responseType: 'json', withCredentials: true });
   }
 }

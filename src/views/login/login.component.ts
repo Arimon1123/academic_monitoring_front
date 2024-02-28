@@ -21,8 +21,8 @@ export class LoginComponent {
     private router: Router,
     private localStorageService: LocalStorageService) { }
   loginForm: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(5), Validators.pattern('^[a-zA-Z0-9]+$')]),
-    password: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(5), Validators.pattern('^[a-zA-Z0-9]+$')]),
+    username: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(5)]),
+    password: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(5),]),
   })
 
   isInvalid = false;
@@ -49,6 +49,9 @@ export class LoginComponent {
             },
             complete: () => {
               this.router.navigate(['/userList']);
+            },
+            error: (error: any) => {
+              alert('Error al obtener los detalles del usuario');
             }
           });
         }

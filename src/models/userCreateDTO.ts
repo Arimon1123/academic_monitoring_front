@@ -1,3 +1,5 @@
+import { RoleDTO } from "./RoleDTO";
+
 export interface UserCreateDTO {
     id?: number;
     name?: string;
@@ -7,5 +9,5 @@ export interface UserCreateDTO {
     username?: string;
     ci?: string;
     address?: string;
-    role?: any;
+    roles?: RoleDTO[];
 }

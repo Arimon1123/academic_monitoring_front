@@ -7,11 +7,12 @@ import { UnauthorizedComponent } from '../views/unauthorized/unauthorized.compon
 import { ModalComponent } from '../components/modal/modal.component';
 import { logGuard } from '../guard/log.guard';
 import { HomeComponent } from '../views/home/home.component';
+import { EditUserComponent } from '../views/edit-user/edit-user.component';
 ;
 
 export const routes: Routes = [
     {
-        path: 'login', component: LoginComponent ,
+        path: 'login', component: LoginComponent,
     },
     {
         path: 'userRegister', component: UsersComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE'] }
@@ -26,7 +27,10 @@ export const routes: Routes = [
         path: 'modal', component: ModalComponent
     },
     {
-        path: '', component: HomeComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE','FATHER','TEACHER'] }
+        path: '', component: HomeComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE', 'FATHER', 'TEACHER'] }
+    },
+    {
+        path: 'editUser/:id', component: EditUserComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE'] }
     }
 
 ];

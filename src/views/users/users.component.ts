@@ -5,6 +5,7 @@ import { PersonService } from '../../service/person-service.service';
 import { ModalComponent } from '../../components/modal/modal.component';
 import roles from "../../consts/consts.json";
 import { UserCreateDTO } from '../../models/UserCreateDTO';
+import { Flowbite } from '../../decorator/flowbite';
 
 
 
@@ -15,6 +16,7 @@ import { UserCreateDTO } from '../../models/UserCreateDTO';
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })
+@Flowbite()
 export class UsersComponent {
 
   constructor(private userService: UserService, private personService: PersonService) { }
@@ -46,10 +48,8 @@ export class UsersComponent {
     this.requestSend = true;
     if (this.userForm.controls.role.value !== 'TEACHER') {
       this.userForm.controls.workEmail.setValidators([Validators.email]);
-
     }
     const currentRoles: any = JSON.parse(JSON.stringify(roles));
-
     const selected = currentRoles.roles.find((role: any) => role.name === this.userForm.controls.role.value)
     console.log(selected);
     if (this.userForm.valid) {
@@ -60,7 +60,7 @@ export class UsersComponent {
         phone: this.userForm.controls.phone.value!,
         address: this.userForm.controls.address.value!,
         ci: this.userForm.controls.ci.value!,
-        role: [selected],
+        roles: [selected],
       }
       const formData = new FormData();
       formData.append('user', JSON.stringify(user));

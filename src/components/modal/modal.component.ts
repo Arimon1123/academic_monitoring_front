@@ -31,7 +31,8 @@ export class ModalComponent {
     }
     const instanceOptions: InstanceOptions = {
       id: 'modal-1',
-      override: true
+      override: true,
+
     }
     this.modal = new Modal($modalElement, modalOptions, instanceOptions);
   }

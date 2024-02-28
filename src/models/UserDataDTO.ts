@@ -11,4 +11,5 @@ export interface UserDataDTO {
     username: string;
     roles: RoleDTO[];
     imageUrl: string;
+    status: number;
 } 

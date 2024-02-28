@@ -1,26 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { UserDataDTO } from '../../models/UserDataDTO';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { environment } from '../../environments/environment.development';
+import { Router } from '@angular/router';
+import { initFlowbite } from 'flowbite';
+import { Flowbite, InitFlowbiteFix } from '../../decorator/flowbite';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ModalComponent],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
+@Flowbite()
 export class UserListComponent {
-  currentRoles: { [key: string]: any } = {
-    ADMINISTRATIVE: 'Administrativo',
-    TEACHER: 'Profesor',
-    FATHER: 'Padre'
-  }
+
+  @ViewChild("modal") modalComponent: ModalComponent | undefined;
+  search: any = {}
+  blockUsername: string = '';
+  currentRoles: { [key: string]: string } = environment.currentRoles;
   requestSend = false;
   firstRequest = true;
   totalPages = 0;
   currentPage = 1;
+  message = '';
+  isForBlock = false;
   searchForm: FormGroup = new FormGroup(
     {
       name: new FormControl('', []),
@@ -31,20 +39,25 @@ export class UserListComponent {
 
   );
   userList: UserDataDTO[] = [];
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) {
 
-  // ngOnInit(): void {
-  //   this.userService.getUserList().subscribe((data: any) => {
-  //     console.log(data);
-  //     this.userList = data.content.content;
-  //   });
-  // }
+  }
+
+
   onSearch() {
     this.requestSend = true;
-    const search = { ...this.searchForm.value, page: this.currentPage - 1, size: 1 };
+    if ((this.search.role !== this.searchForm.value.role)
+      || (this.search.name !== this.searchForm.value.name)
+      || (this.search.lastname !== this.searchForm.value.lastname)
+      || (this.search.ci !== this.searchForm.value.ci)) {
+      console.log('se cambio la busqueda');
+      this.currentPage = 1;
+    }
+    this.search = { ...this.searchForm.value, page: this.currentPage - 1, size: 1 };
 
-    console.log(search);
-    this.userService.getUserList(search).subscribe({
+    this.userList = [];
+    console.log(this.search);
+    this.userService.getUserList(this.search).subscribe({
       next: (data: any) => {
         console.log(data);
         this.userList = data.content.content;
@@ -78,15 +91,60 @@ export class UserListComponent {
       this.onSearch();
     }
   }
-  // blockUser(id: number) {
-  //   this.userService.blockUser(id).subscribe((data: any) => {
-  //     alert("Usuario bloqueado");
-  //   });
-  // }
-  // deleteUser(id: number) {
-  //   this.userService.deleteUser(id).subscribe((data: any) => {
-  //     alert("Usuario eliminado");
-  //   });
-  // }
+
+  closeModal() {
+    this.modalComponent?.toggleModal();
+  }
+
+  blockAction() {
+    if (this.isForBlock)
+      this.blockUser();
+    else
+      this.unblockUser();
+
+
+  }
+  blockUser() {
+    this.userService.blockUser(this.blockUsername).subscribe(
+      {
+        next: (data: any) => {
+
+          this.onSearch();
+          this.modalComponent?.toggleModal();
+        },
+        error: (error: any) => {
+          this.modalComponent?.toggleModal();
+        }
+      }
+    );
+  }
+  unblockUser() {
+    this.userService.unblockUser(this.blockUsername).subscribe(
+      {
+        next: (data: any) => {
+          this.modalComponent?.toggleModal();
+          this.onSearch();
+        },
+        error: (error: any) => {
+          this.modalComponent?.toggleModal();
+        }
+      }
+    );
+  }
+  showBlockModal(username: string, status: number) {
+    this.blockUsername = username;
+    if (status === 1) {
+      this.isForBlock = true;
+      this.message = 'Esta seguro que desea bloquear este usuario?';
+    }
+    else {
+      this.isForBlock = false;
+      this.message = 'Esta seguro que desea desbloquear este usuario?';
+    }
+    this.modalComponent?.toggleModal();
+  }
+  editUser(id: number) {
+    window.location.href = `/editUser/${id}`;
+  }
 
 }
