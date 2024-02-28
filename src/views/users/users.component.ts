@@ -4,7 +4,7 @@ import { UserService } from '../../service/user.service';
 import { PersonService } from '../../service/person-service.service';
 import { ModalComponent } from '../../components/modal/modal.component';
 import roles from "../../consts/consts.json";
-import { UserCreateDTO } from '../../models/userCreateDTO';
+import { UserCreateDTO } from '../../models/UserCreateDTO';
 
 
 
@@ -48,9 +48,9 @@ export class UsersComponent {
       this.userForm.controls.workEmail.setValidators([Validators.email]);
 
     }
-    const rolesA: any = JSON.parse(JSON.stringify(roles));
+    const currentRoles: any = JSON.parse(JSON.stringify(roles));
 
-    const selected = rolesA.roles.find((role: any) => role.role === this.userForm.controls.role.value)
+    const selected = currentRoles.roles.find((role: any) => role.name === this.userForm.controls.role.value)
     console.log(selected);
     if (this.userForm.valid) {
       const user: UserCreateDTO = {

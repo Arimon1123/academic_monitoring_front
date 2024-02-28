@@ -18,7 +18,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
   const user = JSON.parse(userDetails || '{}');
   const requiredRoles = route.data['roles'];
-  const userRoles = user.role.map((role: any) => role.role);
+  const userRoles = user.role.map((role: any) => role.name);
   let isRequiredRole = false;
   userRoles.map((role: any) => {
     if (requiredRoles.indexOf(role) !== -1) {

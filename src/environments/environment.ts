@@ -1,4 +1,4 @@
 export const environment = {
-    API_URL: 'http://192.168.0.16:8080',
-    storageSecret : 'superSecretoProduction'  
+    API_URL: 'http://localhost:8080',
+    storageSecret: 'superSecretoProduction'
 };

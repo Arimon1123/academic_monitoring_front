@@ -2,15 +2,15 @@
     "roles": [
         {
             "id": 1,
-            "role": "ADMINISTRATIVE"
+            "name": "ADMINISTRATIVE"
         },
         {
             "id": 2,
-            "role": "TEACHER"
+            "name": "TEACHER"
         },
         {
             "id": 3,
-            "role": "FATHER"
+            "name": "FATHER"
         }
     ]
 }
