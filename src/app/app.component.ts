@@ -5,6 +5,8 @@ import { NavbarComponent } from '../components/navbar/navbar.component';
 import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { initFlowbite } from 'flowbite';
 import { AuthService } from '../service/auth-service.service';
+import { UserService } from '../service/user.service';
+import { LocalStorageService } from '../service/local-storage.service';
 
 
 @Component({
@@ -17,15 +19,18 @@ import { AuthService } from '../service/auth-service.service';
 })
 export class AppComponent {
   title = 'frontend_academic_monitoring';
-  constructor(private authService: AuthService, private router: Router) {
-    this.router.events.subscribe(() => {
-      initFlowbite();
-    });
+  constructor(private authService: AuthService, private router: Router, private userService: UserService, private localStorage: LocalStorageService) {
+
   }
   ngOnInit() {
     initFlowbite();
-  }
 
+  }
+  getUserDetails() {
+    this.userService.userDetails().subscribe((data: any) => {
+      this.localStorage.setItem('userDetails', data);
+    });
+  }
 
 
   logout() {

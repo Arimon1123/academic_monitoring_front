@@ -9,5 +9,6 @@ export interface UserCreateDTO {
     username?: string;
     ci?: string;
     address?: string;
+    academicEmail?: string;
     roles?: RoleDTO[];
 }

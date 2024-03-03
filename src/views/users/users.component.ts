@@ -60,6 +60,7 @@ export class UsersComponent {
         phone: this.userForm.controls.phone.value!,
         address: this.userForm.controls.address.value!,
         ci: this.userForm.controls.ci.value!,
+        academicEmail: this.userForm.controls.workEmail.value!,
         roles: [selected],
       }
       const formData = new FormData();

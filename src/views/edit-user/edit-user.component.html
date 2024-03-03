@@ -1,7 +1,7 @@
 <main>
     <form [formGroup]="userForm" class="flex flex-col justify-center items-center" (ngSubmit)="onSubmit()">
         <h1 class="text-lg font-semibold mb-5 ">Edición de Usuario</h1>
-        <div class="flex flex-col w-1/3 mb-3">
+        <div class="flex flex-col md:w-1/3 w-4/5 mb-3">
             <h2 class="text-md font-semibold text-center mb-3">Datos personales</h2>
             <label for="name"> Nombre</label>
             <input id="name" type="text" formControlName="name" class="border border-gray-400 rounded-md px-2 mb-3">
@@ -17,7 +17,7 @@
         </div>
         @if(user.roles){
         <h2 class="text-md font-semibold">Roles</h2>
-        <div class="flex flex-col w-1/3 border rounded-md p-3 mb-3">
+        <div class="flex flex-col md:w-1/3 w-4/5 border rounded-md p-3 mb-3">
             <label class="inline-flex justify-between items-center mb-5 cursor-pointer">
                 <span class="me-5 text-md font-medium text-gray-900 dark:text-gray-300">Administrador</span>
                 <input type="checkbox" [checked]="checkRole('ADMINISTRATIVE')" value="false" formControlName="admin"
@@ -45,6 +45,7 @@
         </div>
         }
         <button type="submit" class="w-1/3 bg-primary rounded-md text-white py-1">Guardar</button>
+
     </form>
 </main>
 

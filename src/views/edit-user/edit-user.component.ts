@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserDataDTO } from '../../models/UserDataDTO';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,9 +8,9 @@ import { environment } from '../../environments/environment.development';
 import { RoleDTO } from '../../models/RoleDTO';
 import roles from "../../consts/consts.json";
 import { UserCreateDTO } from '../../models/UserCreateDTO';
-import { PersonService } from '../../service/person-service.service';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { Flowbite } from '../../decorator/flowbite';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-editUser',
@@ -20,7 +20,7 @@ import { Flowbite } from '../../decorator/flowbite';
   styleUrl: './edit-user.component.css'
 })
 @Flowbite()
-export class EditUserComponent {
+export class EditUserComponent implements OnInit {
 
   @ViewChild('modal') modalComponent: ModalComponent | undefined;
 
@@ -31,7 +31,7 @@ export class EditUserComponent {
 
   constructor(private route: ActivatedRoute, private userService: UserService, private router: Router) { }
   ngOnInit() {
-
+    initFlowbite();
     const id = this.route.snapshot.params['id'];
     console.log(id);
     this.userService.getUser(id).subscribe({

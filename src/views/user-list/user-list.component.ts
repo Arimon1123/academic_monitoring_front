@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { UserDataDTO } from '../../models/UserDataDTO';
 import { CommonModule } from '@angular/common';
@@ -6,8 +6,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { ModalComponent } from '../../components/modal/modal.component';
 import { environment } from '../../environments/environment.development';
 import { Router } from '@angular/router';
-import { initFlowbite } from 'flowbite';
-import { Flowbite, InitFlowbiteFix } from '../../decorator/flowbite';
+import { Flowbite } from '../../decorator/flowbite';
 
 @Component({
   selector: 'app-user-list',
@@ -17,8 +16,11 @@ import { Flowbite, InitFlowbiteFix } from '../../decorator/flowbite';
   styleUrl: './user-list.component.css'
 })
 @Flowbite()
-export class UserListComponent {
+export class UserListComponent implements OnInit {
 
+  ngOnInit() {
+
+  }
   @ViewChild("modal") modalComponent: ModalComponent | undefined;
   search: any = {}
   blockUsername: string = '';
@@ -50,11 +52,9 @@ export class UserListComponent {
       || (this.search.name !== this.searchForm.value.name)
       || (this.search.lastname !== this.searchForm.value.lastname)
       || (this.search.ci !== this.searchForm.value.ci)) {
-      console.log('se cambio la busqueda');
       this.currentPage = 1;
     }
-    this.search = { ...this.searchForm.value, page: this.currentPage - 1, size: 1 };
-
+    this.search = { ...this.searchForm.value, page: this.currentPage - 1, size: 10 };
     this.userList = [];
     console.log(this.search);
     this.userService.getUserList(this.search).subscribe({

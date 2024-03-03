@@ -13,7 +13,7 @@ module.exports = {
         "selected": "#438ABE"
       },
       screens: {
-
+        'xs': '375px'
       },
       gridTemplateColumns: {
         '2A': '3fr 1fr',

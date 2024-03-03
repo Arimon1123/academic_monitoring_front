@@ -1,5 +1,5 @@
 export const environment = {
-    API_URL: 'http://localhost:8080',
+    API_URL: 'http://192.168.0.181:8080',
     storageSecret: 'superSecreto',
     currentRoles: {
         'ADMINISTRATIVE': 'Administrativo',

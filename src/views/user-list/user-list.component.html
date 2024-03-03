@@ -1,22 +1,25 @@
 <main class="flex flex-col box-border justify-center">
   <h1 class="my-6 text-center text-lg font-bold">Lista de usuarios</h1>
-  <form [formGroup]="searchForm" class="flex flex-col justify-center w-full items-center" (ngSubmit)="onSearch()">
-    <div class="flex flex-col justify-center lg:w-2/5  w-4/5">
-      <input type="text" class="border border-gray-400 rounded-md px-2 mb-3" placeholder="Nombre"
-        formControlName="name">
-      <input type="text" class="border border-gray-400 rounded-md px-2 mb-3" placeholder="Apellido"
-        formControlName="lastname">
-      <input type="text" class="border border-gray-400 rounded-md px-2 mb-3" placeholder="CI" formControlName="ci">
-      <select formControlName="role" class="border border-gray-400 rounded-md px-2 mb-3">
-        <option value="ADMINISTRATIVE">Administrativo</option>
-        <option value="FATHER">Padre</option>
-        <option value="TEACHER">Docente</option>
-        <option value="">Todos</option>
-      </select>
-      <button type="submit" class="bg-primary text-white px-4 py-1 border rounded-md">Buscar</button>
+  <details>
+    <summary class="text-center text-lg font-semibold">Filtrar</summary>
+    <form [formGroup]="searchForm" class="flex flex-col justify-center w-full items-center" (ngSubmit)="onSearch()">
+      <div class="flex flex-col justify-center md:w-2/5  w-full">
+        <input type="text" class="border border-gray-400 rounded-md px-2 mb-3" placeholder="Nombre"
+          formControlName="name">
+        <input type="text" class="border border-gray-400 rounded-md px-2 mb-3" placeholder="Apellido"
+          formControlName="lastname">
+        <input type="text" class="border border-gray-400 rounded-md px-2 mb-3" placeholder="CI" formControlName="ci">
+        <select formControlName="role" class="border border-gray-400 rounded-md px-2 mb-3">
+          <option value="ADMINISTRATIVE">Administrativo</option>
+          <option value="FATHER">Padre</option>
+          <option value="TEACHER">Docente</option>
+          <option value="">Todos</option>
+        </select>
+        <button type="submit" class="bg-primary text-white px-4 py-1 border rounded-md">Buscar</button>
 
-    </div>
-  </form>
+      </div>
+    </form>
+  </details>
   @if((this.userList.length === 0 && !this.firstRequest) && !this.requestSend ){
   <div class="flex justify-center my-20">
     <span class="font-medium text-lg">No se encontraron usuarios! </span>
@@ -39,64 +42,83 @@
   </div>
   }
 
-  <div class="flex justify-center">
-    <ul class="my-6  w-fit">
-      @for(user of userList; track user.id){
-      <li class="grid grid-flow-row grid-rows-2B border rounded-lg py-3 px-7 m-3">
-        <div class="grid grid-cols-2B items-center gap-10 mb-5">
-          @if(user.imageUrl){
-          <img src="{{user.imageUrl}}" loading="" alt="user image" class="rounded-full w-16 h-16">
-          }
-          @else {
-          <img src="../../assets/user.svg" class="max-w-[4rem]">
-          }
-          <div class="flex flex-col">
-            <span class="text-clip text-center text-white px-2 py-1 rounded-md"
-              [ngClass]="{'bg-red-600':user.status !== 1 , 'bg-green-400':user.status ===1}">{{user.status === 1 ?
-              'activo' : 'bloqueado'}} </span>
-            <span class="text-clip text-center">{{user.name}} </span>
-            <span class="text-clip text-center">{{user.lastname}}</span>
-          </div>
-        </div>
-        <div class="flex flex-col justify-around ">
-          <h3>Datos</h3>
-          <div class="grid grid-cols-2B border rounded-md py-3">
-            <div class="flex flex-col pl-2">
-              <span class="text-clip">Email</span>
-              <span class="text-clip">CI</span>
-              <span class="text-clip">Teléfono</span>
-            </div>
-            <div class="flex flex-col ">
-              <span class="inline-block">{{user.email }}</span>
-              <span class="inline-block">{{user.ci}}</span>
-              <span class="inline-block">{{user.phone}}</span>
-            </div>
+  <div class="flex justify-center w-full">
+    <ul class="md:w-2/5  w-full">
 
+      @for(user of userList; track user.id){
+      <li class="bg-bg-color border rounded-lg py-3 px-1 mt-3 flex flex-col justify-center items-center">
+        <div class="grid grid-cols-2B items-center justify-between mb-5 w-4/5">
+          @if(user.imageUrl){
+          <div class="border rounded-full w-16 h-16 flex justify-center">
+            <img src="{{user.imageUrl}}" loading="" alt="user image" class="rounded-full max-h-16 max-w-16">
           </div>
-          <h3>Roles</h3>
-          <div class="flex flex-row justify-around border rounded-md py-3">
-            @for(role of user.roles; track role.id){
-            <span class="border rounded-lg m-1 p-1"
-              [ngClass]="{'bg-blue-400':role.name === 'ADMINISTRATIVE', 'bg-cyan-300':role.name === 'FATHER', 'bg-sky-400':role.name === 'TEACHER'}">
-              {{currentRoles[role.name]}}
-            </span>
-            }
+          }
+          @else{
+          <div class="border rounded-full w-16 h-16 flex justify-center">
+            <img src="../../assets/user.svg" class="max-w-[4rem]">
           </div>
-          <h3>Acciones</h3>
-          <div class="flex flex-row border justify-around rounded-md py-3">
-            <button class="bg-primary text-white px-4 py-1 border rounded-md"
-              (click)="editUser(user.id)">Editar</button>
-            @if(user.status === 1){
-            <button class="bg-red-500 text-white px-4 py-1 border rounded-md"
-              (click)="showBlockModal(user.username,user.status)">Bloquear Usuario</button>
-            }
-            @if(user.status !== 1){
-            <button class="bg-green-500 text-white px-4 py-1 border rounded-md"
-              (click)="showBlockModal(user.username,user.status)">Desbloquear Usuario</button>
-            }
+          }
+          <div class="flex flex-col justify-center">
+            <span class="text-clip text-center">{{ user.name }}</span>
+            <span class="text-clip text-center">{{ user.lastname }}</span>
           </div>
         </div>
+        <div class="flex flex-col justify-around w-4/5">
+          <section class="flex flex-col  justify-between w-full mb-3">
+            <div class="flex flex-col border rounded-md p-1 mb-3">
+              <h3 class="mb-2 text-start font-bold pl-5">Datos</h3>
+              <div class="flex flex-row justify-evenly w-full">
+                <div class="flex flex-col">
+                  <span class="text-clip font-semibold">Email</span>
+                  <span class="text-clip font-semibold">CI</span>
+                  <span class="text-clip font-semibold">Teléfono</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="block truncate w-full cursor-default" [title]="user.email">{{user.email}}</span>
+                  <span class="block truncate w-11/12 cursor-default" [title]="user.ci">{{ user.ci }}</span>
+                  <span class="block truncate w-11/12 cursor-default" [title]="user.phone">{{ user.phone }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col border rounded-md p-1 ">
+              <h3 class="mb-2 text-start font-semibold pl-5">Roles</h3>
+              <div class="flex flex-wrap justify-center w-full">
+                @for(role of user.roles; track role.id){
+                <span class="border rounded-lg m-1 p-1 "
+                  [ngClass]="{'bg-cyan-300': role.name === 'ADMINISTRATIVE', 'bg-sky-500':role.name==='FATHER','bg-blue-500':role.name==='TEACHER'}">
+                  {{ currentRoles[role.name] }}
+                </span>
+                }
+
+              </div>
+            </div>
+          </section>
+          <section class="flex flex-col border rounded-md p-1 mb-3 justify-center">
+            <h3 class="text-start font-semibold pl-5 ">Estado</h3>
+            <div class="flex justify-center">
+              <span class="flex text-center font-semibold text-white w-fit py-1 px-1 rounded-md shadow"
+                [ngClass]="{'bg-green-500': user.status === 1, 'bg-red-500': user.status === 2}">{{ user.status === 1
+                ? 'Activo' : 'Bloqueado' }}</span>
+            </div>
+          </section>
+          <section class="flex flex-col border rounded-md p-1 ">
+            <h3 class="text-start font-semibold pl-5">Acciones</h3>
+            <div class="flex flex-col xl:flex-row justify-evenly items-center mt-1">
+              <button class="bg-primary text-white px-4 py-1 my-1 border rounded-md w-48 box-border"
+                (click)="editUser(user.id)">Editar</button>
+              @if(user.status === 1){
+              <button class="bg-red-500 text-white px-4 py-1 my-1 border rounded-md w-48 box-border"
+                (click)="showBlockModal(user.username,user.status)">Bloquear Acceso</button>
+              }@else{
+              <button class="bg-green-500 text-white px-4 py-1 my-1 border rounded-md w-48 box-border "
+                (click)="showBlockModal(user.username,user.status)">Desbloquear Acceso</button>
+              }
+            </div>
+          </section>
+        </div>
+
       </li>
+
       }
     </ul>
   </div>
