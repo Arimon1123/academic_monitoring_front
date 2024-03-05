@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
-import { NavbarComponent } from '../components/navbar/navbar.component';
-import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { initFlowbite } from 'flowbite';
-import { AuthService } from '../service/auth-service.service';
-import { UserService } from '../service/user.service';
-import { LocalStorageService } from '../service/local-storage.service';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { AuthService } from './service/auth-service.service';
+import { LocalStorageService } from './service/local-storage.service';
+import { UserService } from './service/user.service';
+
 
 
 @Component({
