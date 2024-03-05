@@ -1,0 +1,59 @@
+<main class="flex flex-col h-[90vh] border rounded-md bg-bg-color p-5 box-border justify-start items-center">
+    <h1 class="text-start font-semibold my-5">Registro de materia</h1>
+    <form class="flex flex-col w-4/5 md:w-2/5 justify-center items-center" [formGroup]="subjectForm"
+        (ngSubmit)="onSubmit()">
+        <div class="w-full flex flex-row justify-between">
+            <input type="text"
+                class="md:w-[49%] w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+                id="subjectName" placeholder="Nombre de la Materia" formControlName="name">
+            <input type="number"
+                class=" md:w-[49%] w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+                id="subjectCode" placeholder="Horas" formControlName="hours">
+        </div>
+        <div class="flex flex-col w-full">
+            <label for="subjectDescription">Grado</label>
+            <select class="w-full h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+                formControlName="grade">
+                @for(grade of gradeList; track grade.id){
+                <option value="{{grade.id}}">{{grade.number}}° {{grade.section}}</option>
+                }
+            </select>
+        </div>
+        <div class="flex flex-col w-full">
+            <label for="subjectDescription">Requisitos</label>
+            <select class="h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+                formControlName="requirements">
+                @for(requirement of requirementList; track requirement.id){
+                <option value="{{requirement.id}}">{{requirement.requirement}}</option>
+                }
+            </select>
+        </div>
+        <button type="submit"
+            class="h-8  border rounded-md bg-primary text-bg-color col-span-1 disabled:opacity-50 transition disabled:hover:bg-primary hover:bg-selected hover:text-white mt-5 px-5">Guardar</button>
+    </form>
+</main>
+
+<app-modal #modal>
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <button type="button" (click)="closeModal()"
+            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close modal</span>
+        </button>
+        <div class="p-4 md:p-5 text-center">
+            <h3 class="mb-5 mt-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                {{message}}
+            </h3>
+
+
+            <button type="button" (click)="closeModal()"
+                class="text-white bg-primary hover:bg-selected focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                Aceptar
+            </button>
+
+        </div>
+    </div>
+</app-modal>
