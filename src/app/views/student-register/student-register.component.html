@@ -1,0 +1,168 @@
+<main class="flex flex-col items-center w-full">
+    <section class="grid lg:grid-cols-3A grid-rows-none w-full gap-5">
+        <div class="h-fit border rounded-md bg-bg-color p-5 box-border justify-start items-center">
+            <form [formGroup]="parentForm" (ngSubmit)="searchParents()" class="flex">
+                <input type="text" id="parentCi" formControlName="ci" placeholder="CI del Padre"
+                    class="h-8 w-full mr-2 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary">
+                <button type="submit" class="bg-selected border rounded-md
+                 text-white py-1 px-2 hover:bg-sky-500 transition-colors">
+                    Buscar
+                </button>
+            </form>
+            <ul>
+                @for(parent of parentList; track parent.parentId){
+                <li class="border rounded-md p-2 my-1 flex flex-row justify-evenly">
+                    <div class="flex flex-col">
+                        <span>Nombre: {{parent.person.name}} {{parent.person.lastname}}</span>
+
+                        <span>Ci: {{parent.person.ci}}</span>
+                    </div>
+                    <button (click)="addParent(parent)"
+                        class="border rounded-md px-2 py-0 hover:bg-slate-300 transition-colors">
+                        <i class="fa-solid fa-user-plus" style="color: rgb(67,138 ,190 );"> </i>
+                    </button>
+                </li>
+                }
+            </ul>
+        </div>
+        <div class="h-fit w-full border rounded-md bg-bg-color p-5 box-border justify-start items-center">
+            <h1 class="text-lg font-semibold">Registro de Estudiante</h1>
+            <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+                <div>
+                    <h2 class="font-semibold">Datos del estudiante</h2>
+                    <div class="flex flex-col my-2 ">
+                        <label for="studentName">Nombres</label>
+                        <input type="text" id="studentName" placeholder="Nombre del Estudiante" formControlName="name"
+                            class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary">
+                        @if( studentForm.get('name')?.invalid && studentForm.get('name')?.touched){
+                        <span class="text-red-500">Campo invalido</span>
+                        }
+                    </div>
+                    <div class="flex md:flex-row flex-col w-full justify-between">
+                        <div class="flex flex-col my-2 md:w-[49%] w-full">
+                            <label for="mothersLastName">Apellido Materno</label>
+                            <input type="text" id="studentLastName" placeholder="Apellido del Estudiante"
+                                formControlName="motherLastname"
+                                class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary">
+                            @if( studentForm.get('motherLastname')?.invalid &&
+                            studentForm.get('motherLastname')?.touched){
+                            <span class="text-red-500">Campo invalido</span>
+                            }
+                        </div>
+                        <div class="flex flex-col my-2 md:w-[49%] w-full">
+                            <label for="fathersLastName">Apellido Paterno</label>
+                            <input type="text" id="studentLastName" placeholder="Apellido del Estudiante"
+                                formControlName="fatherLastname"
+                                class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary">
+                            @if( studentForm.get('fatherLastname')?.invalid &&
+                            studentForm.get('fatherLastname')?.touched){
+                            <span class="text-red-500">Campo invalido</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="flex md:flex-row flex-col w-full justify-between">
+                        <div class="flex flex-col my-2 md:w-[49%] w-full">
+                            <label for="studentBirthdate">Fecha de Nacimiento</label>
+                            <input type="date" id="studentBirthdate" [max]="maxDate" [min]="minDate"
+                                formControlName="birthDate"
+                                class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary">
+                            @if( studentForm.get('birthDate')?.invalid && studentForm.get('birthDate')?.touched){
+                            <span class="text-red-500">Campo invalido</span>
+                            }
+                        </div>
+                        <div class="flex flex-col my-2 md:w-[49%] w-full">
+                            <!-- phone -->
+                            <label for="studentPhone">Teléfono</label>
+                            <input type="tel" id="studentPhone" placeholder="Teléfono del Estudiante"
+                                formControlName="phone"
+                                class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary">
+                            @if( studentForm.get('phone')?.invalid && studentForm.get('phone')?.touched){
+                            <span class="text-red-500">Campo invalido</span>
+                            }
+                        </div>
+                    </div>
+                    <!-- address -->
+                    <div class="flex flex-col my-2">
+                        <label for="studentAddress">Dirección</label>
+                        <input type="text" id="studentAddress" placeholder="Dirección del Estudiante"
+                            formControlName="address"
+                            class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary">
+                        @if( studentForm.get('address')?.invalid && studentForm.get('address')?.touched){
+                        <span class="text-red-500">Campo invalido</span>
+                        }
+                    </div>
+                    <div class="flex md:flex-row flex-col w-full justify-between">
+                        <div class="flex flex-col my-2 md:w-[49%] w-full">
+                            <label for="studentCi">Carnet de Identidad</label>
+                            <input type="text" id="studentCi" placeholder="Carnet de Identidad del Estudiante"
+                                formControlName="ci" (change)="existsStudentByCi()"
+                                class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary">
+                            @if( studentForm.get('ci')?.invalid && studentForm.get('ci')?.touched &&
+                            !studentForm.get('ci')?.getError('exists')){
+                            <span class="text-red-500">Campo invalido</span>
+                            }
+                            @if( studentForm.get('ci')?.getError('exists')){
+                            <span class="text-red-500">El Ci ya existe</span>
+                            }
+
+                        </div>
+                        <div class="flex flex-col my-2 md:w-[49%] w-full">
+                            <!-- rude -->
+                            <label for="studentRude">Rude</label>
+                            <input type="text" id="studentRude" (click)="existsStudentByRude()"
+                                placeholder="Rude del Estudiante" formControlName="rude"
+                                class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary">
+                            @if( studentForm.get('rude')?.invalid && studentForm.get('rude')?.touched &&
+                            !studentForm.get('rude')?.getError('exists')){
+                            <span class="text-red-500">Campo invalido</span>
+                            }
+                            @if( studentForm.get('rude')?.getError('exists')){
+                            <span class="text-red-500">El Rude ya existe</span>
+                            }
+                        </div>
+                    </div>
+                    <!-- grade with select -->
+                    <div class="flex flex-col my-2">
+                        <label for="studentGrade">Grado</label>
+                        <select id="studentGrade" (change)="searchClass($event)" formControlName="gradeId"
+                            class="h-8 border border-gray-400 rounded-md pl-3 py-0 outline-none focus:border-primary">
+                            <option value="-1" disabled selected>Seleccione el grado</option>
+                            @for(grade of gradeList; track grade.id){
+                            <option value="{{grade.id}}">{{grade.number}}° {{grade.section}}</option>
+                            }
+                        </select>
+
+                    </div>
+                    @if(classList.length > 0){
+                    <div class="flex flex-col my-2">
+                        <label for="studentClass"> Curso</label>
+                        <select id="studentClass" formControlName="classId"
+                            class="h-8 border border-gray-400 rounded-md pl-3 py-0 outline-none focus:border-primary">
+                            @for(class of classList; track class.id){
+                            <option value="{{class.id}}">{{class.identifier}} --- {{class.studentCount}}</option>
+                            }
+                        </select>
+                    </div>
+                    }
+                </div>
+                <div class="my-2">
+                    <h2 class="font-semibold">Padre, Madre o Apoderado</h2>
+                </div>
+                @for(parent of selectedParentList; track parent.parentId){
+                <div class="p-2 border rounded-sm flex flex-row justify-evenly my-2 bg-white">
+                    <span>Nombre: {{parent.person.name}}</span>
+                    <span>Apellido: {{parent.person.lastname}}</span>
+                    <span>Ci: {{parent.person.ci}}</span>
+                    <button (click)="removeParent(parent.parentId)"><i class="fa-solid fa-trash"
+                            style="color: #f50505;"></i></button>
+                </div>
+                }
+                <div class="w-full flex justify-end">
+                    <button type="submit" [disabled]="studentForm.invalid || selectedParentList.length == 0"
+                        class="bg-primary border rounded-md py-1 px-4 text-white my-2 disabled:opacity-15">Guardar</button>
+                </div>
+            </form>
+        </div>
+
+    </section>
+</main>

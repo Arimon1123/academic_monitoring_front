@@ -18,9 +18,8 @@ module.exports = {
       gridTemplateColumns: {
         '2A': '3fr 1fr',
         '2B': '1fr 3fr',
-        'navbar': '3rem 1fr',
-        'sidebar': '10vw 90vw',
-        'main': '1fr',
+        '3A': '1fr 3fr 1fr',
+
       },
     }
   },

@@ -8,6 +8,7 @@ import { SubjectRegisterComponent } from './views/subject-register/subject-regis
 import { UnauthorizedComponent } from './views/unauthorized/unauthorized.component';
 import { UserListComponent } from './views/user-list/user-list.component';
 import { UsersComponent } from './views/users/users.component';
+import { StudentRegisterComponent } from './views/student-register/student-register.component';
 
 ;
 
@@ -35,6 +36,9 @@ export const routes: Routes = [
     },
     {
         path: 'subjectRegister', component: SubjectRegisterComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE'] }
+    },
+    {
+        path: 'studentRegister', component: StudentRegisterComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE'] }
     }
 
 ];

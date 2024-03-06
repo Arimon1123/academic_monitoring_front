@@ -1,36 +1,61 @@
-<main class="flex flex-col h-[90vh] border rounded-md bg-bg-color p-5 box-border justify-start items-center">
-    <h1 class="text-start font-semibold my-5">Registro de materia</h1>
-    <form class="flex flex-col w-4/5 md:w-2/5 justify-center items-center" [formGroup]="subjectForm"
-        (ngSubmit)="onSubmit()">
-        <div class="w-full flex flex-row justify-between">
-            <input type="text"
-                class="md:w-[49%] w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
-                id="subjectName" placeholder="Nombre de la Materia" formControlName="name">
-            <input type="number"
-                class=" md:w-[49%] w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
-                id="subjectCode" placeholder="Horas" formControlName="hours">
-        </div>
-        <div class="flex flex-col w-full">
-            <label for="subjectDescription">Grado</label>
-            <select class="w-full h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
-                formControlName="grade">
-                @for(grade of gradeList; track grade.id){
-                <option value="{{grade.id}}">{{grade.number}}° {{grade.section}}</option>
-                }
-            </select>
-        </div>
-        <div class="flex flex-col w-full">
-            <label for="subjectDescription">Requisitos</label>
-            <select class="h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
-                formControlName="requirements">
-                @for(requirement of requirementList; track requirement.id){
-                <option value="{{requirement.id}}">{{requirement.requirement}}</option>
-                }
-            </select>
-        </div>
-        <button type="submit"
-            class="h-8  border rounded-md bg-primary text-bg-color col-span-1 disabled:opacity-50 transition disabled:hover:bg-primary hover:bg-selected hover:text-white mt-5 px-5">Guardar</button>
-    </form>
+<main class="flex flex-col items-center">
+    <div class="flex flex-col h-fit border rounded-md bg-bg-color p-5 box-border justify-start items-center w-fit">
+        <section class="flex items-start justify-start w-full">
+            <h1 class="text-start font-semibold my-5 text-lg">Registro de materia</h1>
+        </section>
+        <form class="flex flex-col  justify-center items-center" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+            <div class="w-full flex flex-row justify-between">
+                <div class="flex flex-col md:w-[49%] w-full my-2">
+                    <label for="subjectName">Nombre de la Materia</label>
+                    <input type="text"
+                        class=" w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+                        id="subjectName" placeholder="Nombre de la Materia" formControlName="name">
+                </div>
+                <div class="flex flex-col md:w-[49%] w-full my-2">
+                    <label for="subjectHours">Horas de la Materia</label>
+                    <input type="number"
+                        class=" w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+                        id="subjectHours" placeholder="Horas" formControlName="hours">
+                </div>
+
+            </div>
+            <div class="flex flex-col w-full my-2">
+                <label for="subjectDescription">Grado</label>
+                <select class="w-full h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+                    formControlName="grade">
+                    @for(grade of gradeList; track grade.id){
+                    <option value="{{grade.id}}">{{grade.number}}° {{grade.section}}</option>
+                    }
+                </select>
+            </div>
+            <div class="flex flex-col w-full my-2">
+                <label for="subjectDescription">Requisitos</label>
+                <select class="h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+                    formControlName="requirements" (change)="addRequirement($event)">
+                    <option value="-1" disabled>Seleccione los requisitos</option>
+                    @for(requirement of requirementList; track requirement.id){
+                    <option value="{{requirement.id}}" [title]="requirement.description">{{requirement.requirement}}
+                    </option>
+                    }
+                </select>
+            </div>
+            <div class="flex flex-col w-full">
+                <h2>Requisitos Seleccionados</h2>
+                <ul>
+                    @for(requirement of selectedRequirement; track requirement.id){
+                    <li class="flex flex-row justify-between items-center w-full my-2 pl-2">
+                        <span>{{requirement.requirement}}</span>
+                        <button type="button" (click)="removeRequirement(requirement.id)"
+                            class=" border rounded-md bg-red-500 text-white hover:bg-red-600 transition px-5 w-fit">Eliminar</button>
+                        }
+                </ul>
+            </div>
+            <div class="flex flex-col w-full my-2 items-end">
+                <button type="submit"
+                    class="h-8 border rounded-md bg-primary text-bg-color disabled:opacity-50 transition disabled:hover:bg-primary hover:bg-selected hover:text-white mt-5 px-5 w-fit">Guardar</button>
+            </div>
+        </form>
+    </div>
 </main>
 
 <app-modal #modal>
@@ -49,7 +74,7 @@
             </h3>
 
 
-            <button type="button" (click)="closeModal()"
+            <button type="button" (click)="closeModal()" [disabled]="this.subjectForm.invalid"
                 class="text-white bg-primary hover:bg-selected focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                 Aceptar
             </button>
