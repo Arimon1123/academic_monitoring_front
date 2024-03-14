@@ -51,6 +51,7 @@ export class AssignationComponent implements OnInit {
   classSchedule: ScheduleDTO[] = [];
   classroomSchedule: ScheduleDTO[] = [];
 
+
   constructor(private gradeService: GradeService,
     private subjectService: SubjectService,
     private teacherService: TeacherService,
@@ -186,21 +187,43 @@ export class AssignationComponent implements OnInit {
       this.selectedTeacher = teacher;
       console.log(this.selectedTeacher);
     }
+    if (this.selectedClassroom.id !== undefined) {
+      this.showSchedule = true;
+    }
   }
   selectClassroom(classroomDTO: ClassroomDTO) {
     this.selectedClassroom = classroomDTO;
+    if (this.selectedTeacher.id !== undefined) {
+      this.showSchedule = true;
+    }
   }
   selectSubject(subjectDTO: SubjectDTO) {
     this.selectedSubject = subjectDTO;
     this.getTeachersBySubject(subjectDTO);
     this.getClassroomByRequirements();
   }
+  getSubjectAndClassSchedule() {
+    if (this.selectedClass.id !== null && this.selectedSubject.id !== null) {
+      this.scheduleService.getScheduleBySubjectAndClassId(this.selectedClass.id, this.selectedSubject.id).subscribe({
+        next: (data: ResponseDTO<ScheduleDTO[]>) => {
+          this.selectedSchedules = data.content;
+          console.log(this.schedule);
+        },
+        error: (error: any) => {
+          alert('Error al cargar el horario de la clase ' + error.error.message);
+        },
+        complete: () => {
+          console.log('complete');
+        }
+      });
+    }
+  }
 
   getSchedules() {
     this.getTeacherSchedule();
     this.getClassSchedule();
     this.getClassroomSchedule();
-
+    this.getSubjectAndClassSchedule();
     setTimeout(() => {
       this.composeSchedule();
     }, 1500)
@@ -226,6 +249,10 @@ export class AssignationComponent implements OnInit {
     for (let schedule of this.classroomSchedule) {
       this.schedule[schedule.weekday][schedule.period - 1].isAvailable = false;
       this.schedule[schedule.weekday][schedule.period - 1].reason = 'classroom'
+    }
+    for (let schedule of this.selectedSchedules) {
+      this.schedule[schedule.weekday][schedule.period - 1].isAvailable = false;
+      this.schedule[schedule.weekday][schedule.period - 1].reason = 'selected'
     }
     console.log(this.schedule);
     this.showedSchedule = this.transformSchedule();

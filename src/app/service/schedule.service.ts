@@ -19,4 +19,7 @@ export class ScheduleService {
   getScheduleByClass(id: number) {
     return this.http.get<ResponseDTO<ScheduleDTO[]>>(`${this.API_URL}/schedule/class/${id}`, { withCredentials: true });
   }
+  getScheduleBySubjectAndClassId(classId: number, subjectId: number) {
+    return this.http.get<ResponseDTO<ScheduleDTO[]>>(`${this.API_URL}/schedule/class/${classId}/subject/${subjectId}`, { withCredentials: true });
+  }
 }
