@@ -1,0 +1,102 @@
+<main class="flex flex-row h-[87vh] justify-evenly border rounded-md ">
+    <div class="">
+        <ul>
+            @for(grade of gradeList; track grade.id){
+            <li class="flex justify-center">
+                <button (click)="selectGrade(grade)" class="border rounded-md p-2 w-32 "
+                    [ngClass]="{'bg-selected':grade.id === selectedGrade.id,'text-white':grade.id === selectedGrade.id}">{{grade.number}}°
+                    {{grade.section}}</button>
+            </li>
+            }
+        </ul>
+    </div>
+    @if(selectedGrade){
+    <div>
+        <ul>
+            @for(class of classList; track class.id){
+            <li class="flex justify-center">
+                <button (click)="selectClass(class)" class="border rounded-md p-2 w-32 "
+                    [ngClass]="{'bg-selected':class.id === selectedClass.id, 'text-white': class.id === selectedClass.id}">
+                    {{class.identifier}}</button>
+            </li>
+            }
+        </ul>
+    </div>
+    }
+    @if(selectedClass){
+    <div>
+        <ul>
+            @for(subject of subjectList; track subject.id){
+            <li class="flex justify-center">
+                <button (click)="selectSubject(subject)" class="border rounded-md p-2 w-32"
+                    [ngClass]="{'bg-selected':subject.id === selectedSubject.id,'text-white': subject.id === selectedSubject.id}">{{subject.name}}</button>
+            </li>
+            }
+        </ul>
+    </div>
+    <div class="flex flex-col ">
+        @if(selectedSubject.id ){
+        <div>
+            <select (change)="selectTeacher($event)">
+                <option value="0">Seleccionar docente</option>
+                @for(teacher of teacherList; track teacher.id){
+                <option value="{{teacher.id}}">{{teacher.person.name}}</option>
+                }
+            </select>
+        </div>
+        }
+        @if(selectedSubject){
+        <div>
+            <ul>
+                @for(classroom of classroomList; track classroom.id){
+                <li>
+                    <button (click)="selectClassroom(classroom)">{{classroom.type}} {{classroom.block}}
+                        {{classroom.number}}</button>
+                </li>
+                }
+            </ul>
+        </div>
+        }
+        @if(schedule){
+        <div class="flex  w-3/5">
+            <table class="table-fixed table">
+                <tr class="border bg-primary text-white w-3/4">
+                    <th class="text-center">Horario</th>
+                    <th class="text-center">Lunes</th>
+                    <th class="text-center">Martes</th>
+                    <th class="text-center">Miércoles</th>
+                    <th class="text-center">Jueves</th>
+                    <th class="text-center">Viernes</th>
+                </tr>
+                @for(day of showedSchedule; track day; let idx = $index){
+                <tr>
+                    <td class="border text-center">{{hours[idx].start}} - {{hours[idx].end}}</td>
+                    @for(period of day; track period.period; let dayIdx = $index){
+                    <td class="border cursor-pointer text-center" [ngClass]="{'bg-red-500':period.isAvailable=== false && period.reason !== 'selected',
+                            'bg-green-500':period.isAvailable,
+                            'bg-blue-500':period.isAvailable === false && period.reason === 'selected'}"
+                        (click)="selectSchedule(period,dayIdx)">
+                        @if(!period.isAvailable && period.reason === 'selected'){
+                        <span>Seleccionado</span>
+                        }
+                        @if(!period.isAvailable && period.reason !== 'selected'){
+                        <span>no disponible</span>
+                        }
+                        @if(period.isAvailable){
+                        <span>Disponible</span>
+                        }
+                    </td>
+                    }
+                </tr>
+                }
+            </table>
+        </div>
+        <div class="flex w-1/3">
+            <button (click)="getSchedules()" class="border rounded-md bg-selected text-white">calcular</button>
+        </div>
+        }
+    </div>
+    }
+
+    <button (click)="onSubmit()">Asignar</button>
+</main>

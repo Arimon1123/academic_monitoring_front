@@ -9,6 +9,7 @@ import { UnauthorizedComponent } from './views/unauthorized/unauthorized.compone
 import { UserListComponent } from './views/user-list/user-list.component';
 import { UsersComponent } from './views/users/users.component';
 import { StudentRegisterComponent } from './views/student-register/student-register.component';
+import { AssignationComponent } from './views/assignation/assignation.component';
 
 ;
 
@@ -39,6 +40,9 @@ export const routes: Routes = [
     },
     {
         path: 'studentRegister', component: StudentRegisterComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE'] }
+    },
+    {
+        path: 'assignation', component: AssignationComponent
     }
 
 ];

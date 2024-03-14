@@ -6,7 +6,7 @@ import { UserService } from '../../service/user.service';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment.development';
 import { RoleDTO } from '../../models/RoleDTO';
-import roles from "../../consts/consts.json";
+import roles from "../../consts/roles.json";
 import { UserCreateDTO } from '../../models/UserCreateDTO';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { Flowbite } from '../../decorator/flowbite';
