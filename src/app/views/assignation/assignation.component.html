@@ -1,29 +1,29 @@
-<main class="flex flex-col h-[87vh] border rounded-md  bg-bg-color">
+<main class="flex flex-col h-[87vh] border rounded-md  bg-bg-color overflow-y-scroll overflow-x-hidden">
     <div class="w-full flex justify-start p-4">
         <h1 class="text-lg font-semibold text-start">Asignación de horarios</h1>
     </div>
-    <div class="grid grid-cols-5A  justify-evenly  p-4">
-        <div></div>
+    <div class="lg:grid lg:grid-cols-5A flex flex-col   gap-5 justify-evenly  p-4">
+
         <div class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-center items-center">
             <h2 class="text-md font-semibold my-4">Grado</h2>
             <ul>
                 @for(grade of gradeList; track grade.id){
                 <li class="flex justify-center my-2 ">
                     <button class="border rounded-md p-2 w-32  transition-colors hover:bg-active  hover:text-white"
-                        (click)="selectGrade(grade)"
-                        [ngClass]="{'bg-active':grade.id === selectedGrade.id,'text-white':grade.id === selectedGrade.id, 'bg-slate-200': grade.id!== selectedGrade.id}">{{grade.number}}°
+                        (click)="selectGrade(grade)" [ngClass]="getGradeClasses(grade.id)">{{grade.number}}°
                         {{grade.section}}</button>
                 </li>
                 }
             </ul>
         </div>
         @if(selectedGrade){
-        <div>
+        <div class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-center items-center">
+            <h2 class="text-md font-semibold my-4">Paralelo</h2>
             <ul>
                 @for(class of classList; track class.id){
-                <li class="flex justify-center">
-                    <button (click)="selectClass(class)" class="border rounded-md p-2 w-32 "
-                        [ngClass]="{'bg-active':class.id === selectedClass.id, 'text-white': class.id === selectedClass.id}">
+                <li class="flex justify-center my-2">
+                    <button class="border rounded-md p-2 w-32  transition-colors hover:bg-active  hover:text-white"
+                        (click)="selectClass(class)" [ngClass]="getClassClasses(class.id)">
                         {{class.identifier}}</button>
                 </li>
                 }
@@ -31,20 +31,23 @@
         </div>
         }
         @if(selectedClass){
-        <div>
+        <div class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-center items-center">
+            <h2 class="text-md font-semibold my-4">Materia</h2>
             <ul>
                 @for(subject of subjectList; track subject.id){
-                <li class="flex justify-center">
-                    <button (click)="selectSubject(subject)" class="border rounded-md p-2 w-32"
-                        [ngClass]="{'bg-selected':subject.id === selectedSubject.id,'text-white': subject.id === selectedSubject.id}">{{subject.name}}</button>
+                <li class="flex justify-center my-2">
+                    <button class="border rounded-md p-2 w-32  transition-colors hover:bg-active  hover:text-white"
+                        (click)="selectSubject(subject)"
+                        [ngClass]="getSubjectClasses(subject.id)">{{subject.name}}</button>
                 </li>
                 }
             </ul>
         </div>
-        <div class="flex flex-col w-full">
-            @if(selectedSubject.id ){
-            <div class="flex w-full justify-between">
-                <select (change)="selectTeacher($event)" class="w-2/5">
+        @if(selectedSubject.id ){
+        <div class="flex flex-col w-full border rounded-md bg-white h-fit p-4 ">
+            <div class="flex w-full justify-between ">
+                <select (change)="selectTeacher($event)"
+                    class="w-4/5 h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary ">
                     <option value="0">Seleccionar docente</option>
                     @for(teacher of teacherList; track teacher.id){
                     <option value="{{teacher.id}}">{{teacher.person.name}}</option>
@@ -52,14 +55,15 @@
                 </select>
                 <button (click)="getSchedules()" class="border rounded-md bg-selected text-white p-2">Calcular</button>
             </div>
-            }
+
             @if(selectedSubject){
-            <div>
-                <ul class="flex flex-row m-2">
+            <div class="flexjustify-start overflow-x-hidden  lg:overflow-x-auto w-80 lg:w-full">
+                <ul class="flex flex-row m-2 lg:overflow-y-scroll ">
                     @for(classroom of classroomList; track classroom.id){
                     <li class="mx-2">
-                        <button (click)="selectClassroom(classroom)" class="border rounded-md p-2 w-32"
-                            [ngClass]="{'bg-selected':classroom.id === selectedClassroom.id,'text-white': classroom.id === selectedClassroom.id}">{{classroom.type}}
+                        <button class="border rounded-md p-2 w-32  transition-colors hover:bg-active  hover:text-white"
+                            (click)="selectClassroom(classroom)"
+                            [ngClass]="getClassroomClasses(classroom.id)">{{classroom.type}}
                             {{classroom.block}}
                             {{classroom.number}}</button>
                     </li>
@@ -68,8 +72,8 @@
             </div>
             }
             @if(showSchedule){
-            <div class="flex w-full">
-                <table class="table-fixed table w-full">
+            <div class="flex  lg:w-full w-[36rem] lg:overflow-x-scroll">
+                <table class="table-fixed table w-full overflow-x-scroll">
                     <tr class="border bg-primary text-white w-3/4">
                         <th class="text-center">Horario</th>
                         <th class="text-center">Lunes</th>
@@ -81,11 +85,10 @@
                     @for(day of showedSchedule; track day; let idx = $index){
                     <tr>
                         <td class="border text-center h-10">{{hours[idx].start }} - {{hours[idx].end }}</td>
+
                         @for(period of day; track period.period; let dayIdx = $index){
-                        <td class="border cursor-pointer text-center text-white hover:opacity-95" [ngClass]="{'bg-red-500':period.isAvailable=== false && period.reason !== 'selected',
-                                'bg-green-500':period.isAvailable,
-                                'bg-blue-500':period.isAvailable === false && period.reason === 'selected'
-                                 }" (click)="selectSchedule(period,dayIdx)">
+                        <td class="border cursor-pointer text-center text-white hover:opacity-95"
+                            [ngClass]="getCellClasses(period)" (click)="selectSchedule(period,dayIdx)">
                             @if(!period.isAvailable && period.reason === 'selected'){
                             <span>Seleccionado</span>
                             }
@@ -106,6 +109,7 @@
             </div>
             }
         </div>
+        }
         }
 
         <div class="w-1/3">

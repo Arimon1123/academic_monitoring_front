@@ -224,10 +224,10 @@ export class AssignationComponent implements OnInit {
     this.getClassSchedule();
     this.getClassroomSchedule();
     this.getSubjectAndClassSchedule();
+    this.selectedSchedules = [];
     setTimeout(() => {
       this.composeSchedule();
     }, 1500)
-
   }
 
   composeSchedule() {
@@ -310,6 +310,43 @@ export class AssignationComponent implements OnInit {
         alert('Error al crear la asignación ' + error.error.message);
       }
     });
+  }
+
+  getSubjectClasses(subjectId: number | null) {
+    return {
+      'bg-active': subjectId === this.selectedSubject.id,
+      'text-white': subjectId === this.selectedSubject.id,
+      'bg-slate-200': subjectId !== this.selectedSubject.id
+    }
+  }
+  getGradeClasses(gradeId: number | null) {
+    return {
+      'bg-active': gradeId === this.selectedGrade.id,
+      'text-white': gradeId === this.selectedGrade.id,
+      'bg-slate-200': gradeId !== this.selectedGrade.id
+    }
+  }
+  getClassClasses(classId: number | null) {
+    return {
+      'bg-active': classId === this.selectedClass.id,
+      'text-white': classId === this.selectedClass.id,
+      'bg-slate-200': classId !== this.selectedClass.id
+    }
+  }
+
+  getClassroomClasses(classroomId: number | null) {
+    return {
+      'bg-active': classroomId === this.selectedClassroom.id,
+      'text-white': classroomId === this.selectedClassroom.id,
+      'bg-slate-200': classroomId !== this.selectedClassroom.id
+    }
+  }
+  getCellClasses(period: ScheduleCreateDTO) {
+    return {
+      'bg-red-500': period.isAvailable === false && period.reason !== 'selected',
+      'bg-green-500': period.isAvailable,
+      'bg-blue-500': period.isAvailable === false && period.reason === 'selected'
+    }
   }
 
 }

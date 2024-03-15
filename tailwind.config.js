@@ -20,7 +20,10 @@ module.exports = {
         '2B': '1fr 3fr',
         '3A': '1fr 3fr 1fr',
         '4A': '1fr 1fr 1fr 4fr',
-        '5A': '1fr 1fr 1fr 1fr 4fr'
+        '5A': '1fr 1fr 1fr 6fr'
+      },
+      gridTemplateRows: {
+        '5A': '1fr 1fr 1fr 1fr 6fr'
       }
     }
   },
