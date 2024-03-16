@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GradeDTO } from '../../models/GradeDTO';
 import { ClassListDTO } from '../../models/ClassListDTO';
 import { SubjectDTO } from '../../models/SubjectDTO';
@@ -17,17 +17,24 @@ import { ScheduleCreateDTO } from '../../models/ScheduleCreateDTO';
 import { CommonModule } from '@angular/common';
 import { AssignationCreateDTO } from '../../models/AssignationCreateDTO';
 import { AssignationService } from '../../service/assignation.service';
+import { forkJoin, timeout } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-assignation',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './assignation.component.html',
   styleUrl: './assignation.component.css'
 })
 export class AssignationComponent implements OnInit {
+  @ViewChild('assignation') scrollTo: ElementRef | undefined;
+  @ViewChild('mat') subject: ElementRef | undefined;
+  @ViewChild('course') class: ElementRef | undefined;
+
   days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
   showSchedule = false;
+  currentAssignation: AssignationCreateDTO = {} as AssignationCreateDTO;
 
   gradeList: GradeDTO[] = [];
   classList: ClassListDTO[] = [];
@@ -80,9 +87,26 @@ export class AssignationComponent implements OnInit {
       next: (data: ResponseDTO<SubjectDTO[]>) => {
         this.subjectList = data.content;
         console.log(this.subjectList);
+
       },
       error: (error: any) => {
         alert('Error al cargar las materias ' + error.error.message);
+      },
+      complete: () => {
+        console.log('complete');
+      }
+    });
+  }
+  getAssignation() {
+    const classId = this.selectedClass.id ?? 0; // Use 0 as a fallback value if selectedClass.id is null
+    const subjectId = this.selectedSubject.id ?? 0; // Use 0 as a fallback value if selectedSubject.id is null
+    this.assignationService.getAssignation(classId, subjectId).subscribe({
+      next: (data: ResponseDTO<AssignationCreateDTO>) => {
+        console.log(data);
+        this.currentAssignation = data.content;
+      },
+      error: (error: any) => {
+        alert('Error al cargar la asignación ' + error.error.message);
       },
       complete: () => {
         console.log('complete');
@@ -113,6 +137,9 @@ export class AssignationComponent implements OnInit {
       },
       complete: () => {
         console.log('complete');
+        setTimeout(() => {
+          this.class?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+        }, 150)
       }
     }); // This line is missing a call to the classService
   }
@@ -178,7 +205,11 @@ export class AssignationComponent implements OnInit {
   }
   selectClass(classDto: ClassListDTO) {
     this.selectedClass = classDto;
+    this.getAssignationOptions();
     this.getSubjectsByGrade(this.selectedGrade);
+    setTimeout(() => {
+      this.subject?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    }, 150);
   }
   selectTeacher(event: any) {
     console.log(event.target.value)
@@ -187,30 +218,33 @@ export class AssignationComponent implements OnInit {
       this.selectedTeacher = teacher;
       console.log(this.selectedTeacher);
     }
-    if (this.selectedClassroom.id !== undefined) {
-      this.showSchedule = true;
-    }
   }
   selectClassroom(classroomDTO: ClassroomDTO) {
     this.selectedClassroom = classroomDTO;
-    if (this.selectedTeacher.id !== undefined) {
-      this.showSchedule = true;
-    }
   }
   selectSubject(subjectDTO: SubjectDTO) {
     this.selectedSubject = subjectDTO;
-    this.getTeachersBySubject(subjectDTO);
-    this.getClassroomByRequirements();
+    this.getAssignationOptions();
+
   }
-  getSubjectAndClassSchedule() {
-    if (this.selectedClass.id !== null && this.selectedSubject.id !== null) {
-      this.scheduleService.getScheduleBySubjectAndClassId(this.selectedClass.id, this.selectedSubject.id).subscribe({
-        next: (data: ResponseDTO<ScheduleDTO[]>) => {
-          this.selectedSchedules = data.content;
-          console.log(this.schedule);
+
+  getAssignationOptions() {
+    if (this.selectedClass.id && this.selectedSubject.id) {
+      forkJoin({
+        teachers: this.teacherService.getTeachersBySubject(this.selectedSubject.id),
+        classrooms: this.classroomService.getClassroomsByRequirements(this.selectedSubject.requirements.map(requirement => requirement.id)),
+        assignation: this.assignationService.getAssignation(this.selectedClass.id, this.selectedSubject.id)
+      }).subscribe({
+        next: (data: any) => {
+          this.teacherList = data.teachers.content;
+          this.classroomList = data.classrooms.content;
+          this.currentAssignation = data.assignation.content;
+          this.selectedTeacher = this.teacherList.find(teacher => teacher.id === this.currentAssignation.teacherId) || {} as TeacherDTO;
+          this.selectedClassroom = this.classroomList.find(classroom => classroom.id === this.currentAssignation.classroomId) || {} as ClassroomDTO;
+          this.scrollTo?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
         },
         error: (error: any) => {
-          alert('Error al cargar el horario de la clase ' + error.error.message);
+          alert('Error al cargar los docentes, aulas y asignación ' + error.error.message);
         },
         complete: () => {
           console.log('complete');
@@ -220,15 +254,32 @@ export class AssignationComponent implements OnInit {
   }
 
   getSchedules() {
-    this.getTeacherSchedule();
-    this.getClassSchedule();
-    this.getClassroomSchedule();
-    this.getSubjectAndClassSchedule();
-    this.selectedSchedules = [];
-    setTimeout(() => {
-      this.composeSchedule();
-    }, 1500)
+    this.showSchedule = false;
+    forkJoin({
+      schedule: this.scheduleService.getScheduleByTeacher(this.selectedTeacher.id),
+      classSchedule: this.scheduleService.getScheduleByClass(this.selectedClass.id),
+      classroomSchedule: this.scheduleService.getScheduleByClassroom(this.selectedClassroom.id),
+      selectedSchedules: this.selectedClass.id && this.selectedSubject.id ? this.scheduleService.getScheduleBySubjectAndClassId(this.selectedClass.id, this.selectedSubject.id) : []
+    }
+    ).subscribe({
+      next: (data: any) => {
+        this.teacherSchedule = data.schedule.content;
+        this.classSchedule = data.classSchedule.content;
+        this.classroomSchedule = data.classroomSchedule.content;
+        this.selectedSchedules = data.selectedSchedules.content;
+        console.log(data);
+        this.composeSchedule();
+
+      },
+      error: (error: any) => {
+        alert('Error al cargar el horario de la clase ' + error.error.message);
+      },
+      complete: () => {
+        console.log('complete');
+      }
+    })
   }
+
 
   composeSchedule() {
     this.schedule = {
@@ -256,9 +307,9 @@ export class AssignationComponent implements OnInit {
     }
     console.log(this.schedule);
     this.showedSchedule = this.transformSchedule();
+    this.showSchedule = true
   }
   transformSchedule() {
-
     let schedule: any[] = [];
     for (let i = 0; i < 7; i++) {
       let day1 = []
@@ -275,7 +326,6 @@ export class AssignationComponent implements OnInit {
       alert('Horario No disponible');
       return;
     }
-
     const newSchedule = { id: null, startTime: schedule.start, endTime: schedule.end, weekday: this.days[dayIndex], period: schedule.period }
     if (!schedule.isAvailable) {
       schedule.reason = 'none';

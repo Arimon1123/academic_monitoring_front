@@ -14,4 +14,8 @@ export class AssignationService {
   saveAssignation(assignation: AssignationCreateDTO) {
     return this.http.post<ResponseDTO<string>>(`${this.API_URL}/classAssignation`, assignation, { withCredentials: true });
   }
+
+  getAssignation(classId: number, subjectId: number) {
+    return this.http.get<ResponseDTO<AssignationCreateDTO>>(`${this.API_URL}/classAssignation`, { params: { subjectId: subjectId, classId: classId }, withCredentials: true });
+  }
 }

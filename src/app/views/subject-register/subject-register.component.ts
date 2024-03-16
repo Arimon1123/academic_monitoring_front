@@ -43,7 +43,7 @@ export class SubjectRegisterComponent implements OnInit {
 
   onSubmit() {
     const subject: SubjectDTO = {
-      id: null,
+      id: 0,
       name: this.subjectForm.value.name,
       hours: this.subjectForm.value.hours,
       gradeId: this.subjectForm.value.grade,
