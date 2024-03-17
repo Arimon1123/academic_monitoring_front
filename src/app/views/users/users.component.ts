@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { UserService } from '../../service/user.service';
 import { PersonService } from '../../service/person-service.service';
 import { ModalComponent } from '../../components/modal/modal.component';
-import roles from "../../consts/consts.json";
+import roles from "../../consts/roles.json";
 import { UserCreateDTO } from '../../models/UserCreateDTO';
 import { Flowbite } from '../../decorator/flowbite';
 

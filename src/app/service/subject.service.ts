@@ -15,4 +15,7 @@ export class SubjectService {
   saveSubject(subject: SubjectDTO) {
     return this.http.post<ResponseDTO<string>>(`${this.API_URL}/subject`, subject, { withCredentials: true });
   }
+  getSubjectsByGrade(id: number) {
+    return this.http.get<ResponseDTO<SubjectDTO[]>>(`${this.API_URL}/subject/grade/${id}`, { withCredentials: true });
+  }
 }

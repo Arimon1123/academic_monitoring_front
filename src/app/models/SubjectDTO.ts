@@ -1,7 +1,7 @@
 import { RequirementDTO } from "./RequirementDTO";
 
 export interface SubjectDTO {
-    id: number | null;
+    id: number;
     name: string;
     hours: number;
     gradeId: number;
