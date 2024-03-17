@@ -9,12 +9,13 @@ import { UnauthorizedComponent } from './views/unauthorized/unauthorized.compone
 import { UserListComponent } from './views/user-list/user-list.component';
 import { UsersComponent } from './views/users/users.component';
 import { StudentRegisterComponent } from './views/student-register/student-register.component';
+import { logGuard } from './guard/log.guard';
 
 ;
 
 export const routes: Routes = [
     {
-        path: 'login', component: LoginComponent,
+        path: 'login', component: LoginComponent, canActivate: [logGuard]
     },
     {
         path: 'userRegister', component: UsersComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE'] }

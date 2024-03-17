@@ -3,6 +3,8 @@
         "consts",
         "flowbite",
         "lastname",
+        "navs",
+        "Navs",
         "tailwindcss"
     ]
 }
