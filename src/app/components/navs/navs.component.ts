@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../service/auth-service.service';
 import { Router } from '@angular/router';
 import { RouteDTO } from '../../models/RouteDTO';
-import { routes } from '../../consts/consts.json';
+import * as routes from '../../consts/routes.json';
 import { initFlowbite } from 'flowbite';
 
 @Component({
@@ -22,7 +22,6 @@ export class NavsComponent  implements OnInit{
     console.log(this.userRole);
     if(this.userRole === 'ADMINISTRATIVE'){
       this.routesList = JSON.parse(JSON.stringify(routes));
-  
     }
   }
   logout() {

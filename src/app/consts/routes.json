@@ -1,0 +1,5 @@
+{
+  "ADMINISTRATIVE": [
+    { "route": "/userRegister", "title": "Registro de Usuario" }
+  ]
+}

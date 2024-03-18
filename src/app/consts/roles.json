@@ -12,12 +12,5 @@
             "id": 3,
             "name": "PARENT"
         }
-    ],
-
-    "routes": {
-        "ADMINISTRATIVE": [
-            {"route":"/userRegister",
-            "title": "Registro de Usuario"}
-        ]
-    }
+    ]
 }
