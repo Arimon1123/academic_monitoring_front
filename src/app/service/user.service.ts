@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
+import { ParentDTO } from '../models/ParentDTO';
+import { TeacherDTO } from '../models/TeacherDTO';
+import { ResponseDTO } from '../models/ResponseDTO';
 
 
 @Injectable({
@@ -49,5 +52,8 @@ export class UserService {
   }
   updateUser(user: any) {
     return this.http.put(`${this.API_URL}/user`, user, { responseType: 'json', withCredentials: true });
+  }
+  getUserRoleDetails(role: string) {
+    return this.http.get<ResponseDTO<ParentDTO | TeacherDTO | any>>(`${this.API_URL}/auth/role`, { responseType: 'json', withCredentials: true, params: { role: role } });
   }
 }

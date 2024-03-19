@@ -17,11 +17,16 @@ export class LocalStorageService {
   getItem(key: string) {
     const value = localStorage.getItem(key);
     if (value) {
-      console.log( CryptoJS.AES.decrypt(value, environment.storageSecret).toString(CryptoJS.enc.Utf8))
+      console.log(CryptoJS.AES.decrypt(value, environment.storageSecret).toString(CryptoJS.enc.Utf8))
       return CryptoJS.AES.decrypt(value, environment.storageSecret).toString(CryptoJS.enc.Utf8);
     } else {
       return null;
 
     }
   }
+
+  removeItem(key: string) {
+    localStorage.removeItem(key);
+  }
+
 }

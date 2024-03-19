@@ -1,0 +1,65 @@
+<main class="flex flex-col h-[85vh] w-full justify-start items-center bg-bg-color border rounded-md overflow-y-scroll">
+    <div class="w-4/5">
+        <h1 class="text-start mt-3 font-semibold text-lg">Solicitud de Licencia</h1>
+    </div>
+    <form class="flex flex-col w-4/5 my-4" [formGroup]="permissionForm" (ngSubmit)="onSubmit()">
+        <div class="flex flex-col">
+            <label for="description">Razón de la licencia</label>
+            <textarea name="description" id="description" cols="30" rows="5"
+                class="border rounded-md resize-none min-h-32 my-2" formControlName=reason></textarea>
+        </div>
+        <div class="flex flex-row w-full justify-between ">
+            <div class="flex flex-col w-full my-2">
+                <label for="startDate">Fecha de Inicio</label>
+                <input type="date" max="" min="{{todayDate}}" id="startDate" value="{{todayDate}}"
+                    class="border rounded-md  w-[95%] my-1" formControlName=startDate>
+            </div>
+            <div class="flex flex-col w-full  my-2">
+                <label for="startHour">Hora de Inicio</label>
+                <input type="time" max="18:00" min="08:00" id="startHour" value="08:00" class="border rounded-md my-1"
+                    formControlName="startHour">
+            </div>
+        </div>
+        <div class="flex flex-row w-full justify-between">
+            <div class="flex flex-col w-full  my-2">
+                <label for="endDate">Fecha de Fin</label>
+                <input type="date" max="18-3-2027" min="{{todayDate}}" id="endDate" value="{{todayDate}}"
+                    formControlName="endDate" class="border rounded-md w-[95%] my-1">
+            </div>
+            <div class=" flex flex-col w-full  my-2">
+                <label for="endHour">Hora de Fin</label>
+                <input type="time" max="18:00:00" min="08:00:00" step="600" value="09:00:00" id="endHour"
+                    formControlName="endHour" class="border rounded-md my-1">
+            </div>
+        </div>
+        <span>Adjuntar archivos</span>
+        <div class="flex flex-col my-2">
+            <label>
+                <span
+                    class="flex flex-row justify-center items-center w-48 p-1  border rounded-md bg-white hover:bg-active hover:text-white transition-colors">
+                    Seleccionar archivos
+                </span>
+                <input type="file" max="3" maxlength="5mb" multiple hidden (change)="showImages($event)"
+                    accept="image/*">
+            </label>
+            <ul class="flex flex-row my-2">
+                @for(image of images; track image.id){
+                <li>
+                    <button type="button" (click)="deleteImage(image.id)"
+                        class="flex justify-center items-center relative left-[85%] top-[15%] bg-bg-color rounded-md w-5 h-5 hover:bg-primary transition-colors">
+                        <i class="fas fa-trash-alt [color:#0072f5] hover:[color:#f9f9f9] transition-colors" h></i>
+                    </button>
+                    <img src="{{image.url}}" alt="{{image.image?.name}}"
+                        class="w-48 h-48 min-h-32 min-w-32 aspect-auto border rounded-md">
+                </li>
+                }
+            </ul>
+        </div>
+
+        <div class="flex w-full justify-end">
+            <button class="border rounded-md w-48 bg-primary text-white hover:bg-blue-700 transition-colors p-1"> Enviar
+                solicitud
+            </button>
+        </div>
+    </form>
+</main>

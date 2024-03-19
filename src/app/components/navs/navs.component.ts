@@ -12,21 +12,23 @@ import { initFlowbite } from 'flowbite';
   templateUrl: './navs.component.html',
   styleUrl: './navs.component.css'
 })
-export class NavsComponent  implements OnInit{
+export class NavsComponent implements OnInit {
 
-  routesList:RouteDTO[] = []
+  routesList: RouteDTO[] = []
   @Input() userRole: string = '';
-  constructor(private authService: AuthService, private router : Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
   ngOnInit() {
     initFlowbite();
     console.log(this.userRole);
-    if(this.userRole === 'ADMINISTRATIVE'){
+    if (this.userRole === 'ADMINISTRATIVE') {
       this.routesList = JSON.parse(JSON.stringify(routes));
     }
   }
   logout() {
     localStorage.removeItem('isLogged');
     localStorage.removeItem('userDetails');
+    localStorage.removeItem('currentRole');
+    localStorage.removeItem('roleDetails');
     this.authService.logout().subscribe((data: any) => {
       console.log(data);
     });
