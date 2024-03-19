@@ -13,7 +13,6 @@ import { Route, Router } from '@angular/router';
 export class NavbarComponent {
   constructor(private router: Router) { }
   ngOnInit(): void {
-    console.log(this.router.url);
   }
   @Output() menuStateEmitter = new EventEmitter<string>();
   menuState = 'out';

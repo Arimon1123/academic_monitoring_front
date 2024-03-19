@@ -1,10 +1,13 @@
+import {StudentDTO} from "./StudentDTO";
 
+export interface PermissionDTO{
+  id: number;
+  date: Date;
+  permissionStartDate: Date;
+  permissionEndDate : Date;
+  reason: string;
+  permissionStatus: number;
+  images: string[];
+  student: StudentDTO;
 
-export interface PermissionDTO {
-    id: number;
-    date: string;
-    permissionStartDate: string
-    permissionEndDate: string
-    reason: string
-    studentId: number
 }

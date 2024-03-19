@@ -11,6 +11,9 @@ import { RoleDTO } from './models/RoleDTO';
 import { roles } from './consts/roles.json';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from './environments/environment.development';
+import {TeacherDTO} from "./models/TeacherDTO";
+import {ParentDTO} from "./models/ParentDTO";
+import {ResponseDTO} from "./models/ResponseDTO";
 
 
 @Component({
@@ -30,11 +33,14 @@ export class AppComponent implements OnInit {
   currentRole: string = '';
   currentRoles: RoleDTO[] = [];
   roleNames: any;
+  roleDetails: ParentDTO | TeacherDTO;
   showNavs = false;
   form: FormGroup = new FormGroup({
     roleId: new FormControl('0')
   });
   constructor(private userService: UserService, private localStorage: LocalStorageService, private router: Router) {
+    this.user = {} as UserDTO;
+    this.roleDetails = {} as ParentDTO;
   }
   ngOnInit() {
 
@@ -42,63 +48,56 @@ export class AppComponent implements OnInit {
     this.roleNames = environment.currentRoles;
     this.user = JSON.parse(this.localStorage.getItem('userDetails') as string);
     this.currentRole = JSON.parse(this.localStorage.getItem('currentRole') as string);
-    this.isLogged = this.localStorage.getItem('isLogged') == "Sesion Iniciada" ? true : false;
-    console.log(this.isLogged);
-    if (!this.isLogged) {
-      this.showNavs = true;
-    }
-    console.log(this.currentRole)
-    if (this.isLogged && !this.currentRole) {
-      this.localStorage.removeItem('isLogged');
-    }
-    this.currentRoles = roles;
-    if (this.user && !this.currentRole) {
-      if (this.user?.role?.length === 1) {
+    this.isLogged = this.localStorage.getItem('isLogged') == "Sesion Iniciada";
+    this.roleDetails = JSON.parse(this.localStorage.getItem('roleDetails') as string);
+    if(!this.currentRole && this.isLogged && this.user){
+      if(this.user.role.length === 1 ){
         this.currentRole = this.user.role[0].name;
-      } else {
-        if (this.user?.role?.length ?? 0 > 1) {
-          setTimeout(() => {
-            this.modalComponent?.showModal();
-          }, 500)
-        }
+        this.localStorage.setItem('currentRole', JSON.stringify(this.currentRole));
+      }else{
+        setTimeout(() => {
+          this.showModal();
+        },500);
       }
-
-    } else {
+      if(!this.roleDetails){
+        this.getRoleDetails(this.currentRole);
+      }
+    }
+    if((this.currentRole && this.isLogged) || !this.isLogged){
       this.showNavs = true;
     }
-    this.getRoleDetails(this.currentRole);
+    if(this.currentRole && !this.roleDetails){
+      this.getRoleDetails(this.currentRole);
+    }
+
+
   }
-  getUserDetails() {
-    this.userService.userDetails().subscribe(
-      (data: any) => {
-        this.localStorage.setItem('userDetails', data);
-        this.user = JSON.parse(this.localStorage.getItem('userDetails') as string);
-      })
-  }
+
   showModal() {
     this.modalComponent?.showModal();
   }
   closeModal() {
     this.modalComponent?.hideModal();
   }
-
+  parseRoleDetails(){
+   this.currentRole = JSON.parse(this.localStorage.getItem('currentRole') as string);
+  }
   saveCurrentRole() {
     const roleId = this.form.controls['roleId'].value
-    console.log(parseInt(roleId));
     const savedRole = this.currentRoles.find((role: RoleDTO) => {
       return parseInt(roleId) === role.id;
     });
     this.currentRole = savedRole?.name ?? '';
     this.localStorage.setItem('currentRole', JSON.stringify(savedRole?.name));
     this.showNavs = true;
+    this.getRoleDetails(this.currentRole);
     this.closeModal();
   }
 
   getRoleDetails(role: string) {
     this.userService.getUserRoleDetails(role).subscribe(
-      (data: any) => {
-        console.log(data);
-        this.localStorage.setItem('roleDetails', JSON.stringify(data));
+      (data: ResponseDTO<any>) => {
+        this.localStorage.setItem('roleDetails', JSON.stringify(data.content));
       }
     )
   }

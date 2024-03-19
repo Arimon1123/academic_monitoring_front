@@ -14,23 +14,13 @@ export class ModalComponent {
   modal: any;
   ngOnInit() {
     initModals();
-    console.log('modal INITIALIZED');
     const $modalElement = document.getElementById('modalEl');
     const modalOptions: ModalOptions = {
       placement: 'center',
       backdrop: 'dynamic',
       backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
       closable: true,
-      onHide: () => {
-        console.log('Modal is hidden');
-      },
-      onShow: () => {
 
-        console.log('Modal is shown');
-      },
-      onToggle: () => {
-        console.log('Modal is toggled');
-      }
     }
     const instanceOptions: InstanceOptions = {
       id: 'modal-1',

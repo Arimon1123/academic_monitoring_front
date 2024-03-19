@@ -19,7 +19,6 @@ export class NavsComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
   ngOnInit() {
     initFlowbite();
-    console.log(this.userRole);
     if (this.userRole === 'ADMINISTRATIVE') {
       this.routesList = JSON.parse(JSON.stringify(routes));
     }
@@ -30,7 +29,6 @@ export class NavsComponent implements OnInit {
     localStorage.removeItem('currentRole');
     localStorage.removeItem('roleDetails');
     this.authService.logout().subscribe((data: any) => {
-      console.log(data);
     });
     this.router.navigate(['/login']);
   }

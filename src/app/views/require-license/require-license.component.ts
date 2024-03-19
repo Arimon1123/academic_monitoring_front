@@ -3,8 +3,12 @@ import { ImageDTO } from '../../models/ImageDTO';
 import { v4 as uuid } from 'uuid';
 import { PermissionService } from '../../service/permission.service';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { PermissionDTO } from '../../models/PermissionDTO';
+import { PermissionCreateDTO } from '../../models/PermissionCreateDTO';
 import { ResponseDTO } from '../../models/ResponseDTO';
+import { StudentDTO } from '../../models/StudentDTO';
+import { StudentService } from '../../service/student.service';
+import {ParentDTO} from "../../models/ParentDTO";
+import {LocalStorageService} from "../../service/local-storage.service";
 
 @Component({
   selector: 'app-require-license',
@@ -14,11 +18,13 @@ import { ResponseDTO } from '../../models/ResponseDTO';
   styleUrl: './require-license.component.css'
 })
 export class RequireLicenseComponent {
+  studentList: StudentDTO[] ;
   images: ImageDTO[] = [];
   todayDate: string;
   tomorrowDate: string;
   permissionForm: FormGroup;
-  constructor(private permissionService: PermissionService) {
+  parentInfo: ParentDTO;
+  constructor(private permissionService: PermissionService, private studentService: StudentService, private localStorage: LocalStorageService){
     this.todayDate = new Date().toISOString().split('T')[0];
     this.tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     this.permissionForm = new FormGroup({
@@ -26,14 +32,35 @@ export class RequireLicenseComponent {
       endDate: new FormControl(this.todayDate, [Validators.required]),
       reason: new FormControl('', [Validators.required, Validators.minLength(200)]),
       startHour: new FormControl('08:00', [Validators.required]),
-      endHour: new FormControl('09:00', [Validators.required])
+      endHour: new FormControl('09:00', [Validators.required]),
+      studentId: new FormControl( '-1', [Validators.required])
     });
+    this.studentList = [];
+    this.parentInfo = JSON.parse(<string> this.localStorage.getItem('roleDetails'));
+  }
+  ngOnInit(){
+    this.getStudents()
+  }
+  getStudents(){
+    this.studentService.getStudentByParentId(this.parentInfo.parentId).subscribe(
+      {
+        next: (data: ResponseDTO<StudentDTO[]>) => {
+          this.studentList = data.content;
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+        complete: () => {
+          console.log('Complete');
+        }
+      }
+    );
   }
   showImages(event: any) {
     if (event.target.files.length > 0) {
       if ((event.target.files.length > 3) || (this.images.length + event.target.files.length > 3)) {
         alert('No puedes subir mas de 3 imágenes');
-        return;
+        return
       }
       for (let i = 0; i < event.target.files.length; i++) {
         const image = event.target.files[i];
@@ -59,7 +86,7 @@ export class RequireLicenseComponent {
 
     const permissionStartDate = this.permissionForm.controls['startDate'].value.split('-').reverse().join('-') + ' ' + this.permissionForm.controls['startHour'].value + ':00'
     const permissionEndDate = this.permissionForm.controls['endDate'].value.split('-').reverse().join('-') + ' ' + this.permissionForm.controls['endHour'].value + ':00'
-    const permission: PermissionDTO = {
+    const permission: PermissionCreateDTO = {
       permissionStartDate: permissionStartDate,
       permissionEndDate: permissionEndDate,
       reason: this.permissionForm.controls['reason'].value,
@@ -78,6 +105,7 @@ export class RequireLicenseComponent {
           this.permissionForm.controls['startHour'].setValue('08:00');
           this.permissionForm.controls['endHour'].setValue('09:00');
           this.images = [];
+          this.permissionForm.controls['studentId'].setValue('-1');
           this.permissionForm.updateValueAndValidity();
         },
         error: (error: any) => {

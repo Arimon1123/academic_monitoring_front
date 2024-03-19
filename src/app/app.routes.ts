@@ -12,6 +12,7 @@ import { StudentRegisterComponent } from './views/student-register/student-regis
 import { AssignationComponent } from './views/assignation/assignation.component';
 import { logGuard } from './guard/log.guard';
 import { RequireLicenseComponent } from './views/require-license/require-license.component';
+import {PermissionListComponent} from "./views/permission-list/permission-list.component";
 
 ;
 
@@ -48,6 +49,9 @@ export const routes: Routes = [
     },
     {
         path: 'requirePermission', component: RequireLicenseComponent
+    },
+    {
+      path: 'permissionList', component: PermissionListComponent
     }
 
 ];

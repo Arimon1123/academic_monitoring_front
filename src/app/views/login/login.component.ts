@@ -36,7 +36,6 @@ export class LoginComponent {
           this.localStorageService.setItem('isLogged', data);
         },
         error: (error: any) => {
-          console.log(error)
           this.requestSent = false;
           if (error.status === 401) {
             this.isInvalid = true;
@@ -48,7 +47,8 @@ export class LoginComponent {
               this.localStorageService.setItem('userDetails', JSON.stringify(data));
             },
             complete: () => {
-              this.router.navigate(['/userList']);
+
+              window.location.href = '';
             },
             error: (error: any) => {
               alert('Error al obtener los detalles del usuario');

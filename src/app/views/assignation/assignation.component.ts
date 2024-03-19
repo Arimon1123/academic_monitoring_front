@@ -76,9 +76,6 @@ export class AssignationComponent implements OnInit {
       },
       error: (error: any) => {
         alert('Error al cargar los grados ' + error.error.message);
-      },
-      complete: () => {
-        console.log('complete');
       }
     });
   }
@@ -86,14 +83,12 @@ export class AssignationComponent implements OnInit {
     this.subjectService.getSubjectsByGrade(grade.id).subscribe({
       next: (data: ResponseDTO<SubjectDTO[]>) => {
         this.subjectList = data.content;
-        console.log(this.subjectList);
 
       },
       error: (error: any) => {
         alert('Error al cargar las materias ' + error.error.message);
       },
       complete: () => {
-        console.log('complete');
       }
     });
   }

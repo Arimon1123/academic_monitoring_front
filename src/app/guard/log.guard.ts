@@ -6,7 +6,6 @@ export const logGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const logged = authService.isLoggedIn();
-  console.log(logged);
   if (logged) {
     router.navigate(['/']);
     return false;
