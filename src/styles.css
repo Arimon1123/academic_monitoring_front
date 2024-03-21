@@ -38,3 +38,7 @@
   background: #555;
   /* Cambia el color de la barra al hacer hover */
 }
+
+* {
+  font-size: 18px;
+}

@@ -84,14 +84,14 @@ export class RequireLicenseComponent {
       formData.append('images', image.image as Blob);
     });
 
-    const permissionStartDate = this.permissionForm.controls['startDate'].value.split('-').reverse().join('-') + ' ' + this.permissionForm.controls['startHour'].value + ':00'
-    const permissionEndDate = this.permissionForm.controls['endDate'].value.split('-').reverse().join('-') + ' ' + this.permissionForm.controls['endHour'].value + ':00'
+    const permissionStartDate = this.permissionForm.controls['startDate'].value+ ' ' + this.permissionForm.controls['startHour'].value + ':00'
+    const permissionEndDate = this.permissionForm.controls['endDate'].value+ ' ' + this.permissionForm.controls['endHour'].value + ':00'
     const permission: PermissionCreateDTO = {
       permissionStartDate: permissionStartDate,
       permissionEndDate: permissionEndDate,
       reason: this.permissionForm.controls['reason'].value,
-      date: this.todayDate.split('-').reverse().join('-'),
-      studentId: 1,
+      date: this.todayDate,
+      studentId: this.permissionForm.controls['studentId'].value,
       id: 0
     }
     formData.append('permission', JSON.stringify(permission));

@@ -10,7 +10,9 @@ module.exports = {
         "bg-color": "#F9F9F9",
         "primary": "#0C2348",
         "active": "#159DFF",
-        "selected": "#438ABE"
+        "selected": "#438ABE",
+        "accepted": "#4CAF50",
+        "rejected": "#FF3B30",
       },
       screens: {
         'xs': '375px'
@@ -25,6 +27,9 @@ module.exports = {
       },
       gridTemplateRows: {
         '5A': '1fr 1fr 1fr 1fr 6fr'
+      },
+      fontSize:{
+        'lg':'24px',
       }
     }
   },

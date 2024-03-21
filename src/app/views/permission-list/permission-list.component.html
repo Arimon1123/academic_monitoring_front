@@ -1,26 +1,31 @@
-<main class="flex flex-col items-center h-[85vh] border rounded-md bg-bg-color">
-  <h1>Licencias pendientes</h1>
-  <ul class="flex flex-col w-3/5 justify-center items-center">
-    @for(permission of permissionList; track permission.id){
-      <li class="flex border rounded-md p-2 bg-white items-center w-4/5">
-        <img ngSrc="assets/user.svg" class="w-16 h-16 mx-4" alt="user image" height="16" width="16">
-        <div class="flex flex-row p-4 items-center w-4/5">
-          <div class="flex flex-col w-3/5">
-            <span class="text-md font-bold">{{permission.student.name}} {{permission.student.fatherLastname}} {{permission.student.motherLastname}}</span>
-
-            <span> Inicio: {{permission.permissionStartDate | date: 'dd/MM/yyyy HH:mm'}}</span>
-            <span> Fin: {{permission.permissionEndDate  | date: 'dd/MM/yyyy HH:mm'}} </span>
+<main class="flex flex-col items-center w-full">
+  <div class="flex flex-col w-3/5 items-center h-[85vh] border rounded-md bg-bg-color p-3">
+    <div class="w-10/12 py-2">
+      <h1 class="font-semibold text-lg text-start">Licencias pendientes</h1>
+    </div>
+    <ul class="flex flex-col w-10/12 justify-center items-center">
+      @for(permission of permissionList; track permission.id){
+        <li class="flex border rounded-md p-2 bg-white items-center w-full my-2">
+          <img ngSrc="assets/user.svg" class="w-16 h-16 mx-4" alt="user image" height="16" width="16">
+          <div class="flex flex-row p-4 items-center w-4/5">
+            <div class="flex flex-col w-3/5">
+              <span class="text-md font-bold">{{permission.student.name}} {{permission.student.fatherLastname}} {{permission.student.motherLastname}}</span>
+              <span> Inicio: {{permission.permissionStartDate | date: 'dd/MM/yyyy HH:mm'}}</span>
+              <span> Fin: {{permission.permissionEndDate  | date: 'dd/MM/yyyy HH:mm'}} </span>
+            </div>
+            <div class="flex flex-col w-3/5">
+              <span class="font-semibold"> {{permission.student.studentClass}}</span>
+              <span> Fecha: {{permission.date | date: 'dd/MM/yyyy'}} </span>
+              <span class="text-ellipsis ">Motivo: {{permission.reason}}</span>
+            </div>
           </div>
-          <div class="flex flex-col w-3/5">
-            <span> 4° A TM</span>
-            <span> Fecha: {{permission.date | date: 'dd/MM/yyyy'}} </span>
-            <span class="text-ellipsis ">Motivo: {{permission.reason}}</span>
+          <div class="flex w-1/5 justify-center">
+            <a  routerLink="/permissionDetails/{{permission.id}}" class="border bg-primary text-white p-2 rounded-md hover:bg-active transition-colors ">
+              Info <i class="fa-solid fa-circle-info [color:white]"></i>
+            </a>
           </div>
-        </div>
-        <div class="flex w-1/5 justify-center">
-          <button routerLink><i class="fa-solid fa-circle-info"></i></button>
-        </div>
-      </li>
-    }
-  </ul>
+        </li>
+      }
+    </ul>
+  </div>
 </main>

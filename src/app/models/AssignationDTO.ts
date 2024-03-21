@@ -5,6 +5,6 @@ export interface AssignationDTO {
     className: string;
     subjectName: string;
     teacherName: string;
-    classroomName: number;
+    classroomName: string;
     schedule: ScheduleDTO[];
 }

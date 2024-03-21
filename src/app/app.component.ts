@@ -14,7 +14,10 @@ import { environment } from './environments/environment.development';
 import {TeacherDTO} from "./models/TeacherDTO";
 import {ParentDTO} from "./models/ParentDTO";
 import {ResponseDTO} from "./models/ResponseDTO";
+import myLocalEs from '@angular/common/locales/es';
+import {registerLocaleData} from "@angular/common";
 
+registerLocaleData(myLocalEs, "es-ES");
 
 @Component({
   selector: 'app-root',
@@ -24,6 +27,7 @@ import {ResponseDTO} from "./models/ResponseDTO";
   styleUrls: ['./app.component.css'],
 
 })
+
 export class AppComponent implements OnInit {
   @ViewChild("modal") modalComponent: ModalComponent | undefined;
 

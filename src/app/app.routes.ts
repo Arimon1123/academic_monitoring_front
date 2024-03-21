@@ -13,6 +13,8 @@ import { AssignationComponent } from './views/assignation/assignation.component'
 import { logGuard } from './guard/log.guard';
 import { RequireLicenseComponent } from './views/require-license/require-license.component';
 import {PermissionListComponent} from "./views/permission-list/permission-list.component";
+import {PermissionDetailsComponent} from "./views/permission-details/permission-details.component";
+import {AttendanceComponent} from "./views/attendance/attendance.component";
 
 ;
 
@@ -52,6 +54,12 @@ export const routes: Routes = [
     },
     {
       path: 'permissionList', component: PermissionListComponent
+    },
+    {
+      path: 'permissionDetails/:id' ,component: PermissionDetailsComponent
+    },
+    {
+      path:'attendance', component: AttendanceComponent
     }
 
 ];

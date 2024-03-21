@@ -1,1 +1,63 @@
-<p>permission-details works!</p>
+<main class="flex flex-col items-center">
+  <div class="flex flex-col h-[85vh] items-center w-4/5 bg-bg-color rounded-md border">
+    <div class="flex w-3/5 my-2">
+      <h1 class="font-semibold text-lg">Licencia </h1>
+    </div>
+    <div class="flex flex-col w-3/5 border rounded-md p-4 bg-white">
+      @if(permissionDTO.id){
+        <div class="flex flex-col">
+         <div class="flex my-2">
+           <div class="flex flex-row w-[45%] ">
+             <span class="font-semibold " >Nombre:</span>
+             <span class="ml-3"> {{permissionDTO.student.name}} {{permissionDTO.student.fatherLastname}} {{permissionDTO.student.motherLastname}}</span>
+           </div>
+           <div class="flex flex-row w-[45%] ">
+             <span class="font-semibold ">Curso: </span>
+             <span class="ml-3">  {{permissionDTO.student.studentClass}}</span>
+           </div>
+         </div>
+         <div class="flex flex-row my-2">
+           <div class="flex flex-row w-[45%]">
+             <span class="font-semibold ">Fecha:  </span>
+             <span class="ml-3"> {{permissionDTO.date | date : "longDate" : "GMT-4": "es-ES"}}</span>
+           </div>
+           <div class="flex flex-row w-[45%]">
+             <span class="font-semibold ">Motivo:  </span>
+             <span class="ml-3">  {{permissionDTO.reason}}</span>
+
+           </div>
+         </div>
+          <div class="flex flex-row my-2">
+            <div class="flex flex-row w-[45%]">
+              <span class="font-semibold ">Fecha de Inicio:   </span>
+              <span class="ml-3">  {{permissionDTO.permissionStartDate | date :"longDate"}} a las {{permissionDTO.permissionStartDate | date :"shortTime"}}</span>
+            </div>
+            <div class="flex flex-row w-[45%]">
+              <span class="font-semibold ">Fecha de Fin: </span>
+              <span class="ml-3">  {{permissionDTO.permissionEndDate | date :"longDate"}} a las  {{permissionDTO.permissionEndDate | date :"shortTime"}}</span>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="font-semibold tex">Archivos adicionales</h2>
+        <ul>
+          @for(image of permissionDTO.images; track image){
+            <li>
+              <a target="_blank"  href="{{image}}" class="w-fit"><img src="{{image}}" alt="imagen de la licencia" class="max-w-96 border rounded-md"/></a>
+            </li>
+          }
+        </ul>
+      }
+      <label>
+        Razón del rechazo
+      </label>
+      <textarea id="reason" [(ngModel)]="reason" class="rounded-md border resize-none">
+
+      </textarea>
+      <div class="flex justify-evenly my-5">
+        <button class="border rounded-md p-1 bg-accepted text-white" (click)="approvePermission()">Aprobar licencia</button>
+        <button class="btn rounded-md p-1 bg-rejected text-white" (click)="rejectPermission()" >Rechazar licencia</button>
+      </div>
+    </div>
+  </div>
+</main>
