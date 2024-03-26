@@ -1,0 +1,81 @@
+<main class="flex flex-col  items-center rounded-md border bg-bg-color h-[85vh] overflow-y-scroll">
+  <h1 class="w-4/5 text-start my-2 text-lg font-semibold">Actividades</h1>
+  <div class="flex md:flex-row flex-col w-4/5 my-2 justify-between">
+    <section class="flex flex-col md:w-4/12 w-full bg-white p-2 items-center border rounded-md h-[75vh] " >
+      <h2 class="font-semibold w-full text-start">Lista de actividades</h2>
+      <ul class="flex flex-col w-full overflow-y-scroll items-center">
+        @for(activity of activityList; track activity.id){
+          <li class="border rounded-md bg-white p-3 my-1 w-11/12">
+            <div class="flex justify-around xl:flex-row flex-col w-full" >
+             <div class="flex flex-col xl:w-5/12 w-full">
+               <h1 class="block w-full">{{activity.name}}</h1>
+               <span>Dimension: {{activity.dimension}}</span>
+               <span>Valor: {{activity.value}} %</span>
+             </div>
+              <div class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full ">
+                <button (click)="onUpdate(activity)" class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors">Editar</button>
+                <button (click)="onDeleteActivity(activity)" class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors">Eliminar</button>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+      <div class="flex flex-row  items-center w-full px-3 py-2 justify-between">
+        <button (click)="onNewActivity()" class="border rounded-md bg-active h-fit w-fit md:px-3 md:py-1 p-0.5 text-sm text-white hover:bg-sky-700 transition-colors ">Nueva actividad</button>
+        <span>Total: <span [ngClass]="{'text-red-500 font-bold': totalPercentage > 100} "> {{totalPercentage}} %</span> </span>
+      </div>
+    </section>
+    @if(showForm){
+      <section class="flex flex-col md:w-[63%] w-full bg-white p-2 items-center border rounded-md md:h-[75vh] h-fit mt-2">
+        <h2 class="font-semibold w-full text-start">{{ title }}</h2>
+        <form class="flex flex-col w-full p-3 items-end h-full" [formGroup]="activityForm" (ngSubmit)="onSubmit()">
+          <div class="flex flex-col w-full my-2">
+            <label for="name">Nombre: </label>
+            <input type="text" id="name" class="border rounded-md text-sm border-gray-400" placeholder="Nombre de la actividad" formControlName="name" >
+          </div>
+          <div class="flex flex-col w-full my-2">
+            <label for="value">Valor: </label>
+            <input type="text" id="value" class="border rounded-md text-sm border-gray-400" placeholder="Valor de actividad" formControlName="value">
+          </div>
+          <div  class="flex flex-col w-full my-2">
+            <label for="dimension">Dimesion: </label>
+            <select class="border rounded-md text-sm border-gray-400" id="dimension" formControlName="dimension">
+              <option value="-1" selected disabled>Seleccione una dimension</option>
+              <option value="HACER">Hacer</option>
+              <option value="SABER">Saber</option>
+              <option value="SER">Ser</option>
+              <option value="DECIDIR">Decidir</option>
+            </select>
+          </div>
+          <div class="flex flex-row justify-end items-end w-full h-full my-2">
+            <button class="border rounded-md bg-primary h-fit w-fit px-3 py-1 text-white hover:bg-blue-600 transition-colors">Guardar</button>
+          </div>
+        </form>
+      </section>
+    }
+  </div>
+</main>
+
+<app-modal #modal>
+  <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+    <button type="button" (click)="closeModal()"
+            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+      </svg>
+      <span class="sr-only">Close modal</span>
+    </button>
+    <div class="p-4 md:p-5 text-center flex flex-col items-center">
+      <h3 class="text-lg font-bold">Eliminar actividad</h3>
+      <p class="my-5">
+        Se eliminara la actividad y todas las notas asociadas de forma permanente <br>
+        Desea continuar?
+      </p>
+      <div class="flex flex-row w-4/5 justify-evenly">
+        <button (click)="onDelete()" class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-600 transition-colors">Aceptar</button>
+        <button (click)="closeModal()" class="border rounded-md bg-primary h-fit w-fit px-3 py-1 text-white hover:bg-blue-600 transition-colors">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</app-modal>

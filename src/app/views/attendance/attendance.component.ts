@@ -28,7 +28,7 @@ export class AttendanceComponent implements OnInit{
   assignationDTO: AssignationDTO;
   attendanceDTO:AttendanceDTO[];
   table : AttendanceListDTO[] = [];
-
+  weekdays: any;
   todayDate : Date;
   constructor(private attendanceService: AttendanceService,
               private permissionService: PermissionService,
@@ -38,6 +38,13 @@ export class AttendanceComponent implements OnInit{
     this.studentList = [];
     this.permissionList = [];
     this.attendanceDTO = [];
+    this.weekdays = {
+      "monday":1,
+      'tuesday':2,
+      'wednesday':3,
+      'thursday':4,
+      'friday':5,
+    }
     this.assignationDTO = {
       "id": 1,
       "className": "1°Primaria A",
@@ -54,7 +61,7 @@ export class AttendanceComponent implements OnInit{
         },
         {
           "id": 2,
-          "weekday": "tuesday",
+          "weekday": "thursday",
           "startTime": "08:45:00",
           "endTime": "09:30:00",
           "period": 1
@@ -65,6 +72,7 @@ export class AttendanceComponent implements OnInit{
   }
   ngOnInit() {
    this.getAllLists()
+
   }
   getAllLists(){
     forkJoin(
@@ -97,9 +105,12 @@ export class AttendanceComponent implements OnInit{
     }
     this.table = table;
   }
-  addDay(){
+  addNewAttendanceDay(){
     const lastAttendance = this.table[0].attendance[0] ? this.table[0].attendance[0] : {date: new Date(0)}
-    console.log(lastAttendance.date , this.todayDate)
+    console.log(lastAttendance.date , this.todayDate);
+    const weekdayControl =
+      this.assignationDTO.schedule.find((schedule) => this.weekdays[schedule.weekday] === this.todayDate.getDay()+1);
+    console.log(weekdayControl);
     if(lastAttendance.date.toDateString() !== this.todayDate.toDateString() ) {
       this.table.map((row) => {
         let attendance = row.attendance;
@@ -112,14 +123,13 @@ export class AttendanceComponent implements OnInit{
         return {student: row.student, attendance: attendance}
       })
     }else{
-      alert('ya se agrego la asistencia para hoy')
+      alert('ya se agrego la asistencia para hoy');
       return
     }
   }
   toggleAttendance(attendance: AttendanceDTO){
     if(attendance.date.toLocaleDateString() !== this.todayDate.toLocaleDateString())
       return;
-
     switch (attendance.attendance){
       case 1: attendance.attendance = 2; break;
       case 2: attendance.attendance = 1; break;

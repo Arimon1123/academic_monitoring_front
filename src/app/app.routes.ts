@@ -15,6 +15,8 @@ import { RequireLicenseComponent } from './views/require-license/require-license
 import {PermissionListComponent} from "./views/permission-list/permission-list.component";
 import {PermissionDetailsComponent} from "./views/permission-details/permission-details.component";
 import {AttendanceComponent} from "./views/attendance/attendance.component";
+import {ActivityListComponent} from "./views/activity-list/activity-list.component";
+import {GradesComponent} from "./views/grades/grades.component";
 
 ;
 
@@ -60,6 +62,11 @@ export const routes: Routes = [
     },
     {
       path:'attendance', component: AttendanceComponent
-    }
+    },
+    {
+      path: 'activity', component: ActivityListComponent
+    }, {
+      path: 'grades', component: GradesComponent
+  }
 
 ];

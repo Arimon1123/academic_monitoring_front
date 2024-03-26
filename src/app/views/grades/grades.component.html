@@ -1,0 +1,27 @@
+<table>
+  <thead>
+    <th>Estudiante</th>
+    @for(activity of activities; track activity.id){
+      <th title="{{activity.value}}%">{{activity.name}}</th>
+    }
+    <th>Nota Final</th>
+  </thead>
+  <tbody>
+    @for(student of table; track  student.student.id){
+      <tr>
+        <td>{{student.student.fatherLastname}} {{student.student.motherLastname}} {{student.student.name}}</td>
+        @for(grade of student.grades; track grade.id; let last = $last){
+          @if(!last){
+            <td>
+              <input value="{{grade.grade}}">
+            </td>
+          } @else {
+            <td>
+              {{grade.grade | round }}
+            </td>
+          }
+        }
+      </tr>
+    }
+  </tbody>
+</table>
