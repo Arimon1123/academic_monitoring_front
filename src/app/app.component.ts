@@ -29,7 +29,7 @@ registerLocaleData(myLocalEs, "es-ES");
 })
 
 export class AppComponent implements OnInit {
-  @ViewChild("modal") modalComponent: ModalComponent | undefined;
+  //@ViewChild("modal") modalComponent: ModalComponent | undefined;
 
   title = 'frontend_academic_monitoring';
   user: UserDTO | undefined;
@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
         this.localStorage.setItem('currentRole', JSON.stringify(this.currentRole));
       }else{
         setTimeout(() => {
-          this.showModal();
+        //  this.showModal();
         },500);
       }
       if(!this.roleDetails){
@@ -77,12 +77,12 @@ export class AppComponent implements OnInit {
 
   }
 
-  showModal() {
-    this.modalComponent?.showModal();
-  }
-  closeModal() {
-    this.modalComponent?.hideModal();
-  }
+  // showModal() {
+  //   this.modalComponent?.showModal();
+  // }
+  // closeModal() {
+  //   this.modalComponent?.hideModal();
+  // }
   parseRoleDetails(){
    this.currentRole = JSON.parse(this.localStorage.getItem('currentRole') as string);
   }
@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
     this.localStorage.setItem('currentRole', JSON.stringify(savedRole?.name));
     this.showNavs = true;
     this.getRoleDetails(this.currentRole);
-    this.closeModal();
+   // this.closeModal();
   }
 
   getRoleDetails(role: string) {

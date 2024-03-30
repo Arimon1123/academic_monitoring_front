@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../service/auth-service.service';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { RouteDTO } from '../../models/RouteDTO';
 import * as routes from '../../consts/routes.json';
 import { initFlowbite } from 'flowbite';
@@ -8,7 +8,9 @@ import { initFlowbite } from 'flowbite';
 @Component({
   selector: 'app-navs',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterLink
+  ],
   templateUrl: './navs.component.html',
   styleUrl: './navs.component.css'
 })

@@ -7,13 +7,15 @@ import roles from "../../consts/roles.json";
 import { UserCreateDTO } from '../../models/UserCreateDTO';
 import { Flowbite } from '../../decorator/flowbite';
 import { RoleDTO } from '../../models/RoleDTO';
+import {NgOptimizedImage} from "@angular/common";
+import {initFlowbite, initModals, InstanceOptions, Modal, ModalInterface, ModalOptions} from "flowbite";
 
 
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [ReactiveFormsModule, ModalComponent],
+  imports: [ReactiveFormsModule, ModalComponent, NgOptimizedImage],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })
@@ -23,9 +25,8 @@ export class UsersComponent {
   constructor(private userService: UserService, private personService: PersonService) { }
 
   @ViewChild("modal") modalComponent: ModalComponent | undefined;
-
   ngOnInit() {
-    console.log(roles)
+    initFlowbite();
   }
   showPassword = false;
   imageFile: File | null = null;
@@ -159,9 +160,11 @@ export class UsersComponent {
   showModal() {
     this.modalComponent?.showModal();
   }
-  closeModal() {
+  toggleModal() {
+    this.modalComponent?.toggleModal();
+  }
+  hideModal() {
     this.modalComponent?.hideModal();
-    this.message = "Usuario creado exitosamente";
   }
 
   changeValidators($event: any) {

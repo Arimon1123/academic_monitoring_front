@@ -19,7 +19,6 @@ export class LocalStorageService {
        return CryptoJS.AES.decrypt(value, environment.storageSecret).toString(CryptoJS.enc.Utf8);
     } else {
       return null;
-
     }
   }
 

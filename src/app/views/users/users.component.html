@@ -6,7 +6,7 @@
             <div class="flex flex-col justify-between lg:flex-row ">
                 <div class="flex flex-col my-3 mr-0 lg:mr-3  box-content w-full">
                     <label for="name">Nombres</label>
-                    <input name="name" type="text"
+                    <input name="name" type="text" id="name"
                         class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
                         formControlName="name">
                     @if(userForm.get('name')?.invalid && userForm.get('name')?.touched){
@@ -15,7 +15,7 @@
                 </div>
                 <div class="flex flex-col my-3 mr-3 md:mr-0 box-content w-full">
                     <label for="lastname">Apellidos</label>
-                    <input name="lastname" type="text" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
+                    <input id="lastname" name="lastname" type="text" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
                         formControlName="lastname">
                     @if(userForm.get('lastname')?.invalid && userForm.get('lastname')?.touched){
                     <span class="text-red-600 text-sm">Apellido Invalido</span>
@@ -25,7 +25,7 @@
             <div class="flex flex-col justify-between lg:flex-row">
                 <div class="flex flex-col my-3 mr-0 lg:mr-3 box-content w-full">
                     <label for="ci">CI</label>
-                    <input name=ci type="ci" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
+                    <input id="ci" name=ci type="text" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
                         formControlName="ci" (click)="checkCi()">
                     @if(userForm.get('ci')?.invalid && userForm.get('ci')?.touched &&
                     !userForm.get('ci')?.getError('ciExists')){
@@ -51,7 +51,7 @@
             </div>
             <div class="flex flex-col my-3 mr-0  box-content wull">
                 <label for="email">Email Personal</label>
-                <input name="email" type="email" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
+                <input id="email" name="email" type="email" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
                     formControlName="email" (change)="checkEmail()">
                 @if(userForm.get('email')?.invalid && userForm.get('email')?.touched &&
                 !userForm.get('email')?.getError('emailExists')){
@@ -63,14 +63,14 @@
             </div>
             <div class="flex flex-col my-3">
                 <label for="address">Dirección</label>
-                <textarea name="address" type="text" placeholder="Dirección"
+                <textarea id="address" name="address" type="text" placeholder="Dirección"
                     class="border border-gray-400 rounded-md pl-3 resize-none" rows="2"
                     formControlName="address"></textarea>
 
             </div>
             <div class="flex flex-col my-3">
-                <label for="password_confirm">Rol</label>
-                <select name="role" class=" border border-gray-400 rounded-md pl-3 outline-none" formControlName="role"
+                <label for="role">Rol</label>
+                <select id="role"  name="role" class=" border border-gray-400 rounded-md pl-3 outline-none" formControlName="role"
                     (change)="changeValidators($event)">
                     <option value="ADMINISTRATIVE">Administrative</option>
                     <option selected value="TEACHER">Profesor</option>
@@ -80,14 +80,15 @@
             @if(userForm.get('role')?.value === 'TEACHER'){
             <div class="flex flex-col my-3 mr-0  box-content wull">
                 <label for="workEmail">Email Académico</label>
-                <input name="workEmail" type="email" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
+                <input id="workEmail" name="workEmail" type="email" class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
                     formControlName="workEmail">
             </div>
             }
 
         </div>
         <div class="flex flex-col justify-center items-center h-full w-full rounded-md">
-            <img src={{userImage}} class="border rounded-full max-h-32 max-w-[8rem] aspect-square">
+            <img ngSrc="{{userImage}}" width="128px" height="128px" class="border rounded-full max-h-32 max-w-[8rem] aspect-square" alt="user image"
+                 >
             <label class="flex flex-col w-3/4 text-center justmt-10">
                 <span
                     class="flex justify-center items-center text-white border rounded-md bg-active h-8 hover:bg-primary transition">
@@ -117,25 +118,26 @@
             [disabled]="requestSend || userForm.invalid">Enviar</button>
     </form>
 </main>
+
 <app-modal #modal>
     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-        <button type="button" (click)="closeModal()"
-            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-            </svg>
-            <span class="sr-only">Close modal</span>
-        </button>
-        <div class="p-4 md:p-5 text-center">
-            <h3 class="mb-5 mt-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                {{message}}
-            </h3>
-            <button type="button" (click)="closeModal()"
+      <button type="button" (click)="hideModal()"
+              class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+        </svg>
+        <span class="sr-only">Close modal</span>
+      </button>
+      <div class="p-4 md:p-5 text-center">
+        <h3 class="mb-5 mt-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+          {{message}}
+        </h3>
+        <button type="button" (click)="hideModal()"
                 class="text-white bg-primary hover:bg-selected focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                Aceptar
-            </button>
+          Aceptar
+        </button>
 
-        </div>
+      </div>
     </div>
 </app-modal>

@@ -1,5 +1,5 @@
-import { Component, Output } from '@angular/core';
-import { Modal, initModals } from 'flowbite';
+import { Component} from '@angular/core';
+import { Modal} from 'flowbite';
 import type { ModalOptions, ModalInterface } from 'flowbite';
 import type { InstanceOptions } from 'flowbite';
 
@@ -11,16 +11,14 @@ import type { InstanceOptions } from 'flowbite';
   styleUrl: './modal.component.css'
 })
 export class ModalComponent {
-  modal: any;
+  modal: ModalInterface | undefined;
   ngOnInit() {
-    initModals();
     const $modalElement = document.getElementById('modalEl');
     const modalOptions: ModalOptions = {
       placement: 'center',
       backdrop: 'dynamic',
       backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
       closable: true,
-
     }
     const instanceOptions: InstanceOptions = {
       id: 'modal-1',
@@ -30,13 +28,13 @@ export class ModalComponent {
   }
 
   showModal() {
-    this.modal.show();
+    this.modal!.show();
   }
   toggleModal() {
-    this.modal.toggle();
+    this.modal!.toggle();
   }
   hideModal() {
-    this.modal.hide();
+    this.modal!.hide();
   }
 
 

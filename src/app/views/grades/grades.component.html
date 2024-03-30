@@ -1,27 +1,53 @@
-<table>
-  <thead>
-    <th>Estudiante</th>
-    @for(activity of activities; track activity.id){
-      <th title="{{activity.value}}%">{{activity.name}}</th>
-    }
-    <th>Nota Final</th>
-  </thead>
-  <tbody>
-    @for(student of table; track  student.student.id){
-      <tr>
-        <td>{{student.student.fatherLastname}} {{student.student.motherLastname}} {{student.student.name}}</td>
-        @for(grade of student.grades; track grade.id; let last = $last){
-          @if(!last){
-            <td>
-              <input value="{{grade.grade}}">
-            </td>
-          } @else {
-            <td>
-              {{grade.grade | round }}
-            </td>
-          }
+<main class="flex flex-col items-center  h-[85vh] bg-bg-color rounded-md border">
+  <section class="w-4/5 py-2 px-4 mt-2">
+    <h1 class="font-semibold text-lg">Registro de Notas</h1>
+    <div class="flex my-2 w-2/5 justify-between">
+      <div class="flex flex-col">
+        <div class="flex my-1">
+          <span class="font-bold">Curso: </span> <span class="ml-2">{{assignation.className}}</span>
+        </div>
+        <div class="flex my-1">
+          <span class="font-bold">Profesor: </span> <span class="ml-2">{{assignation.teacherName}}</span>
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <div class="flex my-1">
+          <span class="font-bold">Materia: </span> <span class="ml-2">{{assignation.subjectName}}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="flex flex-col w-4/5 items-start overflow-auto">
+    <table class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5">
+      <thead class="bg-selected text-white">
+      <th class="w-64 border text-center first:border-l first:rounded-tl-lg border-gray font-extralight sticky left-0 h-fit bg-active" >Estudiante</th>
+        @for(activity of activities; track activity.id){
+          <th  class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
+               title="{{activity.name}} : {{activity.value}}%">{{activity.name}}</th>
         }
-      </tr>
-    }
-  </tbody>
-</table>
+      <th  class="w-32 border px-5 last:rounded-tr-lg border-gray font-extralight">Nota Final</th>
+      </thead>
+      <tbody>
+        @for(student of table; track  student.student.id; let idx = $index){
+          <tr>
+            <td class="border text-start pl-5 sticky left-0 bg-white truncate">{{student.student.fatherLastname}} {{student.student.motherLastname}} {{student.student.name}}</td>
+            @for(grade of student.grades; track grade.id; let last = $last){
+              @if(!last){
+                <td class="border text-center bg-white">
+                  <input class=" h-5 w-full border-0 text-center focus:outline-none"  value="{{grade.grade}}" (change)="updateGrade($event,grade,idx)" type="number">
+                </td>
+              } @else {
+                <td class="border text-center bg-white" [ngClass]="{'text-red': grade.grade < 51}">
+                  {{grade.grade | round }}
+                </td>
+              }
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+  <div class="flex w-4/5 justify-end">
+    <button class="border bg-primary rounded-lg py-1 px-3 text-white hover:bg-active transition-colors my" (click)="saveGrades()">Guardar</button>
+  </div>
+</main>

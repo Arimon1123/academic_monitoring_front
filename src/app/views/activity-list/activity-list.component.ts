@@ -120,6 +120,7 @@ export class ActivityListComponent {
     this.activityForm.controls['dimension'].setValue('-1');
     this.activityForm.updateValueAndValidity();
     this.title = "Nueva actividad"
+    this.isUpdate = false;
     this.showForm = true;
   }
   updateActivity(activity:ActivityDTO){
