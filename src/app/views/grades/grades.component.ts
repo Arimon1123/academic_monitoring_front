@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, TemplateRef, ViewChild} from '@angular/core';
 import {AssignationDTO} from "../../models/AssignationDTO";
 import {LocalStorageService} from "../../service/local-storage.service";
 import {StudentDTO} from "../../models/StudentDTO";
@@ -12,6 +12,7 @@ import {forkJoin} from "rxjs";
 import * as uuid from 'uuid';
 import {DecimalPipe, NgClass} from "@angular/common";
 import {RoundPipe} from "../../pipes/RoundPipe";
+import {ModalService} from "../../service/modal.service";
 @Component({
   selector: 'app-grades',
   standalone: true,
@@ -24,6 +25,7 @@ import {RoundPipe} from "../../pipes/RoundPipe";
   styleUrl: './grades.component.css'
 })
 export class GradesComponent {
+  @ViewChild('modal') content : TemplateRef<any> | undefined
   assignation: AssignationDTO;
   students : StudentDTO[];
   activities: ActivityDTO[];
@@ -32,7 +34,8 @@ export class GradesComponent {
   constructor(private localStorage: LocalStorageService,
               private studentService: StudentService,
               private activityService: ActivityService,
-              private gradesService: GradesService) {
+              private gradesService: GradesService,
+              private modalService: ModalService) {
     this.assignation = JSON.parse(this.localStorage.getItem('assignation') as string)
     this.students = [];
     this.activities = [];
@@ -87,7 +90,7 @@ export class GradesComponent {
     this.gradesService.saveGradesBy(grades).subscribe(
       {
         next: (data: ResponseDTO<string>) => {
-          alert(data.message);
+          this.openModal( data.message, "Calificaciones Guardadas");
         }
       }
     )
@@ -95,7 +98,7 @@ export class GradesComponent {
   updateGrade(event:any, activity: ActivityGradeDTO, index: number){
     const grade = parseInt(event.target.value);
     if(grade > 100 || grade < 0){
-      alert("La calificación debe ser entre 0 y 100");
+      this.openModal("La calificación debe ser un número entre 0 y 100", "Error" );
       event.target.value = 0;
       return;
     }
@@ -110,6 +113,12 @@ export class GradesComponent {
     }
     tableRow.grades[this.activities.length].grade = finalGrade;
   }
-
-  protected readonly scroll = scroll;
+  openModal(message:string, title:string){
+    this.modalService.open({
+      content: this.content!,
+      options: {
+        isSubmittable: false,
+        title: title,
+        message: message}});
+  }
 }

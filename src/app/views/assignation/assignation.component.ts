@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { GradeDTO } from '../../models/GradeDTO';
 import { ClassListDTO } from '../../models/ClassListDTO';
 import { SubjectDTO } from '../../models/SubjectDTO';
@@ -17,8 +17,9 @@ import { ScheduleCreateDTO } from '../../models/ScheduleCreateDTO';
 import { CommonModule } from '@angular/common';
 import { AssignationCreateDTO } from '../../models/AssignationCreateDTO';
 import { AssignationService } from '../../service/assignation.service';
-import { forkJoin, timeout } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import {ModalService} from "../../service/modal.service";
 
 @Component({
   selector: 'app-assignation',
@@ -28,9 +29,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './assignation.component.css'
 })
 export class AssignationComponent implements OnInit {
-  @ViewChild('assignation') scrollTo: ElementRef | undefined;
-  @ViewChild('mat') subject: ElementRef | undefined;
-  @ViewChild('course') class: ElementRef | undefined;
+  @ViewChild('modal') content: TemplateRef<any> | undefined;
 
   days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
   showSchedule = false;
@@ -51,21 +50,18 @@ export class AssignationComponent implements OnInit {
   selectedClass: ClassListDTO = {} as ClassListDTO;
   selectedClassroom: ClassroomDTO = {} as ClassroomDTO;
   currentYear = new Date().getFullYear();
-
   hours: any[] = schedule[0].hours;
-
   teacherSchedule: ScheduleDTO[] = [];
   classSchedule: ScheduleDTO[] = [];
   classroomSchedule: ScheduleDTO[] = [];
-
-
   constructor(private gradeService: GradeService,
     private subjectService: SubjectService,
     private teacherService: TeacherService,
     private classService: ClassService,
     private classroomService: ClassroomService,
     private scheduleService: ScheduleService,
-    private assignationService: AssignationService) { }
+    private assignationService: AssignationService,
+    private modalService: ModalService) { }
   ngOnInit(): void {
     this.getGrades();
   }
@@ -75,7 +71,7 @@ export class AssignationComponent implements OnInit {
         this.gradeList = data.content;
       },
       error: (error: any) => {
-        alert('Error al cargar los grados ' + error.error.message);
+        this.openModal('Error', error.error.message);
       }
     });
   }
@@ -83,117 +79,29 @@ export class AssignationComponent implements OnInit {
     this.subjectService.getSubjectsByGrade(grade.id).subscribe({
       next: (data: ResponseDTO<SubjectDTO[]>) => {
         this.subjectList = data.content;
+      },
+      error: (error: any) => {
+        this.openModal('Error', error.error.message);
+      },
+      complete: () => {
+      }
+    });
+  }
 
-      },
-      error: (error: any) => {
-        alert('Error al cargar las materias ' + error.error.message);
-      },
-      complete: () => {
-      }
-    });
-  }
-  getAssignation() {
-    const classId = this.selectedClass.id ?? 0; // Use 0 as a fallback value if selectedClass.id is null
-    const subjectId = this.selectedSubject.id ?? 0; // Use 0 as a fallback value if selectedSubject.id is null
-    this.assignationService.getAssignation(classId, subjectId).subscribe({
-      next: (data: ResponseDTO<AssignationCreateDTO>) => {
-        console.log(data);
-        this.currentAssignation = data.content;
-      },
-      error: (error: any) => {
-        alert('Error al cargar la asignación ' + error.error.message);
-      },
-      complete: () => {
-        console.log('complete');
-      }
-    });
-  }
-  getTeachersBySubject(subject: SubjectDTO) {
-    const subjectId = subject.id ?? 0; // Use 0 as a fallback value if subject.id is null
-    this.teacherService.getTeachersBySubject(subjectId).subscribe({
-      next: (data: ResponseDTO<TeacherDTO[]>) => {
-        this.teacherList = data.content;
-      },
-      error: (error: any) => {
-        alert('Error al cargar los docentes ' + error.error.message);
-      },
-      complete: () => {
-        console.log('complete');
-      }
-    });
-  }
   getClassByGrade(grade: GradeDTO) {
     this.classService.getClassListByGradeIdAndYearAndShift(grade.id, this.currentYear, 1).subscribe({
       next: (data: ResponseDTO<ClassListDTO[]>) => {
         this.classList = data.content;
       },
       error: (error: any) => {
-        alert('Error al cargar las clases ' + error.error.message);
+        this.openModal('Error', error.error.message);
       },
       complete: () => {
         console.log('complete');
-        setTimeout(() => {
-          this.class?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-        }, 150)
       }
     }); // This line is missing a call to the classService
   }
-  getClassroomByRequirements() {
-    const requirementIds = this.selectedSubject.requirements.map(requirement => requirement.id);
-    this.classroomService.getClassroomsByRequirements(requirementIds).subscribe({
-      next: (data: ResponseDTO<ClassroomDTO[]>) => {
-        this.classroomList = data.content;
-      },
-      error: (error: any) => {
-        alert('Error al cargar las aulas ' + error.error.message);
-      },
-      complete: () => {
-        console.log('complete');
-      }
-    });
-  }
-  getTeacherSchedule() {
-    this.scheduleService.getScheduleByTeacher(this.selectedTeacher.id).subscribe({
-      next: (data: ResponseDTO<ScheduleDTO[]>) => {
-        this.teacherSchedule = data.content;
-        console.log(this.teacherSchedule);
-      },
-      error: (error: any) => {
-        alert('Error al cargar el horario del docente ' + error.error.message);
-      },
-      complete: () => {
-        console.log('complete');
-      }
-    });
-  }
-  getClassSchedule() {
-    this.scheduleService.getScheduleByClass(this.selectedClass.id).subscribe({
-      next: (data: ResponseDTO<ScheduleDTO[]>) => {
-        this.classSchedule = data.content;
-        console.log(this.classSchedule);
-      },
-      error: (error: any) => {
-        alert('Error al cargar el horario de la clase ' + error.error.message);
-      },
-      complete: () => {
-        console.log('complete');
-      }
-    });
-  }
-  getClassroomSchedule() {
-    this.scheduleService.getScheduleByClassroom(this.selectedClassroom.id).subscribe({
-      next: (data: ResponseDTO<ScheduleDTO[]>) => {
-        this.classroomSchedule = data.content;
-        console.log(this.classroomSchedule);
-      },
-      error: (error: any) => {
-        alert('Error al cargar el horario del aula ' + error.error.message);
-      },
-      complete: () => {
-        console.log('complete');
-      }
-    });
-  }
+
   selectGrade(grade: GradeDTO) {
     this.selectedGrade = grade;
     this.getClassByGrade(grade);
@@ -202,9 +110,6 @@ export class AssignationComponent implements OnInit {
     this.selectedClass = classDto;
     this.getAssignationOptions();
     this.getSubjectsByGrade(this.selectedGrade);
-    setTimeout(() => {
-      this.subject?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-    }, 150);
   }
   selectTeacher(event: any) {
     console.log(event.target.value)
@@ -236,10 +141,10 @@ export class AssignationComponent implements OnInit {
           this.currentAssignation = data.assignation.content;
           this.selectedTeacher = this.teacherList.find(teacher => teacher.id === this.currentAssignation.teacherId) || {} as TeacherDTO;
           this.selectedClassroom = this.classroomList.find(classroom => classroom.id === this.currentAssignation.classroomId) || {} as ClassroomDTO;
-          this.scrollTo?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+
         },
         error: (error: any) => {
-          alert('Error al cargar los docentes, aulas y asignación ' + error.error.message);
+          this.openModal('Error', error.error.message);
         },
         complete: () => {
           console.log('complete');
@@ -267,15 +172,13 @@ export class AssignationComponent implements OnInit {
 
       },
       error: (error: any) => {
-        alert('Error al cargar el horario de la clase ' + error.error.message);
+       this.openModal('Error', error.error.message)
       },
       complete: () => {
         console.log('complete');
       }
     })
   }
-
-
   composeSchedule() {
     this.schedule = {
       'monday': structuredClone(this.hours),
@@ -345,14 +248,13 @@ export class AssignationComponent implements OnInit {
       subjectId: this.selectedSubject.id || 0, // Use a default value of 0 if selectedSubject.id is null
       classroomId: this.selectedClassroom.id,
       schedule: this.selectedSchedules
-
     }
     this.assignationService.saveAssignation(assignationDTO).subscribe({
       next: (data: ResponseDTO<any>) => {
-        alert(data.message);
+        this.openModal('Asignación creada', data.message);
       },
       error: (error: any) => {
-        alert('Error al crear la asignación ' + error.error.message);
+        this.openModal('Error', error.error.message);
       }
     });
   }
@@ -392,6 +294,17 @@ export class AssignationComponent implements OnInit {
       'bg-green-500': period.isAvailable,
       'bg-blue-500': period.isAvailable === false && period.reason === 'selected'
     }
+  }
+
+  openModal(title: string, message: string) {
+    this.modalService.open({
+      content: this.content!,
+      options: {
+        isSubmittable: false,
+        title: title,
+        message: message
+      }
+    });
   }
 
 }

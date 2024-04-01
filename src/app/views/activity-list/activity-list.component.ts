@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, TemplateRef, ViewChild} from '@angular/core';
 import {ActivityDTO} from "../../models/ActivityDTO";
 import {ActivityService} from "../../service/activity.service";
 import {AssignationDTO} from "../../models/AssignationDTO";
@@ -8,6 +8,8 @@ import {NgClass} from "@angular/common";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ModalComponent} from "../../components/modal/modal.component";
 import {Modal} from "flowbite";
+import {ModalService} from "../../service/modal.service";
+import {normalizeExtraEntryPoints} from "@angular-devkit/build-angular/src/tools/webpack/utils/helpers";
 @Component({
   selector: 'app-activity-list',
   standalone: true,
@@ -29,8 +31,11 @@ export class ActivityListComponent {
   deleteActivityId: number
   title: string
   showForm : boolean;
-  @ViewChild('modal') modal : ModalComponent | undefined;
-  constructor(private activityService: ActivityService, private localStorage: LocalStorageService){
+  @ViewChild('modal') content:   TemplateRef<any> | undefined;
+
+  constructor(private activityService: ActivityService,
+              private localStorage: LocalStorageService,
+              private modalService: ModalService){
     this.title = "Nueva actividad";
     this.updatedActivity = {} as ActivityDTO;
     this.deleteActivityId = 0;
@@ -135,18 +140,25 @@ export class ActivityListComponent {
     )
   }
   onDeleteActivity(activity:ActivityDTO){
-    this.showModal();
-    this.deleteActivityId= activity.id
+    this.openDeleteModal('Se eliminará la actividad y todas las  notas asociadas de forma permanente ¿Desea continuar?', 'Eliminar actividad')
+      .subscribe(
+        {
+          next: data => {
+            this.deleteActivity(activity.id)
+          }
+        }
+      )
+
   }
   onDelete(){
     this.deleteActivity(this.deleteActivityId);
-    this.closeModal();
+
   }
   deleteActivity(id:number){
     this.activityService.deleteActivity(id).subscribe(
       {
         next:(data:ResponseDTO<string>)=>{
-          alert(data.message);
+          this.openModal("Actividad eliminada",data.message);
         },
         complete: ()=>{
           this.getAllActivities();
@@ -154,11 +166,20 @@ export class ActivityListComponent {
       }
     )
   }
-
-  showModal(){
-    this.modal?.showModal();
+  openDeleteModal(message:string, title:string){
+    return this.modalService.open({content: this.content!, options: {
+      size: 'small',
+      isSubmittable: true,
+      message:message,
+      title:title
+    }})
   }
-  closeModal(){
-    this.modal?.hideModal();
+  openModal(title:string, message:string){
+    this.modalService.open({content:this.content!,
+      options: {
+        title: title,
+        message: message
+      }
+    })
   }
 }

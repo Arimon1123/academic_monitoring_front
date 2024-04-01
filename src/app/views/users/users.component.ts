@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, TemplateRef, ViewChild} from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import { PersonService } from '../../service/person-service.service';
@@ -8,7 +8,8 @@ import { UserCreateDTO } from '../../models/UserCreateDTO';
 import { Flowbite } from '../../decorator/flowbite';
 import { RoleDTO } from '../../models/RoleDTO';
 import {NgOptimizedImage} from "@angular/common";
-import {initFlowbite, initModals, InstanceOptions, Modal, ModalInterface, ModalOptions} from "flowbite";
+import {initFlowbite} from "flowbite";
+import {ModalService} from "../../service/modal.service";
 
 
 
@@ -19,23 +20,15 @@ import {initFlowbite, initModals, InstanceOptions, Modal, ModalInterface, ModalO
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })
-@Flowbite()
 export class UsersComponent {
-
-  constructor(private userService: UserService, private personService: PersonService) { }
-
-  @ViewChild("modal") modalComponent: ModalComponent | undefined;
-  ngOnInit() {
-    initFlowbite();
-  }
-  showPassword = false;
+  constructor(private userService: UserService, private personService: PersonService, private modalService:ModalService) { }
+  @ViewChild("modal") modal: TemplateRef<any> | undefined;
   imageFile: File | null = null;
   userImage: string = "../../assets/user.svg";
   hasImage = false;
-  usernameIsAvailable = true;
   requestSend = false;
-  message = "Usuario creado exitosamente";
-
+  modalMessage = "";
+  modalTitle = "";
 
   userForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
@@ -76,14 +69,17 @@ export class UsersComponent {
       this.userService.createUser(formData).subscribe({
         next: (data: any) => {
           console.log(data);
-          this.showModal();
+          this.modalMessage = "Usuario creado exitosamente";
+          this.modalTitle = "Usuario creado "
+          this.openModal();
           this.userForm.reset();
           this.userImage = "../../assets/user.svg";
         },
         error: (error: any) => {
           console.log(error);
-          this.message = error.error.message;
-          this.showModal();
+          this.modalMessage = error.error.message;
+          this.modalTitle = "Error al crear el usuario"
+          this.openModal();
           this.requestSend = false;
         },
         complete: () => {
@@ -96,7 +92,6 @@ export class UsersComponent {
     }
 
   }
-
   onFileSelected(event: any) {
     this.imageFile = event.target.files[0];
     console.log(this.imageFile);
@@ -106,10 +101,6 @@ export class UsersComponent {
     reader.onload = () => {
       this.userImage = reader.result as string;
     }
-  }
-
-  toggleShowPassword() {
-    this.showPassword = !this.showPassword;
   }
   checkEmail() {
     if (this.userForm.get('email')?.errors) {
@@ -157,16 +148,6 @@ export class UsersComponent {
     );
   }
 
-  showModal() {
-    this.modalComponent?.showModal();
-  }
-  toggleModal() {
-    this.modalComponent?.toggleModal();
-  }
-  hideModal() {
-    this.modalComponent?.hideModal();
-  }
-
   changeValidators($event: any) {
 
     if ($event.target.value === 'TEACHER') {
@@ -177,6 +158,20 @@ export class UsersComponent {
       this.userForm.get('workEmail')?.updateValueAndValidity();
       console.log(this.userForm.controls.workEmail.errors);
     }
+  }
+  openModal() {
+    const content = this.modal!;
+    console.log(content);
+    this.modalService.open(
+      {
+        content: content,
+        options: {
+          size: 'small' ,
+          title: this.modalTitle,
+          message: this.modalMessage,
+          isSubmittable: false
+        }
+      });
   }
 
 }

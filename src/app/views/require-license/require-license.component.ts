@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, TemplateRef, ViewChild} from '@angular/core';
 import { ImageDTO } from '../../models/ImageDTO';
 import { v4 as uuid } from 'uuid';
 import { PermissionService } from '../../service/permission.service';
@@ -9,6 +9,7 @@ import { StudentDTO } from '../../models/StudentDTO';
 import { StudentService } from '../../service/student.service';
 import {ParentDTO} from "../../models/ParentDTO";
 import {LocalStorageService} from "../../service/local-storage.service";
+import {ModalService} from "../../service/modal.service";
 
 @Component({
   selector: 'app-require-license',
@@ -18,13 +19,18 @@ import {LocalStorageService} from "../../service/local-storage.service";
   styleUrl: './require-license.component.css'
 })
 export class RequireLicenseComponent {
+
+  @ViewChild('modal') content: TemplateRef<any> | undefined;
   studentList: StudentDTO[] ;
   images: ImageDTO[] = [];
   todayDate: string;
   tomorrowDate: string;
   permissionForm: FormGroup;
   parentInfo: ParentDTO;
-  constructor(private permissionService: PermissionService, private studentService: StudentService, private localStorage: LocalStorageService){
+  constructor(private permissionService: PermissionService,
+              private studentService: StudentService,
+              private localStorage: LocalStorageService,
+              private modalService: ModalService){
     this.todayDate = new Date().toISOString().split('T')[0];
     this.tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     this.permissionForm = new FormGroup({
@@ -98,7 +104,6 @@ export class RequireLicenseComponent {
     this.permissionService.savePermission(formData).subscribe(
       {
         next: (data: ResponseDTO<string>) => {
-          alert(data.message);
           this.permissionForm.controls['startDate'].setValue(this.todayDate);
           this.permissionForm.controls['endDate'].setValue(this.todayDate);
           this.permissionForm.controls['reason'].setValue('');
@@ -107,15 +112,19 @@ export class RequireLicenseComponent {
           this.images = [];
           this.permissionForm.controls['studentId'].setValue('-1');
           this.permissionForm.updateValueAndValidity();
+          this.openModal(data.message);
         },
         error: (error: any) => {
-          console.log(error);
+          this.openModal('Error al registrar el permiso ' + error.error.message);
         },
         complete: () => {
-          console.log('Complete');
+
         }
       }
     );
+  }
+  openModal(message: string){
+    this.modalService.open({content: this.content!, options: {size: 'small', title: 'Registro de Permiso', message: message, isSubmittable: false}});
 
   }
 }

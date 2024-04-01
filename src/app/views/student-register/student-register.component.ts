@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { ParentService } from '../../service/parent.service';
 import { ResponseDTO } from '../../models/ResponseDTO';
 import { ParentDTO } from '../../models/ParentDTO';
@@ -9,6 +9,7 @@ import { ClassService } from '../../service/class.service';
 import { ClassListDTO } from '../../models/ClassListDTO';
 import { StudentCreateDTO } from '../../models/StudentCreateDTO';
 import { StudentService } from '../../service/student.service';
+import {ModalService} from "../../service/modal.service";
 
 @Component({
   selector: 'app-student-register',
@@ -18,7 +19,7 @@ import { StudentService } from '../../service/student.service';
   styleUrl: './student-register.component.css'
 })
 export class StudentRegisterComponent implements OnInit {
-
+  @ViewChild('modal') content: TemplateRef<any> | undefined;
   minDate = this.calculateMinDate();
   maxDate = this.calculateMaxDate();
   parentList: ParentDTO[] = [];
@@ -28,7 +29,8 @@ export class StudentRegisterComponent implements OnInit {
   constructor(private parentService: ParentService,
     private gradeService: GradeService,
     private classService: ClassService,
-    private studentService: StudentService) { }
+    private studentService: StudentService,
+    private modalService: ModalService) { }
 
   studentForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -136,7 +138,6 @@ export class StudentRegisterComponent implements OnInit {
     this.selectedParentList = this.selectedParentList.filter((parent) => parent.parentId !== parentId);
   }
   onSubmit() {
-
     const student: StudentCreateDTO = {
       id: null,
       name: this.studentForm.value.name,
@@ -151,12 +152,11 @@ export class StudentRegisterComponent implements OnInit {
     }
     this.studentService.saveStudent(student).subscribe({
       next: (data: ResponseDTO<string>) => {
-        alert('Estudiante registrado con éxito');
+        this.openModal(data.message);
         this.formReset();
-
       },
       error: (error: any) => {
-        alert('Error al registrar el estudiante ' + error.error.message);
+        this.openModal('Error al registrar el estudiante ' + error.error.message)
       }
     })
   }
@@ -170,5 +170,11 @@ export class StudentRegisterComponent implements OnInit {
     this.studentForm.controls['gradeId'].setValue('-1');
     this.studentForm.updateValueAndValidity();
     this.parentList = [];
+  }
+  openModal(message: string){
+    this.modalService.open(
+      {
+        content:this.content!, options: {size: 'small', title: 'Registro de Estudiante', message: message, isSubmittable: false}
+      });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { GradeDTO } from '../../models/GradeDTO';
 import { GradeService } from '../../service/grade.service';
 import { ResponseDTO } from '../../models/ResponseDTO';
@@ -8,6 +8,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { SubjectDTO } from '../../models/SubjectDTO';
 import { SubjectService } from '../../service/subject.service';
 import { ModalComponent } from '../../components/modal/modal.component';
+import {ModalService} from "../../service/modal.service";
 
 @Component({
   selector: 'app-subject-register',
@@ -17,7 +18,7 @@ import { ModalComponent } from '../../components/modal/modal.component';
   styleUrl: './subject-register.component.css'
 })
 export class SubjectRegisterComponent implements OnInit {
-  @ViewChild('modal') modal: ModalComponent | undefined;
+  @ViewChild('modal') content: TemplateRef<any> | undefined;
   gradeList: GradeDTO[] = [];
   requirementList: RequirementDTO[] = [];
   selectedRequirement: RequirementDTO[] = [];
@@ -29,7 +30,10 @@ export class SubjectRegisterComponent implements OnInit {
     requirements: new FormControl('-1', Validators.required)
   });
 
-  constructor(private gradeService: GradeService, private requirementService: RequirementsService, private subjectService: SubjectService) {
+  constructor(private gradeService: GradeService,
+              private requirementService: RequirementsService,
+              private subjectService: SubjectService,
+              private modalService: ModalService){
 
   }
   ngOnInit(): void {
@@ -52,7 +56,6 @@ export class SubjectRegisterComponent implements OnInit {
     this.subjectService.saveSubject(subject).subscribe(
       {
         next: (data: ResponseDTO<string>) => {
-
           this.message = data.message;
           this.subjectForm.value.name = '';
           this.subjectForm.value.hours = '';
@@ -63,18 +66,12 @@ export class SubjectRegisterComponent implements OnInit {
           this.openModal();
         },
         complete: () => {
-          this.openModal();
+        this.openModal();
         }
       }
     )
   }
 
-  closeModal() {
-    this.modal?.hideModal();
-  }
-  openModal() {
-    this.modal?.showModal();
-  }
   addRequirement($event: any) {
     const selectedRequirement = this.requirementList.find(r => r.id == $event.target.value);
     if (selectedRequirement) {
@@ -93,5 +90,10 @@ export class SubjectRegisterComponent implements OnInit {
       this.selectedRequirement = this.selectedRequirement.filter((r) => r.id != id);
       this.requirementList.push(requirement);
     }
+  }
+
+  openModal(){
+    this.modalService.open(
+    {content: this.content!, options: {size: 'small', title: 'Registro de Materia', message: this.message, isSubmittable: true}});
   }
 }

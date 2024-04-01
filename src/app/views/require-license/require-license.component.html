@@ -3,6 +3,15 @@
         <h1 class="text-start mt-3 font-semibold text-lg">Solicitud de Licencia</h1>
     </div>
     <form class="flex flex-col w-4/5 my-4" [formGroup]="permissionForm" (ngSubmit)="onSubmit()">
+      <div class="flex flex-col w-full">
+        <label for="student">Estudiante</label>
+        <select class="w-full border rounded-md" id="student" formControlName="studentId">
+          <option value="-1" disabled>Seleccione un estudiante </option>
+          @for (student of studentList; track student.id){
+            <option value="{{student.id}}">{{student.name}} {{student.fatherLastname}} {{student.motherLastname}}</option>
+          }
+        </select>
+      </div>
         <div class="flex flex-col">
             <label for="description">Razón de la licencia</label>
             <textarea name="description" id="description" cols="30" rows="5"
@@ -19,15 +28,6 @@
                 <input type="time" max="18:00" min="08:00" id="startHour" value="08:00" class="border rounded-md my-1"
                     formControlName="startHour">
             </div>
-        </div>
-        <div class="flex flex-col w-full">
-          <label for="student">Estudiante</label>
-          <select class="w-full border rounded-md" id="student" formControlName="studentId">
-            <option value="-1" disabled>Seleccione un estudiante </option>
-            @for (student of studentList; track student.id){
-              <option value="{{student.id}}">{{student.name}} {{student.fatherLastname}} {{student.motherLastname}}</option>
-            }
-          </select>
         </div>
         <div class="flex flex-row w-full justify-between">
             <div class="flex flex-col w-full  my-2">
@@ -72,3 +72,5 @@
         </div>
     </form>
 </main>
+
+<ng-template #modal></ng-template>

@@ -1,9 +1,9 @@
-<main class="flex flex-col items-center">
-    <div class="flex flex-col h-fit border rounded-md bg-bg-color p-5 box-border justify-start items-center w-fit">
-        <section class="flex items-start justify-start w-full">
-            <h1 class="text-start font-semibold my-5 text-lg">Registro de materia</h1>
-        </section>
-        <form class="flex flex-col  justify-center items-center" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+<main class="flex flex-col items-center w-full h-[85vh] border rounded-md bg-bg-color ">
+    <div class="flex flex-col h-fit  rounded-md p-5 justify-start items-center w-4/5">
+
+        <h1 class="text-start font-semibold my-5 text-lg w-4/5">Registro de materia</h1>
+
+        <form class="flex flex-col  justify-center items-center w-4/5" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
             <div class="w-full flex flex-row justify-between">
                 <div class="flex flex-col md:w-[49%] w-full my-2">
                     <label for="subjectName">Nombre de la Materia</label>
@@ -20,8 +20,8 @@
 
             </div>
             <div class="flex flex-col w-full my-2">
-                <label for="subjectDescription">Grado</label>
-                <select class="w-full h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+                <label for="grade">Grado</label>
+                <select id="grade" class="w-full h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
                     formControlName="grade">
                     @for(grade of gradeList; track grade.id){
                     <option value="{{grade.id}}">{{grade.number}}° {{grade.section}}</option>
@@ -29,8 +29,8 @@
                 </select>
             </div>
             <div class="flex flex-col w-full my-2">
-                <label for="subjectDescription">Requisitos</label>
-                <select class="h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+                <label for="requirements">Requisitos</label>
+                <select id="requirements" class="h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
                     formControlName="requirements" (change)="addRequirement($event)">
                     <option value="-1" disabled>Seleccione los requisitos</option>
                     @for(requirement of requirementList; track requirement.id){
@@ -43,7 +43,7 @@
                 <h2>Requisitos Seleccionados</h2>
                 <ul>
                     @for(requirement of selectedRequirement; track requirement.id){
-                    <li class="flex flex-row justify-between items-center w-full my-2 pl-2">
+                    <li class="flex flex-row justify-between items-center w-full my-2 pl-2 border rounded-md bg-white p-2">
                         <span>{{requirement.requirement}}</span>
                         <button type="button" (click)="removeRequirement(requirement.id)"
                             class=" border rounded-md bg-red-500 text-white hover:bg-red-600 transition px-5 w-fit">Eliminar</button>
@@ -58,27 +58,4 @@
     </div>
 </main>
 
-<app-modal #modal>
-    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-        <button type="button" (click)="closeModal()"
-            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-            </svg>
-            <span class="sr-only">Close modal</span>
-        </button>
-        <div class="p-4 md:p-5 text-center">
-            <h3 class="mb-5 mt-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                {{message}}
-            </h3>
-
-
-            <button type="button" (click)="closeModal()" [disabled]="this.subjectForm.invalid"
-                class="text-white bg-primary hover:bg-selected focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                Aceptar
-            </button>
-
-        </div>
-    </div>
-</app-modal>
+<ng-template #modal></ng-template>

@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component,  TemplateRef, ViewChild} from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { UserDataDTO } from '../../models/UserDataDTO';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from '../../components/modal/modal.component';
-import { environment } from '../../environments/environment.development';
-import { Router } from '@angular/router';
 import { Flowbite } from '../../decorator/flowbite';
+import {ModalService} from "../../service/modal.service";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-user-list',
@@ -16,12 +16,8 @@ import { Flowbite } from '../../decorator/flowbite';
   styleUrl: './user-list.component.css'
 })
 @Flowbite()
-export class UserListComponent implements OnInit {
+export class UserListComponent{
 
-  ngOnInit() {
-
-  }
-  @ViewChild("modal") modalComponent: ModalComponent | undefined;
   search: any = {}
   blockUsername: string = '';
   currentRoles: { [key: string]: string } = environment.currentRoles;
@@ -29,23 +25,19 @@ export class UserListComponent implements OnInit {
   firstRequest = true;
   totalPages = 0;
   currentPage = 1;
-  message = '';
   isForBlock = false;
-  searchForm: FormGroup = new FormGroup(
-    {
-      name: new FormControl('', []),
-      lastname: new FormControl('', []),
-      ci: new FormControl('', []),
-      role: new FormControl('ADMINISTRATIVE', [])
-    }
-
-  );
+  searchForm: FormGroup;
   userList: UserDataDTO[] = [];
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private modalService: ModalService){
+    this.searchForm = new FormGroup(
+      {
+        name: new FormControl('', []),
+        lastname: new FormControl('', []),
+        ci: new FormControl('', []),
+        role: new FormControl('ADMINISTRATIVE', [])
+      });
 
   }
-
-
   onSearch() {
     this.requestSend = true;
     if ((this.search.role !== this.searchForm.value.role)
@@ -91,11 +83,6 @@ export class UserListComponent implements OnInit {
       this.onSearch();
     }
   }
-
-  closeModal() {
-    this.modalComponent?.toggleModal();
-  }
-
   blockAction() {
     if (this.isForBlock)
       this.blockUser();
@@ -110,10 +97,10 @@ export class UserListComponent implements OnInit {
         next: (data: any) => {
 
           this.onSearch();
-          this.modalComponent?.toggleModal();
+
         },
         error: (error: any) => {
-          this.modalComponent?.toggleModal();
+
         }
       }
     );
@@ -122,29 +109,34 @@ export class UserListComponent implements OnInit {
     this.userService.unblockUser(this.blockUsername).subscribe(
       {
         next: (data: any) => {
-          this.modalComponent?.toggleModal();
+
           this.onSearch();
         },
         error: (error: any) => {
-          this.modalComponent?.toggleModal();
+
         }
       }
     );
   }
   showBlockModal(username: string, status: number) {
-    this.blockUsername = username;
-    if (status === 1) {
-      this.isForBlock = true;
-      this.message = 'Esta seguro que desea bloquear este usuario?';
-    }
-    else {
-      this.isForBlock = false;
-      this.message = 'Esta seguro que desea desbloquear este usuario?';
-    }
-    this.modalComponent?.toggleModal();
+
   }
   editUser(id: number) {
     window.location.href = `/editUser/${id}`;
   }
-
+  openModal(modalTemplate: TemplateRef<any>, user: UserDataDTO) {
+    this.blockUsername = user.username;
+    this.isForBlock = user.status === 1;
+    const message  = this.isForBlock ? 'Esta seguro que desea bloquear este usuario?' : 'Esta seguro que desea desbloquear este usuario?';
+    const title = this.isForBlock ? 'Bloquear Usuario' : 'Desbloquear Usuario';
+    this.modalService.open({content:modalTemplate,options:
+        {size: 'small', title:title, message: message, isSubmittable: true}})
+      .subscribe({
+        next: (data: any) => {
+          if(data === 'submit'){
+            this.blockAction();
+          }
+        }
+      });
+  }
 }

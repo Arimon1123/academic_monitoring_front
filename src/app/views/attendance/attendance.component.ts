@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {StudentDTO} from "../../models/StudentDTO";
 import {PermissionDTO} from "../../models/PermissionDTO";
 import {AttendanceService} from "../../service/attendance.service";
@@ -12,6 +12,7 @@ import {forkJoin, tap} from "rxjs";
 import {DatePipe, NgClass} from "@angular/common";
 import {AttendanceListDTO} from "../../models/AttendanceListDTO";
 import {AttendanceDateDTO} from "../../models/AttendanceDateDTO";
+import {ModalService} from "../../service/modal.service";
 
 @Component({
   selector: 'app-attendance',
@@ -24,6 +25,7 @@ import {AttendanceDateDTO} from "../../models/AttendanceDateDTO";
   styleUrl: './attendance.component.css'
 })
 export class AttendanceComponent implements OnInit{
+  @ViewChild('modal') content : TemplateRef<any> | undefined;
   studentList : StudentDTO[];
   permissionList : PermissionDTO[];
   assignationDTO: AssignationDTO;
@@ -35,7 +37,7 @@ export class AttendanceComponent implements OnInit{
   constructor(private attendanceService: AttendanceService,
               private permissionService: PermissionService,
               private studentService: StudentService,
-              private localStorage: LocalStorageService){
+              private modalService: ModalService){
     this.todayDate = new Date( new Date().getFullYear()+"-"+ (new Date().getMonth()+1) +"-"+new Date().getDate());
     this.studentList = [];
     this.permissionList = [];
@@ -173,8 +175,13 @@ export class AttendanceComponent implements OnInit{
     console.log(attendance)
     this.attendanceService.saveAllAttendance(attendance).subscribe({
       next:(data:ResponseDTO<string>)=>{
-        alert(data.message);
+        this.openModal("Asistencia Guardada", data.message)
       }
     })
+  }
+  openModal(title:string, message:string){
+    this.modalService.open({content: this.content!, options: {
+        isSubmittable: false, title: title, message: message
+      }});
   }
 }

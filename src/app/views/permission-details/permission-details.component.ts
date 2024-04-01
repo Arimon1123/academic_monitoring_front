@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, TemplateRef, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {PermissionDTO} from "../../models/PermissionDTO";
 import {PermissionService} from "../../service/permission.service";
 import {ResponseDTO} from "../../models/ResponseDTO";
 import {DatePipe, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {ModalService} from "../../service/modal.service";
 
 @Component({
   selector: 'app-permission-details',
@@ -21,7 +22,12 @@ export class PermissionDetailsComponent {
   permissionId: number;
   permissionDTO: PermissionDTO;
   reason: string;
-  constructor(private route: ActivatedRoute, private permissionService: PermissionService){
+  @ViewChild('acceptModal') content: TemplateRef<any> | undefined;
+  @ViewChild('rejectModal') rejectContent: TemplateRef<any> | undefined;
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private permissionService: PermissionService,
+              private modalService: ModalService){
     this.reason = ""
     this.permissionDTO = {} as PermissionDTO;
     this.permissionId = 0;
@@ -44,26 +50,50 @@ export class PermissionDetailsComponent {
       }
     })
   }
+  openModal(title:string, message:string){
+    this.modalService.open({content: this.content!, options: {
+        isSubmittable: false, title: title, message: message
+      }});
+  }
   approvePermission(){
     this.permissionService.approvePermission(this.permissionId).subscribe(
       {
         next:((data: ResponseDTO<string>)=> {
-          alert(data.message)
+          this.openModal("Permiso Aceptado", data.message);
         }),
         error: ((error:any) => {
-          console.log(error)
-        })
+         this.openModal("Error", error.error.message)
+        }),
+        complete: () => {
+          this.router.navigate(['/permissionList']);
+        }
       }
     )
   }
   rejectPermission(){
     this.permissionService.rejectPermission(this.permissionId, this.reason).subscribe({
       next: ((data:ResponseDTO<string> ) => {
-        alert(data.message);
+        this.openModal("Permiso Rechazado", data.message);
       }),
       error: ((error:any) =>{
-        console.log(error)
-      })
+        this.openModal("Error", error.error.message)
+      }),
+      complete: () => {
+        this.router.navigate(['/permissionList']);
+      }
     })
+  }
+
+  rejectPermissionModal(){
+    this.modalService.open({content: this.rejectContent!, options: {size: 'medium',
+        isSubmittable: true, title: "Permiso Rechazado", hasContent: true, message: "Por favor, ingrese el motivo de rechazo"
+      }}).subscribe(
+      {
+        next: (data: string) => {
+          this.reason = data;
+          this.rejectPermission();
+        }
+      }
+    )
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserDataDTO } from '../../models/UserDataDTO';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { UserCreateDTO } from '../../models/UserCreateDTO';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { Flowbite } from '../../decorator/flowbite';
 import { initFlowbite } from 'flowbite';
+import {ModalService} from "../../service/modal.service";
 
 @Component({
   selector: 'app-editUser',
@@ -22,14 +23,15 @@ import { initFlowbite } from 'flowbite';
 @Flowbite()
 export class EditUserComponent implements OnInit {
 
-  @ViewChild('modal') modalComponent: ModalComponent | undefined;
-
-  currentRoles: { [key: string]: string } = environment.currentRoles;
+  @ViewChild('modal') content: TemplateRef<any> | undefined;
   user: UserDataDTO = {} as UserDataDTO;
   message: string = '';
   userUpdated = false;
 
-  constructor(private route: ActivatedRoute, private userService: UserService, private router: Router) { }
+  constructor(private route: ActivatedRoute,
+              private userService: UserService,
+              private modalService: ModalService,
+              private router: Router) { }
   ngOnInit() {
     initFlowbite();
     const id = this.route.snapshot.params['id'];
@@ -92,7 +94,7 @@ export class EditUserComponent implements OnInit {
       && this.userForm.controls['teacher'].value === false &&
       this.userForm.controls['father'].value === false) {
       this.message = 'Debe seleccionar al menos un rol';
-      this.showModal();
+      this.openModal( this.message, 'Error')
       return;
     }
     const user: UserCreateDTO = {
@@ -112,26 +114,26 @@ export class EditUserComponent implements OnInit {
         console.log(data);
         this.message = data.message;
         this.userUpdated = true;
+        this.openModal('Usuario Actualizado', this.message);
+        this.router.navigate(['/userList']);
       },
       error: (error: any) => {
         console.error(error);
         this.message = error.error.message;
-        this.modalComponent?.toggleModal();
+        this.openModal( this.message , 'Error');
       },
       complete: () => {
         console.log('complete');
-        this.modalComponent?.toggleModal();
       }
     })
   }
-
-  closeModal() {
-    this.modalComponent?.toggleModal();
-  }
-  showModal() {
-    this.modalComponent?.toggleModal();
-  }
-  goToUserList() {
-    window.location.href = '/userList';
+  openModal(message: string, title:string){
+    return this.modalService.open({ content:this.content!,
+      options: {
+        isSubmittable: true,
+        title: title,
+        message: message
+      }
+    });
   }
 }
