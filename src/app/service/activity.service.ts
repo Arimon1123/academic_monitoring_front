@@ -12,8 +12,8 @@ export class ActivityService {
   private API_URL = environment.API_URL;
   constructor(private http: HttpClient) { }
 
-  getActivitiesByAssignationId(assignationId: number) : Observable<ResponseDTO<ActivityDTO[]>>{
-    return this.http.get<ResponseDTO<ActivityDTO[]>>(`${this.API_URL}/activity/assignation/${assignationId}`, {withCredentials: true});
+  getActivitiesByAssignationId(assignationId: number, bimester: number) : Observable<ResponseDTO<ActivityDTO[]>>{
+    return this.http.get<ResponseDTO<ActivityDTO[]>>(`${this.API_URL}/activity/assignation/${assignationId}/bimester/${bimester}`, {withCredentials: true});
   }
   saveActivity(activity: ActivityDTO) : Observable<ResponseDTO<string>>{
     return this.http.post<ResponseDTO<string>>(`${this.API_URL}/activity`, activity, {withCredentials: true});

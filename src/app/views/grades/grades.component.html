@@ -23,7 +23,7 @@
       <th class="w-64 border text-center first:border-l first:rounded-tl-lg border-gray font-extralight sticky left-0 h-fit bg-active" >Estudiante</th>
         @for(activity of activities; track activity.id){
           <th  class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
-               title="{{activity.name}} : {{activity.value}}%">{{activity.name}}</th>
+               title="{{activity.dimension}}: {{activity.value}}% ">{{activity.name}} </th>
         }
       <th  class="w-32 border px-5 last:rounded-tr-lg border-gray font-extralight">Nota Final</th>
       </thead>

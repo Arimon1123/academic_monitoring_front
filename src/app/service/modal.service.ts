@@ -11,13 +11,15 @@ export class ModalService {
   constructor(private resolver: ComponentFactoryResolver, private injector: Injector, @Inject(DOCUMENT) private document: Document) {
 
   }
-  open({content, options}: { content: TemplateRef<any>, options?: { size?: string; title?: string, message?: string, isSubmittable?: boolean, hasContent?: boolean} }){
+  open({content, options}: { content: TemplateRef<any>, options?: { data?: any, size?: string; title?: string, message?: string, isSubmittable?: boolean, hasContent?: boolean} }){
     const modalComponentFactory = this.resolver.resolveComponentFactory(ModalComponent);
     const contentViewRef = content.createEmbeddedView(null);
     const modalComponent = modalComponentFactory.create(this.injector, [contentViewRef.rootNodes]);
     modalComponent.instance.size = options?.size;
     modalComponent.instance.title = options?.title;
     modalComponent.instance.message = options?.message;
+    modalComponent.instance.content = content;
+    modalComponent.instance.data = options?.data;
     modalComponent.instance.isSubmittable = options?.isSubmittable;
     modalComponent.instance.hasContent = options?.hasContent;
     modalComponent.instance.closeEvent.subscribe(() => {

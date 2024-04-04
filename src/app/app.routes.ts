@@ -17,6 +17,8 @@ import {PermissionDetailsComponent} from "./views/permission-details/permission-
 import {AttendanceComponent} from "./views/attendance/attendance.component";
 import {ActivityListComponent} from "./views/activity-list/activity-list.component";
 import {GradesComponent} from "./views/grades/grades.component";
+import {TeacherScheduleComponent} from "./views/schedule/teacher-schedule.component";
+import {StudentScheduleComponent} from "./views/student-schedule/student-schedule.component";
 
 ;
 
@@ -67,6 +69,12 @@ export const routes: Routes = [
       path: 'activity', component: ActivityListComponent
     }, {
       path: 'grades', component: GradesComponent
-  }
+    },
+    {
+      path:'teacherSchedule', component: TeacherScheduleComponent
+   },
+    {
+      path: 'studentSchedule', component: StudentScheduleComponent
+    }
 
 ];

@@ -24,7 +24,7 @@ import {normalizeExtraEntryPoints} from "@angular-devkit/build-angular/src/tools
 export class ActivityListComponent {
   activityList: ActivityDTO[];
   assignation: AssignationDTO;
-  totalPercentage: number = 0;
+  totalPercentage: number;
   isUpdate : boolean;
   activityForm: FormGroup;
   updatedActivity: ActivityDTO;
@@ -36,6 +36,7 @@ export class ActivityListComponent {
   constructor(private activityService: ActivityService,
               private localStorage: LocalStorageService,
               private modalService: ModalService){
+    this.totalPercentage = 0;
     this.title = "Nueva actividad";
     this.updatedActivity = {} as ActivityDTO;
     this.deleteActivityId = 0;
@@ -51,16 +52,21 @@ export class ActivityListComponent {
       }
     )
   }
+  dimensionValue : {[key:string]: number} = {
+    HACER:30,
+    SABER:30,
+    SER:20,
+    DECIDIR:20
+  }
   ngOnInit() {
     this.getAllActivities();
   }
   getAllActivities(){
-    console.log("aaa")
-    this.activityService.getActivitiesByAssignationId(this.assignation.id).subscribe(
+    this.activityService.getActivitiesByAssignationId(this.assignation.id,1).subscribe(
       {
         next: (response: ResponseDTO<ActivityDTO[]>) => {
           this.activityList = response.content;
-          this.totalPercentage = this.activityList.reduce((acc, activity) => acc + activity.value, 0);
+          this.totalPercentage = this.activityList.reduce((acc, activity) => acc + activity.value * this.dimensionValue[activity.dimension]/100 , 0);
         }
       }
     );
@@ -82,7 +88,7 @@ export class ActivityListComponent {
   onSubmit(){
     let newTotal = 0;
     if(!this.isUpdate)
-      newTotal = this.totalPercentage + parseInt(this.activityForm.controls['value'].value)
+      newTotal = this.totalPercentage + parseInt(this.activityForm.controls['value'].value) * this.dimensionValue[this.activityForm.controls['dimension'].value /100]
     else
       newTotal = this.totalPercentage - this.updatedActivity.value + parseInt(this.activityForm.controls['value'].value);
     if(newTotal > 100 ){

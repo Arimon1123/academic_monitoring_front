@@ -31,6 +31,12 @@ export class GradesComponent {
   activities: ActivityDTO[];
   grades:{[key:number]:ActivityGradeDTO[]};
   table : {student:StudentDTO, grades: ActivityGradeDTO[]}[];
+  dimensionValue : {[key:string]: number} = {
+    HACER:30,
+    SABER:30,
+    SER:20,
+    DECIDIR:20
+  }
   constructor(private localStorage: LocalStorageService,
               private studentService: StudentService,
               private activityService: ActivityService,
@@ -44,13 +50,14 @@ export class GradesComponent {
   }
   ngOnInit(){
     forkJoin({
-      activities: this.activityService.getActivitiesByAssignationId(this.assignation.id),
+      activities: this.activityService.getActivitiesByAssignationId(this.assignation.id,1),
       students: this.studentService.getStudentsByAssignationId(this.assignation.id),
-      grades: this.gradesService.getGradesByAssignation(this.assignation.id)
+      grades: this.gradesService.getGradesByAssignation(this.assignation.id,1)
     }).subscribe(
       {
         next: (data : {activities: ResponseDTO<ActivityDTO[]>, students: ResponseDTO<StudentDTO[]>, grades: ResponseDTO<{[key:number]:ActivityGradeDTO[]} >})=>{
-          this.activities = data.activities.content;
+          this.activities = data.activities.content
+          console.log(this.activities);
           this.students = data.students.content;
           this.grades = data.grades.content;
           this.buildTable();
@@ -58,6 +65,7 @@ export class GradesComponent {
       }
     )
   }
+
   buildTable(){
     for(let student of this.students){
       let grades: {student: StudentDTO, grades: ActivityGradeDTO[]} = { student: student , grades : []}
@@ -66,7 +74,7 @@ export class GradesComponent {
         const grade = this.grades[student.id] ? this.grades[student.id].find((grade) => grade.activityId === activity.id) : undefined;
         if(grade){
           grades.grades.push(grade);
-          finalGrade += activity.value * (grade!.grade/100);
+          finalGrade += activity.value * (grade!.grade/100) * (this.dimensionValue[activity.dimension] / 100);
         }
         else {
           grades.grades.push({id: 0 , studentId: student.id, activityId: activity.id, grade: 0})
@@ -107,7 +115,8 @@ export class GradesComponent {
     let finalGrade = 0;
     for(let grade of tableRow.grades){
       if(grade.activityId !== 0){
-        finalGrade += this.activities.find((activity) => activity.id === grade.activityId)!.value/100 *grade.grade;
+        const activity = this.activities.find((activity) => activity.id === grade.activityId)
+        finalGrade += activity!.value/100 * grade.grade * this.dimensionValue[activity!.dimension]/100;
         console.log(finalGrade)
       }
     }

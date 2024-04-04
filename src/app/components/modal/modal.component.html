@@ -13,7 +13,7 @@
   <hr class="w-full">
   @if (hasContent){
     <div class="flex w-full h-3/5 justify-center items-center ">
-      <ng-content></ng-content>
+      <ng-container *ngTemplateOutlet="content ;context: {data: data }" ></ng-container>
     </div>
   } @else {
     <div class="flex w-full h-2/5 justify-center items-center my-3">
