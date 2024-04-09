@@ -27,4 +27,7 @@ export class AssignationService {
   getAssignationByStudentIdAndYear(studentId:number,year:number){
     return this.http.get<ResponseDTO<AssignationDTO[]>>(`${this.API_URL}/classAssignation/student`,{params: {studentId: studentId, year:year}, withCredentials : true})
   }
+  getAssignationById(id:number){
+    return this.http.get<ResponseDTO<AssignationDTO>>(`${this.API_URL}/classAssignation/${id}`, {withCredentials: true})
+  }
 }
