@@ -65,6 +65,7 @@ export class ActivityListComponent {
     this.activityService.getActivitiesByAssignationId(this.assignation.id,1).subscribe(
       {
         next: (response: ResponseDTO<ActivityDTO[]>) => {
+          console.log("nyan")
           this.activityList = response.content;
           this.totalPercentage = this.activityList.reduce((acc, activity) => acc + activity.value * this.dimensionValue[activity.dimension]/100 , 0);
         }

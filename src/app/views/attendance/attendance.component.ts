@@ -37,7 +37,8 @@ export class AttendanceComponent implements OnInit{
   constructor(private attendanceService: AttendanceService,
               private permissionService: PermissionService,
               private studentService: StudentService,
-              private modalService: ModalService){
+              private modalService: ModalService,
+              private localStorage: LocalStorageService){
     this.todayDate = new Date( new Date().getFullYear()+"-"+ (new Date().getMonth()+1) +"-"+new Date().getDate());
     this.studentList = [];
     this.permissionList = [];
@@ -77,6 +78,7 @@ export class AttendanceComponent implements OnInit{
   }
   ngOnInit() {
    this.getAllLists()
+   this.localStorage.setItem('assignation', JSON.stringify(this.assignationDTO));
 
   }
   getAllLists(){

@@ -10,7 +10,7 @@
                 </button>
             </form>
             <ul class="h-fit max-h-[75vh] overflow-y-scroll">
-                @for(parent of parentList; track parent.parentId){
+                @for(parent of parentList; track parent.id){
                 <li class="border rounded-md p-2 my-1 flex flex-row justify-evenly bg-white ">
                     <div class="flex flex-col w-3/5 h-fit">
                         <span class="truncate hover:text-nowrap h-fit">{{parent.person.name}} {{parent.person.lastname}}</span>
@@ -147,13 +147,13 @@
                 <div class="my-2">
                     <h2 class="font-semibold">Padre, Madre o Apoderado</h2>
                 </div>
-                @for(parent of selectedParentList; track parent.parentId){
+                @for(parent of selectedParentList; track parent.id){
                 <div class="p-2 border rounded-sm flex flex-row justify-evenly my-2 bg-white">
                     <span>Nombre: {{parent.person.name}}</span>
                     <span>Apellido: {{parent.person.lastname}}</span>
                     <span>Ci: {{parent.person.ci}}</span>
-                    <button (click)="removeParent(parent.parentId)"><i class="fa-solid fa-trash"
-                            style="color: #f50505;"></i></button>
+                    <button (click)="removeParent(parent.id)"><i class="fa-solid fa-trash"
+                                                                 style="color: #f50505;"></i></button>
                 </div>
                 }
                 <div class="w-full flex justify-end">

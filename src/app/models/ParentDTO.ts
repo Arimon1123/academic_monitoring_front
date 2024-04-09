@@ -1,7 +1,7 @@
 import { PersonDTO } from "./PersonDTO";
 
 export interface ParentDTO {
-    parentId: number;
+    id: number;
     person: PersonDTO;
     status: number;
 }

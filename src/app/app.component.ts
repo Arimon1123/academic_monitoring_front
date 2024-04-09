@@ -1,108 +1,107 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import {  RouterModule, RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
-import { LocalStorageService } from './service/local-storage.service';
 import { UserService } from './service/user.service';
 import { NavsComponent } from './components/navs/navs.component';
 import { UserDTO } from './models/UserDTO';
 import { ModalComponent } from './components/modal/modal.component';
-import { RoleDTO } from './models/RoleDTO';
-import { roles } from './consts/roles.json';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { environment } from './environments/environment.development';
-import {TeacherDTO} from "./models/TeacherDTO";
-import {ParentDTO} from "./models/ParentDTO";
+import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {ResponseDTO} from "./models/ResponseDTO";
 import myLocalEs from '@angular/common/locales/es';
 import {registerLocaleData} from "@angular/common";
+import {ModalService} from "./service/modal.service";
+import {role_names} from "./consts/roles.json"
+import {LoginComponent} from "./views/login/login.component";
+import {UserDataService} from "./service/user-data.service";
+import {UserDetailsDTO} from "./models/UserDetailsDTO";
+import {LocalStorageService} from "./service/local-storage.service";
 
 registerLocaleData(myLocalEs, "es-ES");
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule, NavsComponent, ModalComponent, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterOutlet, RouterModule, NavsComponent, ModalComponent, FormsModule, ReactiveFormsModule, LoginComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 
 })
 
 export class AppComponent implements OnInit {
-  //@ViewChild("modal") modalComponent: ModalComponent | undefined;
-
-  title = 'frontend_academic_monitoring';
+  @ViewChild('modal') content : TemplateRef<any> | undefined;
+  title = 'Seguimiento académico';
   user: UserDTO | undefined;
   isLogged: boolean = false;
   currentRole: string = '';
-  currentRoles: RoleDTO[] = [];
-  roleNames: any;
-  roleDetails: ParentDTO | TeacherDTO;
-  showNavs = false;
-  form: FormGroup = new FormGroup({
-    roleId: new FormControl('0')
-  });
-  constructor(private userService: UserService, private localStorage: LocalStorageService, private router: Router) {
+  userDetails: UserDetailsDTO ;
+  currentRoles: any = role_names;
+  constructor(private userService: UserService,
+              private userDataService: UserDataService,
+              private modalService: ModalService,
+              private localStorage: LocalStorageService) {
     this.user = {} as UserDTO;
-    this.roleDetails = {} as ParentDTO;
+    this.userDetails = {} as UserDetailsDTO;
   }
   ngOnInit() {
-
     initFlowbite();
-    this.roleNames = environment.currentRoles;
-    this.user = JSON.parse(this.localStorage.getItem('userDetails') as string);
-    this.currentRole = JSON.parse(this.localStorage.getItem('currentRole') as string);
-    this.isLogged = this.localStorage.getItem('isLogged') == "Sesion Iniciada";
-    this.roleDetails = JSON.parse(this.localStorage.getItem('roleDetails') as string);
-    if(!this.currentRole && this.isLogged && this.user){
-      if(this.user.role.length === 1 ){
-        this.currentRole = this.user.role[0].name;
-        this.localStorage.setItem('currentRole', JSON.stringify(this.currentRole));
-      }else{
-        setTimeout(() => {
-        //  this.showModal();
-        },500);
+    this.getUserDetails();
+  }
+
+  openRoleSelectionModal(){
+    this.modalService.open({content: this.content!,
+      options: {
+        size:'medium',
+        hasContent: true,
+        data: this.user?.role,
+        isSubmittable: true,
+        title: 'Selecciona un rol',
       }
-      if(!this.roleDetails){
-        this.getRoleDetails(this.currentRole);
+    }).subscribe(
+      {
+        next: data =>{
+          this.localStorage.setItem('role', data);
+          this.getRoleDetails();
+        }
       }
-    }
-    if((this.currentRole && this.isLogged) || !this.isLogged){
-      this.showNavs = true;
-    }
-    if(this.currentRole && !this.roleDetails){
-      this.getRoleDetails(this.currentRole);
-    }
-
-
+    );
   }
-
-  // showModal() {
-  //   this.modalComponent?.showModal();
-  // }
-  // closeModal() {
-  //   this.modalComponent?.hideModal();
-  // }
-  parseRoleDetails(){
-   this.currentRole = JSON.parse(this.localStorage.getItem('currentRole') as string);
-  }
-  saveCurrentRole() {
-    const roleId = this.form.controls['roleId'].value
-    const savedRole = this.currentRoles.find((role: RoleDTO) => {
-      return parseInt(roleId) === role.id;
-    });
-    this.currentRole = savedRole?.name ?? '';
-    this.localStorage.setItem('currentRole', JSON.stringify(savedRole?.name));
-    this.showNavs = true;
-    this.getRoleDetails(this.currentRole);
-   // this.closeModal();
-  }
-
-  getRoleDetails(role: string) {
-    this.userService.getUserRoleDetails(role).subscribe(
-      (data: ResponseDTO<any>) => {
-        this.localStorage.setItem('roleDetails', JSON.stringify(data.content));
+  getUserDetails(){
+    this.userService.userDetails().subscribe({
+      next: (data:ResponseDTO<UserDTO>)=>{
+        this.user = data.content;
+        if(this.user.role.length > 1)
+          this.openRoleSelectionModal();
+        else
+          this.currentRole = this.user.role[0].name;
+          this.getRoleDetails();
+      },
+      error: error =>{
+        console.log(error);
+        if(error.status === 401){
+          this.isLogged = false;
+        }
       }
-    )
+    })
   }
+
+  getRoleDetails(){
+    this.userService.getUserRoleDetails(this.currentRole).subscribe({
+      next: (data:ResponseDTO<UserDetailsDTO>)=>{
+        this.userDetails = data.content;
+      },
+      complete: () => {
+        this.updateUserData();
+        this.isLogged = true;
+      }
+    })
+  }
+  updateLoginState(isLogged: boolean){
+    this.isLogged = isLogged;
+    this.getUserDetails();
+  }
+  updateUserData(){
+    this.userDataService.setUserDetails(this.userDetails);
+  }
+
 }
