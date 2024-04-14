@@ -29,8 +29,6 @@ registerLocaleData(myLocalEs, "es-ES");
 })
 
 export class AppComponent implements OnInit {
-  //@ViewChild("modal") modalComponent: ModalComponent | undefined;
-
   title = 'frontend_academic_monitoring';
   user: UserDTO | undefined;
   isLogged: boolean = false;
