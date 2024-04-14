@@ -13,7 +13,7 @@ export class GradesService {
   constructor(private http:HttpClient) { }
 
   getGradesByAssignation(assignationId:number, bimester: number){
-    return this.http.get<ResponseDTO<{[key:number]:ActivityGradeDTO[]}>>(`${this.API_URL}/activityGrade/assignation/${assignationId}/${bimester}`, {withCredentials :true})
+    return this.http.get<ResponseDTO<{[key:number]:ActivityGradeDTO[]}>>(`${this.API_URL}/activityGrade/assignation/${assignationId}/bimester/${bimester}`, {withCredentials :true})
   }
   saveGradesBy(activityGradeDTO: ActivityGradeDTO[]){
     return this.http.post<ResponseDTO<string>>(`${this.API_URL}/activityGrade`, activityGradeDTO, {withCredentials :true})

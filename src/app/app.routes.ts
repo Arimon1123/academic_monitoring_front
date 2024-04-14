@@ -21,6 +21,7 @@ import {TeacherScheduleComponent} from "./views/schedule/teacher-schedule.compon
 import {StudentScheduleComponent} from "./views/student-schedule/student-schedule.component";
 import {StudentGradesComponent} from "./views/student-grades/student-grades.component";
 import {StudentActivitiesComponent} from "./views/student-activities/student-activities.component";
+import {ReportCardsComponent} from "./views/report-cards/report-cards.component";
 
 ;
 
@@ -83,6 +84,9 @@ export const routes: Routes = [
   },
   {
     path: 'studentActivities/assignation/:assignationId/bimester/:bimester', component: StudentActivitiesComponent
+  },
+  {
+    path:'reportCards',component:ReportCardsComponent
   }
 
 ];

@@ -1,0 +1,66 @@
+<main class="flex flex-col h-[85vh] w-full justify-start items-center bg-bg-color border rounded-md overflow-y-scroll">
+  <div class="w-full flex justify-start p-4">
+    <h1 class="text-lg font-semibold text-start">Boletas de notas</h1>
+  </div>
+  <div class="flex flex-row w-full my-2">
+    <div class="flex flex-col border rounded-md bg-white h-fit w-1/5 pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border">
+      <h2>Grado</h2>
+      <ul>
+        @for(grade of gradeList; track grade.id){
+          <li class="flex justify-center my-2 " >
+            <button class="border rounded-md p-2 w-32  transition-colors hover:bg-active hover:text-white"
+                    (click)="getClassList(grade.id)" [ngClass]="getStyles(grade.id)">
+              {{grade.number}}° {{grade.section}}
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+    @if(classList.length > 0){
+      <div class="flex flex-col border rounded-md bg-white h-fit w-1/5 pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border">
+        <h2>Cursos</h2>
+        <ul >
+          @for (classDTO of classList; track classDTO.id){
+            <li class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 ">
+              <span>{{classDTO.grade}} {{classDTO.identifier}} </span>
+              <input type="checkbox" value="{{classDTO.id}}" class="border rounded-md w-5 h-5 mx-1 focus:ring-transparent" (change)="addSelectedClass($event)">
+            </li>
+          }
+        </ul>
+      </div>
+    }
+
+    @if(selectedClass.length > 0){
+      <section class="flex flex-col border rounded-md bg-white h-fit w-3/5 max-w-[45rem] py-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border">
+        <h2>Bimestre</h2>
+        <ul class="flex flex-row flex-wrap justify-center">
+          <li class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2">
+            1 bimestre
+            <input type="radio" name="bimester" id="bimester" [disabled]="isFinalReport" (change)="onBimesterChange($event)" checked value="1">
+          </li>
+          <li class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2 ">
+            2 bimestre
+            <input type="radio" name="bimester" id="secondBimester" [disabled]="isFinalReport" (change)="onBimesterChange($event)" value="2">
+          </li>
+          <li class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2 ">
+            3 bimestre
+            <input type="radio" name="bimester" id="thirdBimester" [disabled]="isFinalReport" (change)="onBimesterChange($event)" value="3">
+          </li>
+          <li class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2 ">
+            4 bimestre
+            <input type="radio" name="bimester" id="fourthBimester" [disabled]="isFinalReport" [checked]="isFinalReport" (change)="onBimesterChange($event)" value="4">
+          </li>
+          <li class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2 ">
+            Notas finales
+            <input type="checkbox" (change)="onFinalReportChange($event)" name="isFinal" id="isFinal"></li>
+        </ul>
+        <div class="flex w-full justify-end px-2" >
+          <button class="bg-primary text-white border rounded-md py-1 px-3" (click)="downloadReportCards()">Generar boletas</button>
+        </div>
+      </section>
+    }
+  </div>
+</main>
+
+<ng-template #modal>
+</ng-template>

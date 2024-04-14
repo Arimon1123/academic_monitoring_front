@@ -6,7 +6,7 @@
     <div class="xl:grid xl:grid-cols-assignation flex flex-col gap-5 justify-evenly px-2">
         <div class=" flex md:flex-row flex-coljustify-evenly">
             <div
-                class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-4/5 xl:overflow-y-scroll mx-2 box-border">
+                class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border">
                 <h2 class="text-md font-semibold my-4">Grado</h2>
                 <ul>
                     @for(grade of gradeList; track grade.id){
@@ -19,7 +19,7 @@
                 </ul>
             </div>
             @if(selectedGrade){
-            <div class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-4/5 xl:overflow-y-scroll mx-2 box-border"
+            <div class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border"
                 #course>
                 <h2 class="text-md font-semibold my-4">Paralelo</h2>
                 <ul>
@@ -34,7 +34,7 @@
             </div>
             }
             @if(selectedClass){
-            <div class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-4/5 xl:overflow-y-scroll mx-2 box-border"
+            <div class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border"
                >
                 <h2 class="text-md font-semibold my-4">Materia</h2>
                 <ul>
@@ -50,7 +50,7 @@
             }
         </div>
         @if(selectedSubject.id ){
-        <div class="flex flex-col w-full h-4/5 border rounded-md bg-white p-2 overflow-y-scroll ">
+        <div class="flex flex-col w-full h-fit xl:h-[75vh] border rounded-md bg-white p-2 overflow-y-scroll ">
             <h2 class="text-md font-semibold text-start mb-2">Asignación</h2>
             <h3 class="text-md font-normal text-start mb-2">Profesor</h3>
             <div class="flex w-full justify-between ">

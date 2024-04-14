@@ -31,6 +31,7 @@ export class GradesComponent {
   activities: ActivityDTO[];
   grades:{[key:number]:ActivityGradeDTO[]};
   table : {student:StudentDTO, grades: ActivityGradeDTO[]}[];
+  bimester = 4;
   dimensionValue : {[key:string]: number} = {
     HACER:30,
     SABER:30,
@@ -42,17 +43,40 @@ export class GradesComponent {
               private activityService: ActivityService,
               private gradesService: GradesService,
               private modalService: ModalService) {
-    this.assignation = JSON.parse(this.localStorage.getItem('assignation') as string)
+    this.assignation =  {
+      "id": 29,
+      "className": "1°Primaria A",
+      "teacherName": "Teacher2 Teacher2",
+      "subjectName": "Lenguaje",
+      "classroomName": "Aula A-2",
+      "schedule": [
+        {
+          "id": 37,
+          "weekday": "tuesday",
+          "startTime": "08:00:00",
+          "endTime": "08:45:00",
+          "period": 1
+        },
+        {
+          "id": 38,
+          "weekday": "tuesday",
+          "startTime": "08:45:00",
+          "endTime": "09:30:00",
+          "period": 2
+        }
+      ]
+    },
     this.students = [];
     this.activities = [];
     this.grades = [];
     this.table = [];
   }
   ngOnInit(){
+    console.log(this.assignation);
     forkJoin({
-      activities: this.activityService.getActivitiesByAssignationId(this.assignation.id,1),
+      activities: this.activityService.getActivitiesByAssignationId(this.assignation.id,this.bimester),
       students: this.studentService.getStudentsByAssignationId(this.assignation.id),
-      grades: this.gradesService.getGradesByAssignation(this.assignation.id,1)
+      grades: this.gradesService.getGradesByAssignation(this.assignation.id,this.bimester)
     }).subscribe(
       {
         next: (data : {activities: ResponseDTO<ActivityDTO[]>, students: ResponseDTO<StudentDTO[]>, grades: ResponseDTO<{[key:number]:ActivityGradeDTO[]} >})=>{
@@ -73,15 +97,20 @@ export class GradesComponent {
       for( let activity of this.activities){
         const grade = this.grades[student.id] ? this.grades[student.id].find((grade) => grade.activityId === activity.id) : undefined;
         if(grade){
+          if(grade.grade === 0 ){
+            grade.grade = Math.round((Math.random() * 99) + 1);
+          }
           grades.grades.push(grade);
           finalGrade += activity.value * (grade!.grade/100) * (this.dimensionValue[activity.dimension] / 100);
         }
         else {
-          grades.grades.push({id: 0 , studentId: student.id, activityId: activity.id, grade: 0})
+          const newGrade = {id: { studentId: student.id, activityId: activity.id } , studentId: student.id, activityId: activity.id, grade:  Math.round((Math.random() * 99) + 1) }
+          grades.grades.push(newGrade);
+          finalGrade += activity.value * (newGrade!.grade/100) * (this.dimensionValue[activity.dimension] / 100);
         }
 
       }
-      grades.grades.push({id:0, studentId:0 , grade: finalGrade, activityId: 0})
+      grades.grades.push({id:{studentId: 0, activityId: 0}, studentId:0 , grade: finalGrade, activityId: 0})
       this.table.push(grades)
     }
     console.log(this.table)
