@@ -6,6 +6,7 @@ import { AuthService } from '../../service/auth-service.service';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../../service/local-storage.service';
+import {ResponseDTO} from "../../models/ResponseDTO";
 
 @Component({
   selector: 'app-login',
@@ -43,8 +44,8 @@ export class LoginComponent {
         },
         complete: () => {
           this.userService.userDetails().subscribe({
-            next: (data: any) => {
-              this.localStorageService.setItem('userDetails', JSON.stringify(data));
+            next: (data: ResponseDTO<any>) => {
+              this.localStorageService.setItem('userDetails', JSON.stringify(data.content));
             },
             complete: () => {
 

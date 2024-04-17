@@ -45,7 +45,7 @@ export class UserService {
 
 
   userDetails() {
-    return this.http.get(`${this.API_URL}/auth/details`, { responseType: 'json', withCredentials: true });
+    return this.http.get<ResponseDTO<any>>(`${this.API_URL}/auth/details`, { responseType: 'json', withCredentials: true });
   }
   getUser(id: number) {
     return this.http.get(`${this.API_URL}/user/${id}`, { responseType: 'json', withCredentials: true });

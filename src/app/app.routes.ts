@@ -22,6 +22,7 @@ import {StudentScheduleComponent} from "./views/student-schedule/student-schedul
 import {StudentGradesComponent} from "./views/student-grades/student-grades.component";
 import {StudentActivitiesComponent} from "./views/student-activities/student-activities.component";
 import {ReportCardsComponent} from "./views/report-cards/report-cards.component";
+import {AnnouncementRegisterComponent} from "./views/announcement-register/announcement-register.component";
 
 ;
 
@@ -40,9 +41,6 @@ export const routes: Routes = [
     },
     {
         path: 'modal', component: ModalComponent
-    },
-    {
-        path: '', component: HomeComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE', 'FATHER', 'TEACHER'] }
     },
     {
         path: 'editUser/:id', component: EditUserComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE'] }
@@ -87,6 +85,12 @@ export const routes: Routes = [
   },
   {
     path:'reportCards',component:ReportCardsComponent
-  }
+  },
+  {
+    path:'announcementRegister',component:AnnouncementRegisterComponent
+  },
+  {
+    path: '', component: HomeComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE', 'FATHER', 'TEACHER'] }
+  },
 
 ];

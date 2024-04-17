@@ -1,0 +1,22 @@
+<div class="w-screen m-auto">
+  <h2 class="text-2xl font-semibold mx-2">Avisos</h2>
+  <ul class="flex flex-row overflow-x-scroll overflow-y-hidden">
+    @for (announcement of announcements; track announcement.id){
+      <li class="inline-block border p-2 m-2 rounded-md max-w-[30rem] min-w-[30rem] bg-white  ">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-semibold">{{announcement.title}}</h3>
+          <p class="text-sm">{{announcement.date | date : "dd/MM/yyyy" }}</p>
+        </div>
+        <hr>
+        <div class="flex flex-col w-full items-center">
+          <p class="break-words my-2 text-start min-h-[7rem]">{{announcement.message}}</p>
+          <hr>
+          @for(image of announcement.images; track image){
+            <img src="{{image}}" alt="image related to the announcement" class="max-w-64 max-h-64 aspect-auto h-64">
+          }
+        </div>
+      </li>
+    }
+  </ul>
+
+</div>
