@@ -1,6 +1,6 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {  RouterModule, RouterOutlet } from '@angular/router';
+import {Router, RouterModule, RouterOutlet} from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { UserService } from './service/user.service';
 import { NavsComponent } from './components/navs/navs.component';
@@ -16,6 +16,7 @@ import {LoginComponent} from "./views/login/login.component";
 import {UserDataService} from "./service/user-data.service";
 import {UserDetailsDTO} from "./models/UserDetailsDTO";
 import {LocalStorageService} from "./service/local-storage.service";
+import * as timers from "node:timers";
 
 registerLocaleData(myLocalEs, "es-ES");
 
@@ -39,7 +40,8 @@ export class AppComponent implements OnInit {
   constructor(private userService: UserService,
               private userDataService: UserDataService,
               private modalService: ModalService,
-              private localStorage: LocalStorageService) {
+              private localStorage: LocalStorageService,
+              private router: Router) {
     this.user = {} as UserDTO;
     this.userDetails = {} as UserDetailsDTO;
   }
@@ -77,7 +79,6 @@ export class AppComponent implements OnInit {
           this.getRoleDetails();
       },
       error: error =>{
-        console.log(error);
         if(error.status === 401){
           this.isLogged = false;
         }
@@ -98,8 +99,12 @@ export class AppComponent implements OnInit {
   }
   updateLoginState(isLogged: boolean){
     this.isLogged = isLogged;
-    this.getUserDetails();
+    this.router.navigate(['']).then()
+    if(isLogged)
+      this.getUserDetails();
+
   }
+
   updateUserData(){
     this.userDataService.setUserDetails(this.userDetails);
   }

@@ -39,7 +39,7 @@ export const routes: Routes = [
         path: 'modal', component: ModalComponent
     },
     {
-        path: '', component: HomeComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE', 'FATHER', 'TEACHER'] }
+        path: '', component: HomeComponent
     },
     {
         path: 'editUser/:id', component: EditUserComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE'] }
@@ -63,7 +63,7 @@ export const routes: Routes = [
       path: 'permissionDetails/:id' ,component: PermissionDetailsComponent
     },
     {
-      path:'attendance', component: AttendanceComponent
+      path:'attendance', component: AttendanceComponent, canActivate : [authGuard], data: {roles: ['TEACHER']}
     },
     {
       path: 'activity', component: ActivityListComponent

@@ -8,7 +8,7 @@
   ],
   "TEACHER": [
     { "id":6,"route": "/attendance", "title": "Asistencia" },
-    { "id":7,"route": "/activityList", "title": "Actividades" },
+    { "id":7,"route": "/activity", "title": "Actividades" },
     { "id":8,"route": "/grades", "title": "Notas" },
     { "id":9,"route": "/teacherSchedule", "title": "Horarios" }
   ],

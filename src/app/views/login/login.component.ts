@@ -30,11 +30,13 @@ export class LoginComponent {
   isInvalid = false;
   requestSent = false;
 
-  login(event: any) {
+  login() {
     this.requestSent = true;
+    let isLogged = false;
     this.loginService.login(this.loginForm.value)
       .subscribe({
         next: (data:ResponseDTO<boolean>) => {
+          isLogged = data.content;
         },
         error: (error: any) => {
           this.requestSent = false;
@@ -43,7 +45,7 @@ export class LoginComponent {
           }
         },
         complete: () => {
-          this.loginEvent.emit(true);
+          this.loginEvent.emit(isLogged);
         }
       })
   }

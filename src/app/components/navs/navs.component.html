@@ -52,7 +52,7 @@
         class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-primary dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidebar">
         <div class="h-full px-3 pb-4 overflow-y-auto bg-primary dark:bg-gray-800">
-            <ul class="space-y-2 font-medium" >
+            <ul class="space-y-2 font-medium" data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar">
                 @for( route of routesList; track  route.id){
                   <li class="my-2" >
                     <a  routerLink="{{route.route}}" routerLinkActive="bg-selected"
