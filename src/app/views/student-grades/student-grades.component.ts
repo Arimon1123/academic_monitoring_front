@@ -4,12 +4,17 @@ import {GradesService} from "../../service/grades.service";
 import {ResponseDTO} from "../../models/ResponseDTO";
 import {StudentDTO} from "../../models/StudentDTO";
 import {RouterLink} from "@angular/router";
+import {RoundPipe} from "../../pipes/RoundPipe";
+import {NgClass, NgStyle} from "@angular/common";
 
 @Component({
   selector: 'app-student-grades',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    RoundPipe,
+    NgStyle,
+    NgClass
   ],
   templateUrl: './student-grades.component.html',
   styleUrl: './student-grades.component.css'

@@ -32,14 +32,15 @@
               @if(!last){
                 <a class="inline-block w-full h-full"
                    [routerLink]="['/studentActivities','assignation',grades.assignationId,'bimester',grades.bimester]"
+                   [ngClass]="{'text-red-500': grades.grade < 51}"
                 >
-                  {{grades.grade}}
+                  {{grades.grade }}
                 </a>
               }
               @else{
                 <a class="inline-block w-full h-full"
                 >
-                  {{grades.grade}}
+                  {{grades.grade | round}}
                 </a>
               }
             </td>
