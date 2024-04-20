@@ -6,7 +6,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { ModalComponent } from '../../components/modal/modal.component';
 import { Flowbite } from '../../decorator/flowbite';
 import {ModalService} from "../../service/modal.service";
-import {environment} from "../../environments/environment";
+import {role_names } from "../../consts/roles.json";
 
 @Component({
   selector: 'app-user-list',
@@ -20,7 +20,7 @@ export class UserListComponent{
 
   search: any = {}
   blockUsername: string = '';
-  currentRoles: { [key: string]: string } = environment.currentRoles;
+  currentRoles : {[key:string]:string} = role_names;
   requestSend = false;
   firstRequest = true;
   totalPages = 0;

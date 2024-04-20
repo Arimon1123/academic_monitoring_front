@@ -34,17 +34,17 @@
       @for (row of table; track row.id){
         <tr>
           <td class="border text-center  h-10">{{ row.activity }}</td>
-          <td class="border text-center  h-10">{{ row.grade }}</td>
+          <td class="border text-center  h-10" [ngClass]="{'text-red-500': row.grade < 51}">{{ row.grade }}</td>
           <td class="border text-center  h-10">{{ row.value }}</td>
           <td class="border text-center  h-10">{{ row.dimension }}</td>
-          <td class="border text-center  h-10">{{ row.total }}</td>
+          <td class="border text-center  h-10">{{ row.total | round }}</td>
         </tr>
       }
     </tbody>
   </table>
   <div class="flex w-4/5 justify-end my-2">
     Total:
-    <span class="ml-2 mr-20" [ngStyle]="{color: totalGrade < 51 ? 'red;' : 'black'}">{{ totalGrade }}</span>
+    <span class="ml-2 mr-20" [ngStyle]="{color: totalGrade < 51 ? 'red;' : 'black'}">{{ totalGrade | round }}</span>
   </div>
 
 </main>

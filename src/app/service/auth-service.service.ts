@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment.development';
 import { LocalStorageService } from './local-storage.service';
+import {ResponseDTO} from "../models/ResponseDTO";
 
 
 @Injectable({
@@ -13,7 +14,7 @@ export class AuthService {
   constructor(private http: HttpClient, private localStorageService: LocalStorageService) { }
 
   login(user: any) {
-    return this.http.post(`${this.API_URL}/authenticate`, user, { responseType: 'text', withCredentials: true })
+    return this.http.post<ResponseDTO<boolean>>(`${this.API_URL}/authenticate`, user, { withCredentials: true })
   }
 
   logout() {

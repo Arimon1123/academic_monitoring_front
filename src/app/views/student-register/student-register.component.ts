@@ -135,7 +135,7 @@ export class StudentRegisterComponent implements OnInit {
     });
   }
   removeParent(parentId: number) {
-    this.selectedParentList = this.selectedParentList.filter((parent) => parent.parentId !== parentId);
+    this.selectedParentList = this.selectedParentList.filter((parent) => parent.id !== parentId);
   }
   onSubmit() {
     const student: StudentCreateDTO = {
@@ -148,7 +148,7 @@ export class StudentRegisterComponent implements OnInit {
       address: this.studentForm.value.address,
       rude: this.studentForm.value.rude,
       classId: this.studentForm.value.classId,
-      parentId: [...this.selectedParentList.map((parent) => parent.parentId)]
+      parentId: [...this.selectedParentList.map((parent) => parent.id)]
     }
     this.studentService.saveStudent(student).subscribe({
       next: (data: ResponseDTO<string>) => {

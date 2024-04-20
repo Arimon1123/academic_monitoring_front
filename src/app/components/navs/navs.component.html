@@ -29,28 +29,13 @@
                             id="dropdown-user">
                             <div class="px-4 py-3" role="none">
                                 <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                    Neil Sims
+                                    {{userDetails.details.person.name}} {{userDetails.details.person.lastname}}
                                 </p>
                                 <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
 
                                 </p>
                             </div>
                             <ul class="py-1" role="none">
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Dashboard</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Settings</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Earnings</a>
-                                </li>
                                 <li>
                                     <a (click)="logout()"
                                         class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -67,30 +52,15 @@
         class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-primary dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidebar">
         <div class="h-full px-3 pb-4 overflow-y-auto bg-primary dark:bg-gray-800">
-            <ul class="space-y-2 font-medium">
-                <li class="py-1">
-                    <a href="/userList"
-                        class="block p-2 border bg-primary text-gray-200 rounded-md dark:text-gray-300 hover:bg-selected dark:hover:bg-gray-700 text-center"
-                        aria-current="page" data-drawer-toggle="logo-sidebar">Usuarios</a>
-                </li>
-                <li class="py-1">
-                    <a href="/userRegister" data-drawer-toggle="logo-sidebar"
-                        class="block p-2 border bg-primary text-gray-200 rounded-md dark:text-gray-300 hover:bg-selected dark:hover:bg-gray-700 text-center">Registro
-                        de Usuario</a>
-                </li>
-                <li class="py-1">
-                    <a routerLink="schedule"
-                        class="block p-2 border bg-primary text-gray-200 rounded-md dark:text-gray-300 hover:bg-selected dark:hover:bg-gray-700 text-center">
-                      Gestión de Cursos</a>
-                </li>
-                <li class="py-1">
-                    <a href="#"
-                        class="block p-2 border bg-primary text-gray-200 rounded-md dark:text-gray-300 hover:bg-selected dark:hover:bg-gray-700 text-center">Registros</a>
-                </li>
-                <li class="py-1">
-                    <a href="#"
-                        class="block p-2 border bg-primary text-gray-200 rounded-md dark:text-gray-300 hover:bg-selected dark:hover:bg-gray-700 text-center">Reportes</a>
-                </li>
+            <ul class="space-y-2 font-medium" data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar">
+                @for( route of routesList; track  route.id){
+                  <li class="my-2" >
+                    <a  routerLink="{{route.route}}" routerLinkActive="bg-selected"
+                       class="block p-2 border bg-primary text-gray-200 rounded-md dark:text-gray-300 hover:bg-selected dark:hover:bg-gray-700 text-center">
+                      {{route.title}}
+                    </a>
+                  </li>
+                }
             </ul>
         </div>
     </aside>

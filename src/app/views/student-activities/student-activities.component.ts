@@ -9,14 +9,17 @@ import {StudentDTO} from "../../models/StudentDTO";
 import {forkJoin} from "rxjs";
 import {AssignationService} from "../../service/assignation.service";
 import {AssignationDTO} from "../../models/AssignationDTO";
-import {NgStyle} from "@angular/common";
+import {NgClass, NgStyle} from "@angular/common";
 import colors from "tailwindcss/colors";
+import {RoundPipe} from "../../pipes/RoundPipe";
 
 @Component({
   selector: 'app-student-activities',
   standalone: true,
   imports: [
-    NgStyle
+    NgStyle,
+    RoundPipe,
+    NgClass
   ],
   templateUrl: './student-activities.component.html',
   styleUrl: './student-activities.component.css'

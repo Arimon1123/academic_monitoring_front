@@ -4,6 +4,8 @@ import { environment } from '../environments/environment.development';
 import { ParentDTO } from '../models/ParentDTO';
 import { TeacherDTO } from '../models/TeacherDTO';
 import { ResponseDTO } from '../models/ResponseDTO';
+import {UserDTO} from "../models/UserDTO";
+import {UserDetailsDTO} from "../models/UserDetailsDTO";
 
 
 @Injectable({
@@ -45,7 +47,7 @@ export class UserService {
 
 
   userDetails() {
-    return this.http.get<ResponseDTO<any>>(`${this.API_URL}/auth/details`, { responseType: 'json', withCredentials: true });
+    return this.http.get<ResponseDTO<UserDTO>>(`${this.API_URL}/auth/details`, { responseType: 'json', withCredentials: true });
   }
   getUser(id: number) {
     return this.http.get(`${this.API_URL}/user/${id}`, { responseType: 'json', withCredentials: true });
@@ -54,6 +56,6 @@ export class UserService {
     return this.http.put(`${this.API_URL}/user`, user, { responseType: 'json', withCredentials: true });
   }
   getUserRoleDetails(role: string) {
-    return this.http.get<ResponseDTO<ParentDTO | TeacherDTO | any>>(`${this.API_URL}/auth/role`, { responseType: 'json', withCredentials: true, params: { role: role } });
+    return this.http.get<ResponseDTO<UserDetailsDTO>>(`${this.API_URL}/auth/role`, { responseType: 'json', withCredentials: true, params: { role: role } });
   }
 }

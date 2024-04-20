@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../service/auth-service.service';
-import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
-import { LocalStorageService } from '../../service/local-storage.service';
+import {UserDataService} from "../../service/user-data.service";
 import {ResponseDTO} from "../../models/ResponseDTO";
+
 
 @Component({
   selector: 'app-login',
@@ -18,23 +18,23 @@ import {ResponseDTO} from "../../models/ResponseDTO";
 })
 export class LoginComponent {
   constructor(private loginService: AuthService,
-    private userService: UserService,
     private router: Router,
-    private localStorageService: LocalStorageService) { }
+    private userData: UserDataService) { }
   loginForm: FormGroup = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(5)]),
     password: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(5),]),
   })
-
+  @Output() loginEvent = new EventEmitter<boolean>();
   isInvalid = false;
   requestSent = false;
-  login(event: any) {
-    event.preventDefault();
+
+  login() {
     this.requestSent = true;
+    let isLogged = false;
     this.loginService.login(this.loginForm.value)
       .subscribe({
-        next: (data: any) => {
-          this.localStorageService.setItem('isLogged', data);
+        next: (data:ResponseDTO<boolean>) => {
+          isLogged = data.content;
         },
         error: (error: any) => {
           this.requestSent = false;
@@ -43,18 +43,7 @@ export class LoginComponent {
           }
         },
         complete: () => {
-          this.userService.userDetails().subscribe({
-            next: (data: ResponseDTO<any>) => {
-              this.localStorageService.setItem('userDetails', JSON.stringify(data.content));
-            },
-            complete: () => {
-
-              window.location.href = '';
-            },
-            error: (error: any) => {
-              alert('Error al obtener los detalles del usuario');
-            }
-          });
+          this.loginEvent.emit(isLogged);
         }
       })
   }

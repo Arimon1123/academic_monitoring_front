@@ -44,7 +44,7 @@ export class GradesComponent {
               private gradesService: GradesService,
               private modalService: ModalService) {
     this.assignation =  {
-      "id": 29,
+      "id": 20,
       "className": "1°Primaria A",
       "teacherName": "Teacher2 Teacher2",
       "subjectName": "Lenguaje",
@@ -97,14 +97,11 @@ export class GradesComponent {
       for( let activity of this.activities){
         const grade = this.grades[student.id] ? this.grades[student.id].find((grade) => grade.activityId === activity.id) : undefined;
         if(grade){
-          if(grade.grade === 0 ){
-            grade.grade = Math.round((Math.random() * 99) + 1);
-          }
           grades.grades.push(grade);
           finalGrade += activity.value * (grade!.grade/100) * (this.dimensionValue[activity.dimension] / 100);
         }
         else {
-          const newGrade = {id: { studentId: student.id, activityId: activity.id } , studentId: student.id, activityId: activity.id, grade:  Math.round((Math.random() * 99) + 1) }
+          const newGrade = {id: { studentId: student.id, activityId: activity.id } , studentId: student.id, activityId: activity.id, grade:  0 }
           grades.grades.push(newGrade);
           finalGrade += activity.value * (newGrade!.grade/100) * (this.dimensionValue[activity.dimension] / 100);
         }

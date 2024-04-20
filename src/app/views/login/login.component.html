@@ -2,10 +2,10 @@
   <section class=" border border-black rounded bg-[#F9F9F9]">
     <div class="flex flex-col justify-center items-center box-border py-7 px-5">
       <h1 class="text-xl mb-3">Inicio de Sesión</h1>
-      <form [formGroup]="loginForm" class="flex flex-col justify-center items-center mb-3" (submit)="login($event)">
+      <form [formGroup]="loginForm" class="flex flex-col justify-center items-center mb-3" (submit)="login()">
         <div class="flex flex-col my-4">
           <input placeholder="Usuario" type="text" id="username"
-            class="border border-[#BCBCBC] rounded-lg h-8 w-52 pl-2 placeholder-gray-400" formControlName="username" 
+            class="border border-[#BCBCBC] rounded-lg h-8 w-52 pl-2 placeholder-gray-400" formControlName="username"
             autocomplete="username" />
         </div>
         <div class="flex flex-col my-4">

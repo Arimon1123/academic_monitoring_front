@@ -4,7 +4,7 @@
   </div>
   <div class="flex flex-row w-full my-2">
     <div class="flex flex-col border rounded-md bg-white h-fit w-1/5 pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border">
-      <h2>Grado</h2>
+      <h2 class="my-2 font-semibold">Grado</h2>
       <ul>
         @for(grade of gradeList; track grade.id){
           <li class="flex justify-center my-2 " >
@@ -18,7 +18,7 @@
     </div>
     @if(classList.length > 0){
       <div class="flex flex-col border rounded-md bg-white h-fit w-1/5 pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border">
-        <h2>Cursos</h2>
+        <h2 class="my-2 font-semibold"  >Cursos</h2>
         <ul >
           @for (classDTO of classList; track classDTO.id){
             <li class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 ">
@@ -32,7 +32,7 @@
 
     @if(selectedClass.length > 0){
       <section class="flex flex-col border rounded-md bg-white h-fit w-3/5 max-w-[45rem] py-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border">
-        <h2>Bimestre</h2>
+        <h2 class="my-2 font-semibold">Bimestre</h2>
         <ul class="flex flex-row flex-wrap justify-center">
           <li class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2">
             1 bimestre

@@ -50,7 +50,7 @@ export class RequireLicenseComponent {
     this.getStudents()
   }
   getStudents(){
-    this.studentService.getStudentByParentId(1).subscribe(
+    this.studentService.getStudentByParentId(this.parentInfo.id).subscribe(
       {
         next: (data: ResponseDTO<StudentDTO[]>) => {
           this.studentList = data.content;

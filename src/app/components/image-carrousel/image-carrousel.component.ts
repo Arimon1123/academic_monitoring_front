@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ImageDTO} from "../../models/ImageDTO";
-import * as Events from "node:events";
 import {NgOptimizedImage} from "@angular/common";
 
 @Component({
