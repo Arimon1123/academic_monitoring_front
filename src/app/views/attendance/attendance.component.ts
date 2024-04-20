@@ -5,10 +5,9 @@ import {AttendanceService} from "../../service/attendance.service";
 import {PermissionService} from "../../service/permission.service";
 import {StudentService} from "../../service/student.service";
 import {AssignationDTO} from "../../models/AssignationDTO";
-import {LocalStorageService} from "../../service/local-storage.service";
 import {ResponseDTO} from "../../models/ResponseDTO";
 import {AttendanceDTO} from "../../models/AttendanceDTO";
-import {forkJoin, tap} from "rxjs";
+import {forkJoin} from "rxjs";
 import {DatePipe, NgClass} from "@angular/common";
 import {AttendanceListDTO} from "../../models/AttendanceListDTO";
 import {AttendanceDateDTO} from "../../models/AttendanceDateDTO";
@@ -52,7 +51,7 @@ export class AttendanceComponent implements OnInit{
       'friday':5,
     }
     this.assignationDTO = {
-      "id": 1,
+      "id": 18,
       "className": "1°Primaria A",
       "teacherName": "Teacher Teacher",
       "subjectName": "Matemática",
@@ -67,7 +66,7 @@ export class AttendanceComponent implements OnInit{
         },
         {
           "id": 2,
-          "weekday": "thursday",
+          "weekday": "wednesday",
           "startTime": "08:45:00",
           "endTime": "09:30:00",
           "period": 1
@@ -96,6 +95,7 @@ export class AttendanceComponent implements OnInit{
           attendance.date = new Date( attendance.date + " 00:00:0000")
           return attendance
         });
+        console.log(this.attendanceDTO.length)
         this.permissionList = data.permissions.content;
         this.attendanceDates = data.dates.content.map((attendanceDate: AttendanceDateDTO)=>{
            attendanceDate.date = new Date(attendanceDate.date + " 00:00:0000");
@@ -139,7 +139,7 @@ export class AttendanceComponent implements OnInit{
       alert('No hay clases hoy');
       return;
     }
-    if(lastAttendance.date.toDateString() !== this.todayDate.toDateString() ) {
+    if(!lastAttendance || lastAttendance.date.toDateString() !== this.todayDate.toDateString() ) {
       this.attendanceDates.unshift({id: 0, date: this.todayDate})
       this.table.map((row) => {
         let attendance = row.attendance;

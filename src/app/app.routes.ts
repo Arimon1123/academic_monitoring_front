@@ -19,6 +19,10 @@ import {ActivityListComponent} from "./views/activity-list/activity-list.compone
 import {GradesComponent} from "./views/grades/grades.component";
 import {TeacherScheduleComponent} from "./views/schedule/teacher-schedule.component";
 import {StudentScheduleComponent} from "./views/student-schedule/student-schedule.component";
+import {StudentGradesComponent} from "./views/student-grades/student-grades.component";
+import {StudentActivitiesComponent} from "./views/student-activities/student-activities.component";
+import {ReportCardsComponent} from "./views/report-cards/report-cards.component";
+import {AnnouncementRegisterComponent} from "./views/announcement-register/announcement-register.component";
 
 ;
 
@@ -75,6 +79,21 @@ export const routes: Routes = [
    },
     {
       path: 'studentSchedule', component: StudentScheduleComponent
-    }
+    },
+  {
+    path: 'studentGrades', component: StudentGradesComponent
+  },
+  {
+    path: 'studentActivities/assignation/:assignationId/bimester/:bimester', component: StudentActivitiesComponent
+  },
+  {
+    path:'reportCards',component:ReportCardsComponent
+  },
+  {
+    path:'announcementRegister',component:AnnouncementRegisterComponent
+  },
+  {
+    path: '', component: HomeComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE', 'FATHER', 'TEACHER'] }
+  },
 
 ];

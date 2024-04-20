@@ -3,12 +3,10 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../service/auth-service.service';
-import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
-import { LocalStorageService } from '../../service/local-storage.service';
 import {UserDataService} from "../../service/user-data.service";
 import {ResponseDTO} from "../../models/ResponseDTO";
-import {UserDTO} from "../../models/UserDTO";
+
 
 @Component({
   selector: 'app-login',

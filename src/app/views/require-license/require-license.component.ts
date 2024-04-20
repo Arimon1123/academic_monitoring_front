@@ -10,11 +10,13 @@ import { StudentService } from '../../service/student.service';
 import {ParentDTO} from "../../models/ParentDTO";
 import {LocalStorageService} from "../../service/local-storage.service";
 import {ModalService} from "../../service/modal.service";
+import {ImageInputComponent} from "../../components/image-input/image-input.component";
+import {ImageCarrouselComponent} from "../../components/image-carrousel/image-carrousel.component";
 
 @Component({
   selector: 'app-require-license',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ImageInputComponent, ImageCarrouselComponent],
   templateUrl: './require-license.component.html',
   styleUrl: './require-license.component.css'
 })
@@ -62,27 +64,10 @@ export class RequireLicenseComponent {
       }
     );
   }
-  showImages(event: any) {
-    if (event.target.files.length > 0) {
-      if ((event.target.files.length > 3) || (this.images.length + event.target.files.length > 3)) {
-        alert('No puedes subir mas de 3 imágenes');
-        return
-      }
-      for (let i = 0; i < event.target.files.length; i++) {
-        const image = event.target.files[i];
-        this.images.push({ image: image, url: this.getImageUrl(image), id: uuid() });
-      }
-    }
+  updateImages(images:any){
+    console.log(images.length);
+    this.images = images;
   }
-  getImageUrl(image: File) {
-    return URL.createObjectURL(image);
-  }
-  deleteImage(index: string) {
-    console.log(index);
-    this.images = this.images.filter((image) => image.id !== index);
-    console.log(this.images);
-  }
-
   onSubmit() {
     console.log(this.images);
     const formData = new FormData();
@@ -116,9 +101,6 @@ export class RequireLicenseComponent {
         },
         error: (error: any) => {
           this.openModal('Error al registrar el permiso ' + error.error.message);
-        },
-        complete: () => {
-
         }
       }
     );

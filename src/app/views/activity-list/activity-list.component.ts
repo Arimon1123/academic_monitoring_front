@@ -7,9 +7,7 @@ import {ResponseDTO} from "../../models/ResponseDTO";
 import {NgClass} from "@angular/common";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ModalComponent} from "../../components/modal/modal.component";
-import {Modal} from "flowbite";
 import {ModalService} from "../../service/modal.service";
-import {normalizeExtraEntryPoints} from "@angular-devkit/build-angular/src/tools/webpack/utils/helpers";
 @Component({
   selector: 'app-activity-list',
   standalone: true,
@@ -42,7 +40,29 @@ export class ActivityListComponent {
     this.deleteActivityId = 0;
     this.showForm = false;
     this.activityList = [];
-    this.assignation = JSON.parse(this.localStorage.getItem("assignation") as string);
+    this.assignation = {
+      "id": 30,
+      "className": "1°Primaria A",
+      "teacherName": "Teacher Teacher",
+      "subjectName": "Matemática",
+      "classroomName": "Aula A-1",
+      "schedule": [
+        {
+          "id": 1,
+          "weekday": "monday",
+          "startTime": "08:00:00",
+          "endTime": "08:45:00",
+          "period": 1
+        },
+        {
+          "id": 2,
+          "weekday": "wednesday",
+          "startTime": "08:45:00",
+          "endTime": "09:30:00",
+          "period": 1
+        }
+      ]
+    }
     this.isUpdate = false;
     this.activityForm = new FormGroup<any>(
       {

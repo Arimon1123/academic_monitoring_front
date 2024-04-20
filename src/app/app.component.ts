@@ -16,7 +16,6 @@ import {LoginComponent} from "./views/login/login.component";
 import {UserDataService} from "./service/user-data.service";
 import {UserDetailsDTO} from "./models/UserDetailsDTO";
 import {LocalStorageService} from "./service/local-storage.service";
-import * as timers from "node:timers";
 
 registerLocaleData(myLocalEs, "es-ES");
 
