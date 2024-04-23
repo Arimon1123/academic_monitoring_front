@@ -12,6 +12,7 @@ import {AssignationDTO} from "../../models/AssignationDTO";
 import {NgClass, NgStyle} from "@angular/common";
 import colors from "tailwindcss/colors";
 import {RoundPipe} from "../../pipes/RoundPipe";
+import {StudentService} from "../../service/student.service";
 
 @Component({
   selector: 'app-student-activities',
@@ -37,23 +38,14 @@ export class StudentActivitiesComponent implements OnInit{
   constructor(private route: ActivatedRoute,
               private activityService: ActivityService,
               private gradesService: GradesService,
-              private assignationService: AssignationService) {
+              private assignationService: AssignationService,
+              private studentService: StudentService) {
     this.assignation = {} as AssignationDTO;
     this.activities = [];
     this.grades = [];
     this.table = [];
     this.totalGrade = 0;
-    this.studentData = {
-      "id": 13,
-      "name": "Trueman",
-      "ci": "179-94-9723",
-      "fatherLastname": "Deyes",
-      "motherLastname": "Paybody",
-      "birthDate": "2009-05-07",
-      "address": "73 Pankratz Center",
-      "rude": "820-32-9193",
-      "studentClass": "1°Primaria A"
-    }
+    this.studentData = {} as StudentDTO;
     this.dimensionValue = {
       'HACER':30,
       'SABER':30,
@@ -63,31 +55,35 @@ export class StudentActivitiesComponent implements OnInit{
   }
   ngOnInit(): void {
     this.getRouteParams();
+
+  }
+  getRouteParams(){
+    this.route.params.subscribe({
+      next: (params: any) => {
+       this.getData(params.studentId,params.assignationId,params.bimester);
+       this.bimester = params.bimester;
+      },
+    });
+  }
+  getData(studentId: number,assignationId:number, bimester: number){
     forkJoin({
-      activities: this.activityService.getActivitiesByAssignationId(this.assignationId,this.bimester),
-      grades: this.gradesService.getGradesByStudentIdAndAssignationAndBimester(this.studentData.id,this.assignationId,this.bimester),
-      assignation: this.assignationService.getAssignationById(this.assignationId)
+      activities: this.activityService.getActivitiesByAssignationId(assignationId,bimester),
+      grades: this.gradesService.getGradesByStudentIdAndAssignationAndBimester(studentId,assignationId,bimester),
+      assignation: this.assignationService.getAssignationById(assignationId),
+      student: this.studentService.getStudentById(studentId)
     }).subscribe({
-      next: (data: {activities: ResponseDTO<ActivityDTO[]>, grades: ResponseDTO<ActivityGradeDTO[]>, assignation: ResponseDTO<AssignationDTO>}) => {
+      next: (data: {activities: ResponseDTO<ActivityDTO[]>, grades: ResponseDTO<ActivityGradeDTO[]>, assignation: ResponseDTO<AssignationDTO>, student: ResponseDTO<StudentDTO>}) => {
         this.activities = data.activities.content;
         this.grades = data.grades.content;
         this.assignation = data.assignation.content
+        this.studentData = data.student.content;
         this.table = this.buildTable();
         console.log(this.table);
       },
       error: (error: any) => {
         console.error(error);
       }
-
     })
-  }
-  getRouteParams(){
-    this.route.params.subscribe({
-      next: (params: any) => {
-        this.bimester = params.bimester;
-        this.assignationId = params.assignationId;
-      },
-    });
   }
   buildTable(){
     let table = [];

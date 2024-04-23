@@ -18,6 +18,8 @@
     "@angular/platform-browser": "17.0.6",
     "@angular/platform-browser-dynamic": "17.0.6",
     "@angular/router": "17.0.6",
+    "@stomp/rx-stomp": "^2.0.0",
+    "awesome-image-viewer": "^1.0.60",
     "crypto-js": "4.2.0",
     "flowbite": "2.3.0",
     "rxjs": "7.8.0",

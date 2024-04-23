@@ -15,5 +15,7 @@ export class TeacherService {
   getTeachersBySubject(id: number) {
     return this.http.get<ResponseDTO<TeacherDTO[]>>(this.API_URL + '/teacher/subject/' + id, { withCredentials: true });
   }
-
+  getTeacherById(id: number) {
+    return this.http.get<ResponseDTO<TeacherDTO>>(this.API_URL + '/teacher/' + id, { withCredentials: true });
+  }
 }

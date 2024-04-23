@@ -1,13 +1,12 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 import { AuthService } from '../../service/auth-service.service';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';
 import { RouteDTO } from '../../models/RouteDTO';
 import  routes from '../../consts/routes.json';
 import { initFlowbite } from 'flowbite';
-import {ParentDTO} from "../../models/ParentDTO";
-import {TeacherDTO} from "../../models/TeacherDTO";
-import {AdministrativeDTO} from "../../models/AdministrativeDTO";
+
 import {UserDetailsDTO} from "../../models/UserDetailsDTO";
+import {RouteTupleDTO} from "../../models/RouteTupleDTO";
 
 @Component({
   selector: 'app-navs',
@@ -21,20 +20,23 @@ import {UserDetailsDTO} from "../../models/UserDetailsDTO";
 })
 export class NavsComponent implements OnInit, OnChanges {
 
-  routesList: RouteDTO[] = []
+  routesList: RouteTupleDTO = {} as RouteTupleDTO
   @Input() userDetails: UserDetailsDTO;
   @Output() logoutEvent = new EventEmitter<boolean>();
   constructor(private authService: AuthService, private router: Router) {
     this.userDetails = {} as UserDetailsDTO;
   }
   ngOnChanges(){
+    console.log(this.userDetails);
     this.buildRoutes();
   }
   ngOnInit() {
-    initFlowbite();
-    this.buildRoutes();
+    setTimeout(() => {
+      initFlowbite();
+    },500)
   }
   buildRoutes(){
+    console.log(this.userDetails.role)
     if (this.userDetails.role === 'ADMINISTRATIVE') {
       this.routesList = routes.ADMINISTRATIVE;
     }
@@ -52,5 +54,15 @@ export class NavsComponent implements OnInit, OnChanges {
         this.logoutEvent.emit(true);
       }
     });
+  }
+  showList(id: string){
+    const element = document.getElementById(id);
+    const display = element?.style.display;
+    if(display === '' || display === 'none'){
+      element!.style.display = 'flex';
+    }
+    if(display === 'flex'){
+      element!.style.display = '';
+    }
   }
 }

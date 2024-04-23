@@ -43,9 +43,7 @@
         <ul class="flex flex-row overflow-x-auto">
           @for(image of permissionDTO.images; track image){
             <li class="mr-2">
-              <a target="_blank"  href="{{image}}" class="w-fit">
-                <img src="{{image}}" alt="imagen de la licencia" class="max-w-72 border rounded-md"/>
-              </a>
+              <img src="{{image}}" (click)="onViewImage()" alt="imagen de la licencia" class="max-w-72 border rounded-md"/>
             </li>
           }
         </ul>

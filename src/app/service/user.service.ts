@@ -6,6 +6,7 @@ import { TeacherDTO } from '../models/TeacherDTO';
 import { ResponseDTO } from '../models/ResponseDTO';
 import {UserDTO} from "../models/UserDTO";
 import {UserDetailsDTO} from "../models/UserDetailsDTO";
+import {UserDataDTO} from "../models/UserDataDTO";
 
 
 @Injectable({
@@ -50,12 +51,15 @@ export class UserService {
     return this.http.get<ResponseDTO<UserDTO>>(`${this.API_URL}/auth/details`, { responseType: 'json', withCredentials: true });
   }
   getUser(id: number) {
-    return this.http.get(`${this.API_URL}/user/${id}`, { responseType: 'json', withCredentials: true });
+    return this.http.get<ResponseDTO<UserDataDTO>>(`${this.API_URL}/user/${id}`, { responseType: 'json', withCredentials: true });
   }
   updateUser(user: any) {
     return this.http.put(`${this.API_URL}/user`, user, { responseType: 'json', withCredentials: true });
   }
   getUserRoleDetails(role: string) {
     return this.http.get<ResponseDTO<UserDetailsDTO>>(`${this.API_URL}/auth/role`, { responseType: 'json', withCredentials: true, params: { role: role } });
+  }
+  getUserByPersonId(id: number) {
+    return this.http.get<ResponseDTO<UserDTO>>(`${this.API_URL}/user/person/${id}`, { responseType: 'json', withCredentials: true });
   }
 }

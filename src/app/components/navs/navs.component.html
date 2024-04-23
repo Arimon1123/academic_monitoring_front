@@ -49,19 +49,56 @@
         </div>
     </nav>
     <aside id="logo-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-primary dark:bg-gray-800 dark:border-gray-700"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-[5rem] transition-transform -translate-x-full bg-primary dark:bg-gray-800 dark:border-gray-700 box-content"
         aria-label="Sidebar">
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-primary dark:bg-gray-800">
-            <ul class="space-y-2 font-medium" data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar">
-                @for( route of routesList; track  route.id){
-                  <li class="my-2" >
-                    <a  routerLink="{{route.route}}" routerLinkActive="bg-selected"
-                       class="block p-2 border bg-primary text-gray-200 rounded-md dark:text-gray-300 hover:bg-selected dark:hover:bg-gray-700 text-center">
-                      {{route.title}}
-                    </a>
-                  </li>
-                }
+        <div class="h-[87vh] px-3 pb-4 overflow-y-auto bg-primary dark:bg-gray-800">
+          <ul class="space-y-2 font-medium" >
+            <h2 class="text-white font-semibold">Menu</h2>
+            @for(route of routesList.uniqueRoutes; track route.id){
+              <li class="flex items-center justify-center w-fu p-2 border border-white  transition duration-75 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700" data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar">
+                <a routerLink="{{route.route}}" class="text-white" role="menuitem">{{route.title}}</a>
+              </li>
+            }
+            <hr>
+            @if(userDetails.role === "PARENT"){
+              <h2 class="text-white font-semibold">Estudiantes</h2>
+              @for(student of userDetails.students; track  student.id){
+                <button type="button" (click)="showList('dropdown-'+student.id)" class="flex items-center w-full p-2 border border-white transition duration-75 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700" [attr.aria-controls]="'dropdown-'+student.id">
+                  <span class="flex-1 ms-3 text-white text-left rtl:text-right whitespace-nowrap">{{student.name}} {{student.fatherLastname}} {{student.motherLastname}}</span>
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                  </svg>
+                </button>
+                <ul id="dropdown-{{student.id}}" class="hidden flex-col py-2 space-y-2 items-end border border-gray-500 rounded-lg p-2 box-border">
+                  @for (route of routesList.childRoutes; track route.id){
+                    <li class="flex items-center justify-start w-11/12 p-2 border border-white  transition duration-75 rounded-lg group hover:bg-active" data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar">
+                      <a [routerLink]="route.route+'/'+student.id" class="ml-2 text-white text-center inline" role="menuitem">{{route.title}}</a>
+                    </li>
+                  }
+                </ul>
+              }
+            }
+            @if(userDetails.role === "TEACHER"){
+              <h2 class="text-white font-semibold">Cursos</h2>
+              @for(assignation of userDetails.classAssignations; track  assignation.id){
+                <button type="button" (click)="showList('dropdown-'+assignation.id)" class="flex border border-white items-center w-full p-2  transition duration-75 rounded-lg group hover:bg-active" [attr.aria-controls]="'dropdown-'+assignation.id">
+                  <span class="flex-1 ms-3 text-white text-left rtl:text-right whitespace-nowrap">{{assignation.className}} - {{assignation.subjectName}}</span>
+                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                  </svg>
+                </button>
+                <ul id="dropdown-{{assignation.id}}" class="hidden flex-col py-2 space-y-2 items-end border border-gray-500 rounded-lg p-2 box-border">
+                  @for (route of routesList.childRoutes; track route.id){
+                    <li class="flex items-center justify-start w-11/12 p-2 border border-white  transition duration-75 rounded-lg group hover:bg-active" data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar">
+                      <a [routerLink]="route.route+'/'+assignation.id" class="ml-2 text-white text-center inline" role="menuitem">{{route.title}}</a>
+                    </li>
+                  }
+                </ul>
+              }
+            }
+            @if(userDetails.role === "ADMINISTRATIVE"){}
             </ul>
+
         </div>
     </aside>
 

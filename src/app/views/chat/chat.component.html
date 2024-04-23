@@ -1,0 +1,9 @@
+<div id="messages">
+  <button class="btn btn-primary" (click)="onSendMessage()">Send Test Message</button>
+  <h2>Received messages</h2>
+  <ol>
+    @for(message of messages; track message) {
+      <li>{{ message }}</li>
+    }
+  </ol>
+</div>

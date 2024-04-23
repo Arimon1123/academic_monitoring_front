@@ -6,6 +6,7 @@ import {ResponseDTO} from "../../models/ResponseDTO";
 import {DatePipe, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {ModalService} from "../../service/modal.service";
+import ImageViewer from "awesome-image-viewer/src/imageViewer";
 
 @Component({
   selector: 'app-permission-details',
@@ -22,6 +23,7 @@ export class PermissionDetailsComponent {
   permissionId: number;
   permissionDTO: PermissionDTO;
   reason: string;
+  imageViewer: ImageViewer | undefined;
   @ViewChild('acceptModal') content: TemplateRef<any> | undefined;
   @ViewChild('rejectModal') rejectContent: TemplateRef<any> | undefined;
   constructor(private route: ActivatedRoute,
@@ -95,5 +97,13 @@ export class PermissionDetailsComponent {
         }
       }
     )
+  }
+  onViewImage(){
+    const images : any[] = this.permissionDTO.images.map((image) => {
+      return  {mainUrl: image}
+    })
+    this.imageViewer = new ImageViewer({
+      images: images
+    });
   }
 }

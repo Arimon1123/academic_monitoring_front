@@ -12,6 +12,9 @@ import {DatePipe, NgClass} from "@angular/common";
 import {AttendanceListDTO} from "../../models/AttendanceListDTO";
 import {AttendanceDateDTO} from "../../models/AttendanceDateDTO";
 import {ModalService} from "../../service/modal.service";
+import {LocalStorageService} from "../../service/local-storage.service";
+import {ActivatedRoute} from "@angular/router";
+import {AssignationService} from "../../service/assignation.service";
 
 @Component({
   selector: 'app-attendance',
@@ -37,7 +40,8 @@ export class AttendanceComponent implements OnInit{
               private permissionService: PermissionService,
               private studentService: StudentService,
               private modalService: ModalService,
-              private localStorage: LocalStorageService){
+              private activeRoute: ActivatedRoute,
+              private assignationService: AssignationService) {
     this.todayDate = new Date( new Date().getFullYear()+"-"+ (new Date().getMonth()+1) +"-"+new Date().getDate());
     this.studentList = [];
     this.permissionList = [];
@@ -73,20 +77,22 @@ export class AttendanceComponent implements OnInit{
         }
       ]
     }
-   // this.assignationDTO = JSON.parse(this.localStorage.getItem('assignation') as string);
   }
   ngOnInit() {
-   this.getAllLists()
-   this.localStorage.setItem('assignation', JSON.stringify(this.assignationDTO));
-
+   this.activeRoute.params.subscribe({
+     next:(data)=>{
+       this.getAllLists(data['id']);
+     }
+   });
   }
-  getAllLists(){
+  getAllLists(assignationId: number = 0){
     forkJoin(
       {
-        students :this.studentService.getStudentsByAssignationId(this.assignationDTO.id),
-        attendance: this.attendanceService.getAttendanceByAssignationId(this.assignationDTO.id),
-        permissions: this.permissionService.getPermissionsByClassId(this.assignationDTO.id),
-        dates : this.attendanceService.getAttendanceDatesByAssignationId(this.assignationDTO.id)
+        students :this.studentService.getStudentsByAssignationId(assignationId),
+        attendance: this.attendanceService.getAttendanceByAssignationId(assignationId),
+        permissions: this.permissionService.getPermissionsByClassId(assignationId),
+        dates : this.attendanceService.getAttendanceDatesByAssignationId(assignationId),
+        assignation: this.assignationService.getAssignationById(assignationId)
       }
     ).subscribe({
       next:(data)=>{
@@ -101,7 +107,7 @@ export class AttendanceComponent implements OnInit{
            attendanceDate.date = new Date(attendanceDate.date + " 00:00:0000");
           return attendanceDate;
         });
-        console.log(this.attendanceDates)
+        this.assignationDTO = data.assignation.content;
         this.buildTable()
       }
     })

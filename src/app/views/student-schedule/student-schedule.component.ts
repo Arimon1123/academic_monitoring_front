@@ -1,8 +1,6 @@
 import {Component, TemplateRef, ViewChild} from '@angular/core';
 import {AssignationService} from "../../service/assignation.service";
-import {LocalStorageService} from "../../service/local-storage.service";
 import {AssignationDTO} from "../../models/AssignationDTO";
-import {ResponseDTO} from "../../models/ResponseDTO";
 import {StudentDTO} from "../../models/StudentDTO";
 import {ScheduleAssignationDTO} from "../../models/ScheduleAssignationDTO";
 import {colors} from "../../consts/colors.json";
@@ -10,9 +8,11 @@ import {schedule} from "../../consts/schedule.json";
 import {HourPipe} from "../../pipes/HourPipe";
 import {ModalService} from "../../service/modal.service";
 import {NgStyle} from "@angular/common";
-import {subscribeOn} from "rxjs";
+import {forkJoin} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
+import {StudentService} from "../../service/student.service";
 @Component({
-  selector: 'app-student-schedule',
+  selector: 'app-student-teacher-schedule',
   standalone: true,
   imports: [
     HourPipe,
@@ -31,20 +31,11 @@ export class StudentScheduleComponent {
   assignedColors : {[key: string]: string } ;
   scheduleFormat: any;
   constructor(private assignationService: AssignationService,
-              private locaStorage: LocalStorageService,
-              private modalService: ModalService) {
+              private modalService: ModalService,
+              private activeRoute: ActivatedRoute,
+              private studentService: StudentService) {
     this.schedule = [];
-    this.studentData = {
-      "id": 13,
-      "name": "Trueman",
-      "ci": "179-94-9723",
-      "fatherLastname": "Deyes",
-      "motherLastname": "Paybody",
-      "birthDate": "2009-05-07",
-      "address": "73 Pankratz Center",
-      "rude": "820-32-9193",
-      "studentClass": "1°Primaria A"
-    }
+    this.studentData = {} as StudentDTO;
     this.weekdays = {
       'monday': 0,
       'tuesday': 1,
@@ -58,20 +49,28 @@ export class StudentScheduleComponent {
     this.scheduleFormat = schedule[0];
   }
   ngOnInit(){
-    this.getAssignation();
-  }
-  getAssignation(){
-    this.assignationService.getAssignationByStudentIdAndYear(this.studentData.id,2024).subscribe(
+    this.activeRoute.params.subscribe(
       {
-        next: (data: ResponseDTO<AssignationDTO[]>) => {
-          this.schedule = data.content;
-          console.log(data.content)
-          this.table = this.buildSchedule();
-          this.assignColors();
+        next: (params) => {
+          this.getData(params['id']);
         }
       }
     )
   }
+  getData(studentId:number){
+    forkJoin({
+      student: this.studentService.getStudentById(studentId),
+      assignation: this.assignationService.getAssignationByStudentIdAndYear(studentId,new Date().getFullYear())
+    }).subscribe({
+      next: (data) => {
+        this.studentData = data.student.content;
+        this.schedule = data.assignation.content;
+        this.table = this.buildSchedule();
+        this.assignColors();
+      }
+    })
+  }
+
   buildSchedule() {
     let table : any[] = [];
     for(let row = 0; row < 7; row++) {
@@ -136,5 +135,4 @@ export class StudentScheduleComponent {
     });
   }
 
-  protected readonly subscribeOn = subscribeOn;
 }

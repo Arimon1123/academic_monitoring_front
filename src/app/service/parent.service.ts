@@ -15,4 +15,5 @@ export class ParentService {
   getParentByCi(ci: string) {
     return this.http.get<ResponseDTO<ParentDTO[]>>(`${this.API_URL}/parent`, { params: { 'ci': ci }, withCredentials: true },);
   }
+
 }

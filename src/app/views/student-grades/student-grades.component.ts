@@ -3,9 +3,11 @@ import {GradesDTO} from "../../models/GradesDTO";
 import {GradesService} from "../../service/grades.service";
 import {ResponseDTO} from "../../models/ResponseDTO";
 import {StudentDTO} from "../../models/StudentDTO";
-import {RouterLink} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {RoundPipe} from "../../pipes/RoundPipe";
 import {NgClass, NgStyle} from "@angular/common";
+import {forkJoin} from "rxjs";
+import {StudentService} from "../../service/student.service";
 
 @Component({
   selector: 'app-student-grades',
@@ -23,34 +25,35 @@ export class StudentGradesComponent implements OnInit{
   grades: {[key: number]: GradesDTO[] };
   table : any[] = [];
   studentData : StudentDTO;
-  constructor(private gradesService: GradesService) {
+  constructor(private gradesService: GradesService,
+              private activeRoute: ActivatedRoute,
+              private studentService: StudentService) {
     this.grades = {};
-    this.studentData = { "id": 13,
-      "name": "Trueman",
-      "ci": "179-94-9723",
-      "fatherLastname": "Deyes",
-      "motherLastname": "Paybody",
-      "birthDate": "2009-05-07",
-      "address": "73 Pankratz Center",
-      "rude": "820-32-9193",
-      "studentClass": "1°Primaria A"} as StudentDTO;
+    this.studentData = {} as StudentDTO;
   }
   ngOnInit() {
-    this.getGrades(13,2024)
+    this.activeRoute.params.subscribe({
+      next: (params) => {
+        this.getData(params['id'],new Date().getFullYear());
+      }
+    })
   }
-
-  getGrades(studentId: number, year: number){
-    this.gradesService.getGradesByStudentIdAndYear(studentId, year).subscribe({
-      next: (data: ResponseDTO<{[key: number]: GradesDTO[] }>) => {
-        this.grades = data.content;
+  getData(studentId: number, year: number){
+    forkJoin({
+      grades: this.gradesService.getGradesByStudentIdAndYear(studentId, year),
+      student: this.studentService.getStudentById(studentId)
+    }).subscribe({
+      next: (data: {grades: ResponseDTO<{[key: number]: GradesDTO[] }>, student: ResponseDTO<StudentDTO>}) => {
+        this.grades = data.grades.content;
         this.table = this.buildTable(this.grades);
+        this.studentData = data.student.content;
       },
       error: (error: any) => {
         console.error(error);
       }
-    });
-  }
 
+    })
+  }
   buildTable(grades:{[key: number]: GradesDTO[] } ){
     let table: {subject: string, grades: {grade:number,assignationId:number,bimester:number } []}[] = [];
     for(let key in grades){

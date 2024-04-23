@@ -4,11 +4,11 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { AuthService } from './service/auth-service.service';
-import { UserService } from './service/user.service';
+import {RxStompService} from "./service/rx-stomp.service";
+import {rxStompServiceFactory} from "../../rx-stomp-service-factory";
 
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideHttpClient(), provideAnimations(), AuthService, UserService, {provide: LOCALE_ID, useValue: 'es-ES'}]
+  providers: [provideRouter(routes), provideHttpClient(), provideAnimations(), {provide: LOCALE_ID, useValue: 'es-ES'},{provide: RxStompService, useFactory: rxStompServiceFactory}],
 
 };

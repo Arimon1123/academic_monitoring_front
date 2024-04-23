@@ -12,6 +12,9 @@ import { ModalComponent } from '../../components/modal/modal.component';
 import { Flowbite } from '../../decorator/flowbite';
 import { initFlowbite } from 'flowbite';
 import {ModalService} from "../../service/modal.service";
+import {ResponseDTO} from "../../models/ResponseDTO";
+import {UserDTO} from "../../models/UserDTO";
+import {UserDataService} from "../../service/user-data.service";
 
 @Component({
   selector: 'app-editUser',
@@ -37,7 +40,7 @@ export class EditUserComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     console.log(id);
     this.userService.getUser(id).subscribe({
-      next: (data: any) => {
+      next: (data: ResponseDTO<UserDataDTO>) => {
         this.user = data.content;
         this.userForm.setValue({
           name: this.user.name,

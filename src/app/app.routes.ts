@@ -17,14 +17,13 @@ import {PermissionDetailsComponent} from "./views/permission-details/permission-
 import {AttendanceComponent} from "./views/attendance/attendance.component";
 import {ActivityListComponent} from "./views/activity-list/activity-list.component";
 import {GradesComponent} from "./views/grades/grades.component";
-import {TeacherScheduleComponent} from "./views/schedule/teacher-schedule.component";
+import {TeacherScheduleComponent} from "./views/teacher-schedule/teacher-schedule.component";
 import {StudentScheduleComponent} from "./views/student-schedule/student-schedule.component";
 import {StudentGradesComponent} from "./views/student-grades/student-grades.component";
 import {StudentActivitiesComponent} from "./views/student-activities/student-activities.component";
 import {ReportCardsComponent} from "./views/report-cards/report-cards.component";
 import {AnnouncementRegisterComponent} from "./views/announcement-register/announcement-register.component";
-
-;
+import {ChatComponent} from "./views/chat/chat.component";
 
 export const routes: Routes = [
     {
@@ -67,24 +66,24 @@ export const routes: Routes = [
       path: 'permissionDetails/:id' ,component: PermissionDetailsComponent
     },
     {
-      path:'attendance', component: AttendanceComponent, canActivate : [authGuard], data: {roles: ['TEACHER']}
+      path:'attendance/:id', component: AttendanceComponent, canActivate : [authGuard], data: {roles: ['TEACHER']}
     },
     {
-      path: 'activity', component: ActivityListComponent
+      path: 'activity/:id', component: ActivityListComponent
     }, {
-      path: 'grades', component: GradesComponent
+      path: 'grades/:id', component: GradesComponent
     },
     {
       path:'teacherSchedule', component: TeacherScheduleComponent
    },
     {
-      path: 'studentSchedule', component: StudentScheduleComponent
+      path: 'studentSchedule/:id', component: StudentScheduleComponent
     },
   {
-    path: 'studentGrades', component: StudentGradesComponent
+    path: 'studentGrades/:id', component: StudentGradesComponent
   },
   {
-    path: 'studentActivities/assignation/:assignationId/bimester/:bimester', component: StudentActivitiesComponent
+    path: 'studentActivities/student/:studentId/assignation/:assignationId/bimester/:bimester', component: StudentActivitiesComponent
   },
   {
     path:'reportCards',component:ReportCardsComponent
@@ -95,5 +94,8 @@ export const routes: Routes = [
   {
     path: '', component: HomeComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE', 'FATHER', 'TEACHER'] }
   },
+  {
+    path: 'chat/:receiverId',component: ChatComponent
+  }
 
 ];

@@ -13,10 +13,10 @@ import {registerLocaleData} from "@angular/common";
 import {ModalService} from "./service/modal.service";
 import {role_names} from "./consts/roles.json"
 import {LoginComponent} from "./views/login/login.component";
-import {UserDataService} from "./service/user-data.service";
-import {UserDetailsDTO} from "./models/UserDetailsDTO";
 import {LocalStorageService} from "./service/local-storage.service";
-
+import {UserDetailsDTO} from "./models/UserDetailsDTO";
+import {UserDataService} from "./service/user-data.service";
+import {routes} from "./app.routes";
 registerLocaleData(myLocalEs, "es-ES");
 
 @Component({
@@ -101,7 +101,6 @@ export class AppComponent implements OnInit {
     this.router.navigate(['']).then()
     if(isLogged)
       this.getUserDetails();
-
   }
 
   updateUserData(){

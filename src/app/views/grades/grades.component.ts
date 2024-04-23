@@ -13,6 +13,8 @@ import * as uuid from 'uuid';
 import {DecimalPipe, NgClass} from "@angular/common";
 import {RoundPipe} from "../../pipes/RoundPipe";
 import {ModalService} from "../../service/modal.service";
+import {ActivatedRoute} from "@angular/router";
+import {AssignationService} from "../../service/assignation.service";
 @Component({
   selector: 'app-grades',
   standalone: true,
@@ -38,59 +40,48 @@ export class GradesComponent {
     SER:20,
     DECIDIR:20
   }
-  constructor(private localStorage: LocalStorageService,
-              private studentService: StudentService,
+  constructor(private studentService: StudentService,
               private activityService: ActivityService,
               private gradesService: GradesService,
-              private modalService: ModalService) {
-    this.assignation =  {
-      "id": 20,
-      "className": "1°Primaria A",
-      "teacherName": "Teacher2 Teacher2",
-      "subjectName": "Lenguaje",
-      "classroomName": "Aula A-2",
-      "schedule": [
-        {
-          "id": 37,
-          "weekday": "tuesday",
-          "startTime": "08:00:00",
-          "endTime": "08:45:00",
-          "period": 1
-        },
-        {
-          "id": 38,
-          "weekday": "tuesday",
-          "startTime": "08:45:00",
-          "endTime": "09:30:00",
-          "period": 2
-        }
-      ]
-    },
+              private modalService: ModalService,
+              private activeRoute: ActivatedRoute,
+              private assignationService: AssignationService){
+    this.assignation =  {} as AssignationDTO;
     this.students = [];
     this.activities = [];
     this.grades = [];
     this.table = [];
   }
   ngOnInit(){
-    console.log(this.assignation);
+    this.activeRoute.params.subscribe(
+      {
+        next: (params) => {
+          this.getAllData(params['id']);
+        }
+      }
+    );
+  }
+  getAllData(assignationId:number){
+    console.log("getting data" + assignationId);
     forkJoin({
-      activities: this.activityService.getActivitiesByAssignationId(this.assignation.id,this.bimester),
-      students: this.studentService.getStudentsByAssignationId(this.assignation.id),
-      grades: this.gradesService.getGradesByAssignation(this.assignation.id,this.bimester)
+      activities: this.activityService.getActivitiesByAssignationId(assignationId,this.bimester),
+      students: this.studentService.getStudentsByAssignationId(assignationId),
+      grades: this.gradesService.getGradesByAssignation(assignationId,this.bimester),
+      assignation: this.assignationService.getAssignationById(assignationId)
     }).subscribe(
       {
-        next: (data : {activities: ResponseDTO<ActivityDTO[]>, students: ResponseDTO<StudentDTO[]>, grades: ResponseDTO<{[key:number]:ActivityGradeDTO[]} >})=>{
+        next: (data : {activities: ResponseDTO<ActivityDTO[]>, students: ResponseDTO<StudentDTO[]>, grades: ResponseDTO<{[key:number]:ActivityGradeDTO[]} >,assignation: ResponseDTO<AssignationDTO>})=>{
           this.activities = data.activities.content
-          console.log(this.activities);
           this.students = data.students.content;
           this.grades = data.grades.content;
+          this.assignation = data.assignation.content;
           this.buildTable();
         }
       }
     )
   }
-
   buildTable(){
+    this.table = []
     for(let student of this.students){
       let grades: {student: StudentDTO, grades: ActivityGradeDTO[]} = { student: student , grades : []}
       let finalGrade = 0;
@@ -110,7 +101,6 @@ export class GradesComponent {
       grades.grades.push({id:{studentId: 0, activityId: 0}, studentId:0 , grade: finalGrade, activityId: 0})
       this.table.push(grades)
     }
-    console.log(this.table)
   }
   saveGrades(){
     let grades: ActivityGradeDTO[] = [];

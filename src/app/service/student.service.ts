@@ -28,4 +28,7 @@ export class StudentService {
   getStudentsByAssignationId(assignationId: number) {
     return this.http.get<ResponseDTO<StudentDTO[]>>(`${this.API_URL}/student/assignation/${assignationId}`, { withCredentials: true });
   }
+  getStudentById(studentId: number) {
+    return this.http.get<ResponseDTO<StudentDTO>>(`${this.API_URL}/student/${studentId}`, { withCredentials: true });
+  }
 }

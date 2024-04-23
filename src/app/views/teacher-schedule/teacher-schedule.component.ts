@@ -11,9 +11,11 @@ import {ScheduleAssignationDTO} from "../../models/ScheduleAssignationDTO";
 import {DatePipe, NgClass, NgStyle} from "@angular/common";
 import {HourPipe} from "../../pipes/HourPipe";
 import {colors} from "../../consts/colors.json";
+import {UserDataService} from "../../service/user-data.service";
+import {UserDetailsDTO} from "../../models/UserDetailsDTO";
 
 @Component({
-  selector: 'app-schedule',
+  selector: 'app-teacher-schedule',
   standalone: true,
   imports: [
     DatePipe,
@@ -26,8 +28,7 @@ import {colors} from "../../consts/colors.json";
 })
 export class TeacherScheduleComponent {
   @ViewChild('modal') content : TemplateRef<ScheduleAssignationDTO> | undefined;
-  userDetails: UserDTO;
-  roleDetails: TeacherDTO;
+  userDetails: UserDetailsDTO;
   schedule: AssignationDTO[] = [];
   table : ScheduleAssignationDTO[][] = [];
   selectedClass: ScheduleAssignationDTO;
@@ -42,18 +43,22 @@ export class TeacherScheduleComponent {
   }
   scheduleFormat: any;
   constructor(private assignationService: AssignationService,
-              private localStorage: LocalStorageService,
+              private userDataService: UserDataService,
               private modalService: ModalService) {
-    this.userDetails = {} as UserDTO;
-    this.roleDetails = {} as TeacherDTO;
+    this.userDetails = {} as UserDetailsDTO;
     this.selectedClass = {} as ScheduleAssignationDTO;
     this.assignedColors = {} ;
     this.scheduleFormat = schedule[0];
   }
 
   ngOnInit() {
-    this.userDetails = JSON.parse(this.localStorage.getItem('userDetails') as string);
-    this.roleDetails = JSON.parse(this.localStorage.getItem('roleDetails') as string);
+    this.userDataService.currentUser.subscribe(
+      {
+        next: user=>{
+          this.userDetails = user!
+        }
+      }
+    )
     this.getSchedule();
   }
   assignColors(){
@@ -66,7 +71,7 @@ export class TeacherScheduleComponent {
     }
   }
   getSchedule() {
-    this.assignationService.getAssignationByTeacherId(this.roleDetails.id).subscribe({
+    this.assignationService.getAssignationByTeacherId(this.userDetails.details.id).subscribe({
       next: (data: ResponseDTO<AssignationDTO[]>) => {
         this.schedule = data.content;
       },
