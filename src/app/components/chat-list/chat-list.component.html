@@ -1,0 +1,30 @@
+<p>chat-list works!</p>
+<ul class="p-2 space-y-2 lg:w-4/5 w-full">
+  @for (message of lastMessageList; track message.id){
+    <li (click)="onReceiverSelected(message.userId)" class="border rounded cursor-pointer flex p-2 w-full
+    max-h-24 max-w-64 lg:max-h-fit lg:max-w-full bg-white">
+      <div class="flex flex-row w-full">
+        <div class="mr-2">
+          @if (message.uuid != null ){
+            <img [src]="API_URL+'/file/image/'+message.uuid" class="rounded-full size-10" alt="">
+          } @else {
+            <img src="./assets/user.svg" class="size-10 min-h-10 min-w-10" alt="">
+          }
+        </div>
+        <div class="flex w-full justify-between ">
+          <div class="w-fit max-w-[10rem] lg:max-w-[18rem]">
+            <p class="font-bold text-amber-600 truncate w-full ">{{message.name}} {{message.lastname}}</p>
+            <p class="truncate w-full">{{message.content}}</p>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-xs">{{message.date | date:'HH:mm'}}</span>
+            @if(!message.isSeen && message.sender !== userData.user.username){
+              <span class="size-5 p-[.5px] bg-green-700 rounded-full">❗</span>
+            }
+          </div>
+        </div>
+
+      </div>
+    </li>
+  }
+</ul>

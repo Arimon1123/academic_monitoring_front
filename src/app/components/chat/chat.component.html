@@ -1,0 +1,46 @@
+
+  <div id="messages" class="overflow-y-hidden border rounded-md p-2">
+    <div class="flex w-full items-center">
+      @if(receiverUser.imageUrl){
+        <img src="{{this.receiverUser.imageUrl}} ">
+      } @else {
+        <img src="./assets/user.svg" class="w-8 h-8" height="2rem" width="2rem" alt="user svg">
+      }
+      <h2 class="mx-4">{{receiverUser.name}} {{receiverUser.lastname}}</h2>
+    </div>
+    <div class="w-full h-[30rem] border rounded-md p-2 bg-white my-2">
+      <ul class="flex flex-col-reverse h-[29rem] w-full overflow-y-scroll items-end p-2 ">
+        @for(message of messages; track message; let i = $index; let first = $first; let last = $last){
+          @if(!last && getDate(message.date) != getDate(messages[i+1].date) ){
+            <li class="flex justify-center w-full">
+              <span class="text-xs">{{message.date | date : 'dd/MM/yyyy' : 'America/La_Paz': 'en-ES'}}</span>
+            </li>
+          }
+          <li class="flex  flex-col w-full my-2" enterTheViewportNotifier (visibilityChange)="onMessageSeen($event, message)">
+            <div class="p-2 border rounded-md w-fit max-w-[18rem] flex flex-col" [ngStyle]="messageStyle(message)">
+              <div class="flex w-full justify-between">
+                <span class="text-sm text-amber-600">{{messageName(message)}}</span>
+              </div>
+              <div class="flex w-full justify-between items-end">
+                <p class="break-words max-w-[85%]">{{message.content}}</p>
+                <span class="text-xs ml-3 ">{{message.date | date : 'HH:mm' : 'America/La_Paz': 'en-ES'}}</span>
+              </div>
+            </div>
+          </li>
+          @if(last){
+            <li class="flex justify-center w-full">
+              <span class="text-xs">{{message.date | date : 'dd/MM/yyyy' : 'America/La_Paz': 'en-ES'}}</span>
+            </li>
+          }
+        }
+      </ul>
+    </div>
+    <div class="flex w-full px-2">
+      <textarea class="resize-none w-full px-2 py-1 border rounded-md focus:outline-none focus:ring-0 focus:ring-transparent" [(ngModel)]="message" (keydown)="onKeyDown($event)"></textarea>
+      <button class="border rounded-full  w-8 h-8 flex justify-center items-center  bg-primary mx-2 disabled:opacity-60 cursor-pointer disabled:cursor-no-drop"
+              (click)="onSendMessage()"
+              [disabled]="message===''">
+        <img src="../../../assets/send.svg" alt="send icon" class="w-5 h-5">
+      </button>
+    </div>
+  </div>

@@ -23,7 +23,8 @@ import {StudentGradesComponent} from "./views/student-grades/student-grades.comp
 import {StudentActivitiesComponent} from "./views/student-activities/student-activities.component";
 import {ReportCardsComponent} from "./views/report-cards/report-cards.component";
 import {AnnouncementRegisterComponent} from "./views/announcement-register/announcement-register.component";
-import {ChatComponent} from "./views/chat/chat.component";
+import {ChatComponent} from "./components/chat/chat.component";
+import {ChatsComponent} from "./views/chats/chats.component";
 
 export const routes: Routes = [
     {
@@ -95,7 +96,7 @@ export const routes: Routes = [
     path: '', component: HomeComponent, canActivate: [authGuard], data: { roles: ['ADMINISTRATIVE', 'FATHER', 'TEACHER'] }
   },
   {
-    path: 'chat/:receiverId',component: ChatComponent
+    path: 'chat',component: ChatsComponent
   }
 
 ];
