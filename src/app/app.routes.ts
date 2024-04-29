@@ -25,6 +25,7 @@ import {ReportCardsComponent} from "./views/report-cards/report-cards.component"
 import {AnnouncementRegisterComponent} from "./views/announcement-register/announcement-register.component";
 import {ChatComponent} from "./components/chat/chat.component";
 import {ChatsComponent} from "./views/chats/chats.component";
+import {ReportsComponent} from "./views/reports/reports.component";
 
 export const routes: Routes = [
     {
@@ -97,6 +98,9 @@ export const routes: Routes = [
   },
   {
     path: 'chat',component: ChatsComponent
+  },
+  {
+    path: 'reports',component: ReportsComponent
   }
 
 ];
