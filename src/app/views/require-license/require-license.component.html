@@ -1,58 +1,115 @@
-<main class="flex flex-col h-[85vh] w-full justify-start items-center bg-bg-color border rounded-md overflow-y-scroll">
-    <div class="w-4/5">
-        <h1 class="text-start mt-3 font-semibold text-lg">Solicitud de Licencia</h1>
+<main
+  class="flex flex-col h-[85vh] w-full justify-start items-center bg-bg-color border rounded-md overflow-y-scroll"
+>
+  <div class="w-4/5">
+    <h1 class="text-start mt-3 font-semibold text-lg">Solicitud de Licencia</h1>
+  </div>
+  <form
+    class="flex flex-col w-4/5 my-4"
+    [formGroup]="permissionForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="flex flex-col w-full">
+      <label for="student">Estudiante</label>
+      <select
+        class="w-full border rounded-md"
+        id="student"
+        formControlName="studentId"
+      >
+        <option value="-1" disabled>Seleccione un estudiante</option>
+        @for (student of studentList; track student.id) {
+          <option value="{{ student.id }}">
+            {{ student.name }} {{ student.fatherLastname }}
+            {{ student.motherLastname }}
+          </option>
+        }
+      </select>
     </div>
-    <form class="flex flex-col w-4/5 my-4" [formGroup]="permissionForm" (ngSubmit)="onSubmit()">
-      <div class="flex flex-col w-full">
-        <label for="student">Estudiante</label>
-        <select class="w-full border rounded-md" id="student" formControlName="studentId">
-          <option value="-1" disabled>Seleccione un estudiante </option>
-          @for (student of studentList; track student.id){
-            <option value="{{student.id}}">{{student.name}} {{student.fatherLastname}} {{student.motherLastname}}</option>
-          }
-        </select>
+    <div class="flex flex-col">
+      <label for="description">Razón de la licencia</label>
+      <textarea
+        name="description"
+        id="description"
+        cols="30"
+        rows="5"
+        class="border rounded-md resize-none min-h-32 my-2"
+        formControlName="reason"
+      ></textarea>
+    </div>
+    <div class="flex flex-row w-full justify-between">
+      <div class="flex flex-col w-full my-2">
+        <label for="startDate">Fecha de Inicio</label>
+        <input
+          type="date"
+          max=""
+          min="{{ todayDate }}"
+          id="startDate"
+          value="{{ todayDate }}"
+          class="border rounded-md w-[95%] my-1"
+          formControlName="startDate"
+        />
       </div>
-        <div class="flex flex-col">
-            <label for="description">Razón de la licencia</label>
-            <textarea name="description" id="description" cols="30" rows="5"
-                class="border rounded-md resize-none min-h-32 my-2" formControlName=reason></textarea>
-        </div>
-        <div class="flex flex-row w-full justify-between ">
-            <div class="flex flex-col w-full my-2">
-                <label for="startDate">Fecha de Inicio</label>
-                <input type="date" max="" min="{{todayDate}}" id="startDate" value="{{todayDate}}"
-                    class="border rounded-md  w-[95%] my-1" formControlName=startDate>
-            </div>
-            <div class="flex flex-col w-full  my-2">
-                <label for="startHour">Hora de Inicio</label>
-                <input type="time" max="18:00" min="08:00" id="startHour" value="08:00" class="border rounded-md my-1"
-                    formControlName="startHour">
-            </div>
-        </div>
-        <div class="flex flex-row w-full justify-between">
-            <div class="flex flex-col w-full  my-2">
-                <label for="endDate">Fecha de Fin</label>
-                <input type="date" max="18-3-2027" min="{{todayDate}}" id="endDate" value="{{todayDate}}"
-                    formControlName="endDate" class="border rounded-md w-[95%] my-1">
-            </div>
-            <div class=" flex flex-col w-full  my-2">
-                <label for="endHour">Hora de Fin</label>
-                <input type="time" max="18:00:00" min="08:00:00" step="600" value="09:00:00" id="endHour"
-                    formControlName="endHour" class="border rounded-md my-1">
-            </div>
-        </div>
-        <span>Adjuntar archivos</span>
-        <div class="flex flex-col my-2">
-            <app-image-input [maxFile]="5" [multiple]="true" (uploadImageEvent)="updateImages($event)" ></app-image-input>
-            <app-image-carrousel [images]="images" (deleteImageEvent)="updateImages($event)"></app-image-carrousel>
-        </div>
+      <div class="flex flex-col w-full my-2">
+        <label for="startHour">Hora de Inicio</label>
+        <input
+          type="time"
+          max="18:00"
+          min="08:00"
+          id="startHour"
+          value="08:00"
+          class="border rounded-md my-1"
+          formControlName="startHour"
+        />
+      </div>
+    </div>
+    <div class="flex flex-row w-full justify-between">
+      <div class="flex flex-col w-full my-2">
+        <label for="endDate">Fecha de Fin</label>
+        <input
+          type="date"
+          max="18-3-2027"
+          min="{{ todayDate }}"
+          id="endDate"
+          value="{{ todayDate }}"
+          formControlName="endDate"
+          class="border rounded-md w-[95%] my-1"
+        />
+      </div>
+      <div class="flex flex-col w-full my-2">
+        <label for="endHour">Hora de Fin</label>
+        <input
+          type="time"
+          max="18:00:00"
+          min="08:00:00"
+          step="600"
+          value="09:00:00"
+          id="endHour"
+          formControlName="endHour"
+          class="border rounded-md my-1"
+        />
+      </div>
+    </div>
+    <span>Adjuntar archivos</span>
+    <div class="flex flex-col my-2">
+      <app-image-input
+        [maxFile]="5"
+        [multiple]="true"
+        (uploadImageEvent)="updateImages($event)"
+      ></app-image-input>
+      <app-image-carrousel
+        [images]="images"
+        (deleteImageEvent)="updateImages($event)"
+      ></app-image-carrousel>
+    </div>
 
-        <div class="flex w-full justify-end">
-            <button class="border rounded-md w-48 bg-primary text-white hover:bg-blue-700 transition-colors p-1"> Enviar
-                solicitud
-            </button>
-        </div>
-    </form>
+    <div class="flex w-full justify-end">
+      <button
+        class="border rounded-md w-48 bg-primary text-white hover:bg-blue-700 transition-colors p-1"
+      >
+        Enviar solicitud
+      </button>
+    </div>
+  </form>
 </main>
 
 <ng-template #modal></ng-template>

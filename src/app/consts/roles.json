@@ -1,18 +1,18 @@
 {
-    "roles": [
-        {
-            "id": 1,
-            "name": "ADMINISTRATIVE"
-        },
-        {
-            "id": 2,
-            "name": "TEACHER"
-        },
-        {
-            "id": 3,
-            "name": "PARENT"
-        }
-    ],
+  "roles": [
+    {
+      "id": 1,
+      "name": "ADMINISTRATIVE"
+    },
+    {
+      "id": 2,
+      "name": "TEACHER"
+    },
+    {
+      "id": 3,
+      "name": "PARENT"
+    }
+  ],
   "role_names": {
     "ADMINISTRATIVE": "Administrativo",
     "TEACHER": "Profesor",

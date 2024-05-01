@@ -3,5 +3,5 @@ import { AuthService } from '../service/auth-service.service';
 import { inject } from '@angular/core';
 
 export const logGuard: CanActivateFn = (route, state) => {
-return true;
+  return true;
 };

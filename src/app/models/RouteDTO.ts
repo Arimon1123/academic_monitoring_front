@@ -1,5 +1,5 @@
 export interface RouteDTO {
-    id: number;
-    route: string;
-    title: string;
+  id: number;
+  route: string;
+  title: string;
 }

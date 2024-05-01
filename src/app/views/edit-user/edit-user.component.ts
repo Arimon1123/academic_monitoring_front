@@ -1,42 +1,41 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { UserDataDTO } from '../../models/UserDataDTO';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../service/user.service';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../environments/environment.development';
 import { RoleDTO } from '../../models/RoleDTO';
-import roles from "../../consts/roles.json";
+import roles from '../../consts/roles.json';
 import { UserCreateDTO } from '../../models/UserCreateDTO';
 import { ModalComponent } from '../../components/modal/modal.component';
-import { Flowbite } from '../../decorator/flowbite';
-import { initFlowbite } from 'flowbite';
-import {ModalService} from "../../service/modal.service";
-import {ResponseDTO} from "../../models/ResponseDTO";
-import {UserDTO} from "../../models/UserDTO";
-import {UserDataService} from "../../service/user-data.service";
+import { ModalService } from '../../service/modal.service';
+import { ResponseDTO } from '../../models/ResponseDTO';
 
 @Component({
-  selector: 'app-editUser',
+  selector: 'app-edit-user',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, FormsModule, ModalComponent],
   templateUrl: './edit-user.component.html',
-  styleUrl: './edit-user.component.css'
+  styleUrl: './edit-user.component.css',
 })
-@Flowbite()
 export class EditUserComponent implements OnInit {
-
-  @ViewChild('modal') content: TemplateRef<any> | undefined;
+  @ViewChild('modal') content: TemplateRef<unknown> | undefined;
   user: UserDataDTO = {} as UserDataDTO;
   message: string = '';
   userUpdated = false;
 
-  constructor(private route: ActivatedRoute,
-              private userService: UserService,
-              private modalService: ModalService,
-              private router: Router) { }
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private modalService: ModalService,
+    private router: Router
+  ) {}
   ngOnInit() {
-    initFlowbite();
     const id = this.route.snapshot.params['id'];
     console.log(id);
     this.userService.getUser(id).subscribe({
@@ -51,12 +50,11 @@ export class EditUserComponent implements OnInit {
           teacher: this.checkRole('TEACHER'),
           father: this.checkRole('FATHER'),
           admin: this.checkRole('ADMINISTRATIVE'),
-
         });
       },
-      error: (error: any) => {
-        console.error(error);
-      }
+      error: (error: Error) => {
+        console.error(error.message);
+      },
     });
   }
 
@@ -69,35 +67,45 @@ export class EditUserComponent implements OnInit {
     admin: new FormControl(false, []),
     teacher: new FormControl(false, []),
     father: new FormControl(false, []),
-
   });
   checkRole(role: string) {
     const userRoles = this.user.roles;
-    return userRoles.find((userRole: RoleDTO) => {
-      return userRole.name === role;
-    }) !== undefined;
+    return (
+      userRoles.find((userRole: RoleDTO) => {
+        return userRole.name === role;
+      }) !== undefined
+    );
   }
   addRoles() {
-
     const currentRoles = JSON.parse(JSON.stringify(roles));
-    let newRoles: RoleDTO[] = [];
+    const newRoles: RoleDTO[] = [];
     if (this.userForm.controls['admin'].value) {
-      newRoles.push(currentRoles.roles.find((role: any) => role.name === 'ADMINISTRATIVE'));
+      newRoles.push(
+        currentRoles.roles.find(
+          (role: RoleDTO) => role.name === 'ADMINISTRATIVE'
+        )
+      );
     }
     if (this.userForm.controls['teacher'].value) {
-      newRoles.push(currentRoles.roles.find((role: any) => role.name === 'TEACHER'));
+      newRoles.push(
+        currentRoles.roles.find((role: RoleDTO) => role.name === 'TEACHER')
+      );
     }
     if (this.userForm.controls['father'].value) {
-      newRoles.push(currentRoles.roles.find((role: any) => role.name === 'FATHER'));
+      newRoles.push(
+        currentRoles.roles.find((role: RoleDTO) => role.name === 'FATHER')
+      );
     }
     return newRoles;
   }
   onSubmit() {
-    if (this.userForm.controls['admin'].value === false
-      && this.userForm.controls['teacher'].value === false &&
-      this.userForm.controls['father'].value === false) {
+    if (
+      this.userForm.controls['admin'].value === false &&
+      this.userForm.controls['teacher'].value === false &&
+      this.userForm.controls['father'].value === false
+    ) {
       this.message = 'Debe seleccionar al menos un rol';
-      this.openModal( this.message, 'Error')
+      this.openModal(this.message, 'Error');
       return;
     }
     const user: UserCreateDTO = {
@@ -109,34 +117,35 @@ export class EditUserComponent implements OnInit {
       ci: this.userForm.controls['ci'].value,
       email: this.userForm.controls['email'].value,
       phone: this.userForm.controls['phone'].value,
-      roles: this.addRoles()
-    }
+      roles: this.addRoles(),
+    };
 
     this.userService.updateUser(user).subscribe({
-      next: (data: any) => {
-        console.log(data);
+      next: (data: ResponseDTO<string>) => {
+        console.log(data.message);
         this.message = data.message;
         this.userUpdated = true;
         this.openModal('Usuario Actualizado', this.message);
         this.router.navigate(['/userList']);
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         console.error(error);
-        this.message = error.error.message;
-        this.openModal( this.message , 'Error');
+        this.message = error.message;
+        this.openModal(this.message, 'Error');
       },
       complete: () => {
         console.log('complete');
-      }
-    })
+      },
+    });
   }
-  openModal(message: string, title:string){
-    return this.modalService.open({ content:this.content!,
+  openModal(message: string, title: string) {
+    return this.modalService.open({
+      content: this.content!,
       options: {
         isSubmittable: true,
         title: title,
-        message: message
-      }
+        message: message,
+      },
     });
   }
 }

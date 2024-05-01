@@ -5,14 +5,16 @@ import { ResponseDTO } from '../models/ResponseDTO';
 import { RequirementDTO } from '../models/RequirementDTO';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RequirementsService {
-
   API_URL = environment.API_URL;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAllRequirements() {
-    return this.http.get<ResponseDTO<RequirementDTO[]>>(`${this.API_URL}/requirement`, { withCredentials: true });
+    return this.http.get<ResponseDTO<RequirementDTO[]>>(
+      `${this.API_URL}/requirement`,
+      { withCredentials: true },
+    );
   }
 }

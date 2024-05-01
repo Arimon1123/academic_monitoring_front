@@ -1,31 +1,34 @@
 {
   "ADMINISTRATIVE": {
     "uniqueRoutes": [
-      { "id":1, "route": "/userRegister", "title": "Registro de Usuario" },
-      { "id":2,"route": "/userList", "title":  "Usuarios"},
-      { "id":3,"route": "/assignation", "title":  "Asignación de Materias"},
-      { "id":4,"route": "/permissionList", "title": "Licencias pendientes"},
-      { "id":5,"route": "/studentRegister", "title":  "Registro de Estudiante"}
+      { "id": 1, "route": "/userRegister", "title": "Registro de Usuario" },
+      { "id": 2, "route": "/userList", "title": "Usuarios" },
+      { "id": 3, "route": "/assignation", "title": "Asignación de Materias" },
+      { "id": 4, "route": "/permissionList", "title": "Licencias pendientes" },
+      {
+        "id": 5,
+        "route": "/studentRegister",
+        "title": "Registro de Estudiante"
+      }
     ]
   },
   "TEACHER": {
     "uniqueRoutes": [
-      { "id":9,"route": "/teacherSchedule", "title": "Horarios" }
+      { "id": 9, "route": "/teacherSchedule", "title": "Horarios" }
     ],
     "childRoutes": [
-      { "id":6,"route": "/attendance", "title": "Asistencia" },
-      { "id":7,"route": "/activity", "title": "Actividades" },
-      { "id":8,"route": "/grades", "title": "Notas" }
+      { "id": 6, "route": "/attendance", "title": "Asistencia" },
+      { "id": 7, "route": "/activity", "title": "Actividades" },
+      { "id": 8, "route": "/grades", "title": "Notas" }
     ]
   },
   "PARENT": {
     "uniqueRoutes": [
-      { "id":12,"route": "/requirePermission", "title": "Licencias"}
+      { "id": 12, "route": "/requirePermission", "title": "Licencias" }
     ],
     "childRoutes": [
-      {"id":10, "route": "/studentSchedule", "title": "Horario" },
-      { "id":11,"route": "/studentGrades", "title": "Notas" }
+      { "id": 10, "route": "/studentSchedule", "title": "Horario" },
+      { "id": 11, "route": "/studentGrades", "title": "Notas" }
     ]
   }
 }
-

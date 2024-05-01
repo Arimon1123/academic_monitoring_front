@@ -1,4 +1,4 @@
-export interface PerformanceReportDTO{
+export interface PerformanceReportDTO {
   id: number;
   grade: number;
   classId: number;

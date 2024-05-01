@@ -1,6 +1,6 @@
-import {RouteDTO} from "./RouteDTO";
+import { RouteDTO } from './RouteDTO';
 
-export interface RouteTupleDTO{
+export interface RouteTupleDTO {
   uniqueRoutes: RouteDTO[];
   childRoutes?: RouteDTO[];
 }

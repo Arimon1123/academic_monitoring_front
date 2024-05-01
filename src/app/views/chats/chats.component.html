@@ -1,7 +1,10 @@
-<main class="flex w-full h-[85vh] bg-bg-color p-2 border rounded-md ">
-  <div class="grid grid-cols-2C gap-2 lg:w-4/5 w-full ">
-    <app-chat-list [userData]="userData" (receiverEmitter)="onReceiverSelected($event)"></app-chat-list>
-    @if(receiverId !== 0){
+<main class="flex w-full h-[85vh] bg-bg-color p-2 border rounded-md">
+  <div class="grid grid-cols-2C gap-2 lg:w-4/5 w-full">
+    <app-chat-list
+      [userData]="userData"
+      (receiverEmitter)="onReceiverSelected($event)"
+    ></app-chat-list>
+    @if (receiverId !== 0) {
       <app-chat [receiverId]="receiverId"></app-chat>
     }
   </div>

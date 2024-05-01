@@ -1,7 +1,7 @@
-import { PersonDTO } from "./PersonDTO";
+import { PersonDTO } from './PersonDTO';
 
 export interface TeacherDTO {
-    id: number;
-    person: PersonDTO;
-    academicEmail: String;
+  id: number;
+  person: PersonDTO;
+  academicEmail: String;
 }

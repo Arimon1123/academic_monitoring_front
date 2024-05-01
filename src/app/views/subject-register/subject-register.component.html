@@ -1,61 +1,102 @@
-<main class="flex flex-col items-center w-full h-[85vh] border rounded-md bg-bg-color ">
-    <div class="flex flex-col h-fit  rounded-md p-5 justify-start items-center w-4/5">
+<main
+  class="flex flex-col items-center w-full h-[85vh] border rounded-md bg-bg-color"
+>
+  <div
+    class="flex flex-col h-fit rounded-md p-5 justify-start items-center w-4/5"
+  >
+    <h1 class="text-start font-semibold my-5 text-lg w-4/5">
+      Registro de materia
+    </h1>
 
-        <h1 class="text-start font-semibold my-5 text-lg w-4/5">Registro de materia</h1>
-
-        <form class="flex flex-col  justify-center items-center w-4/5" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
-            <div class="w-full flex flex-row justify-between">
-                <div class="flex flex-col md:w-[49%] w-full my-2">
-                    <label for="subjectName">Nombre de la Materia</label>
-                    <input type="text"
-                        class=" w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
-                        id="subjectName" placeholder="Nombre de la Materia" formControlName="name">
-                </div>
-                <div class="flex flex-col md:w-[49%] w-full my-2">
-                    <label for="subjectHours">Horas de la Materia</label>
-                    <input type="number"
-                        class=" w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
-                        id="subjectHours" placeholder="Horas" formControlName="hours">
-                </div>
-
-            </div>
-            <div class="flex flex-col w-full my-2">
-                <label for="grade">Grado</label>
-                <select id="grade" class="w-full h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
-                    formControlName="grade">
-                    @for(grade of gradeList; track grade.id){
-                    <option value="{{grade.id}}">{{grade.number}}° {{grade.section}}</option>
-                    }
-                </select>
-            </div>
-            <div class="flex flex-col w-full my-2">
-                <label for="requirements">Requisitos</label>
-                <select id="requirements" class="h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
-                    formControlName="requirements" (change)="addRequirement($event)">
-                    <option value="-1" disabled>Seleccione los requisitos</option>
-                    @for(requirement of requirementList; track requirement.id){
-                    <option value="{{requirement.id}}" [title]="requirement.description">{{requirement.requirement}}
-                    </option>
-                    }
-                </select>
-            </div>
-            <div class="flex flex-col w-full">
-                <h2>Requisitos Seleccionados</h2>
-                <ul>
-                    @for(requirement of selectedRequirement; track requirement.id){
-                    <li class="flex flex-row justify-between items-center w-full my-2 pl-2 border rounded-md bg-white p-2">
-                        <span>{{requirement.requirement}}</span>
-                        <button type="button" (click)="removeRequirement(requirement.id)"
-                            class=" border rounded-md bg-red-500 text-white hover:bg-red-600 transition px-5 w-fit">Eliminar</button>
-                        }
-                </ul>
-            </div>
-            <div class="flex flex-col w-full my-2 items-end">
-                <button type="submit"
-                    class="h-8 border rounded-md bg-primary text-bg-color disabled:opacity-50 transition disabled:hover:bg-primary hover:bg-selected hover:text-white mt-5 px-5 w-fit">Guardar</button>
-            </div>
-        </form>
-    </div>
+    <form
+      class="flex flex-col justify-center items-center w-4/5"
+      [formGroup]="subjectForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="w-full flex flex-row justify-between">
+        <div class="flex flex-col md:w-[49%] w-full my-2">
+          <label for="subjectName">Nombre de la Materia</label>
+          <input
+            type="text"
+            class="w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+            id="subjectName"
+            placeholder="Nombre de la Materia"
+            formControlName="name"
+          />
+        </div>
+        <div class="flex flex-col md:w-[49%] w-full my-2">
+          <label for="subjectHours">Horas de la Materia</label>
+          <input
+            type="number"
+            class="w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+            id="subjectHours"
+            placeholder="Horas"
+            formControlName="hours"
+          />
+        </div>
+      </div>
+      <div class="flex flex-col w-full my-2">
+        <label for="grade">Grado</label>
+        <select
+          id="grade"
+          class="w-full h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+          formControlName="grade"
+        >
+          @for (grade of gradeList; track grade.id) {
+            <option value="{{ grade.id }}">
+              {{ grade.number }}° {{ grade.section }}
+            </option>
+          }
+        </select>
+      </div>
+      <div class="flex flex-col w-full my-2">
+        <label for="requirements">Requisitos</label>
+        <select
+          id="requirements"
+          class="h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+          formControlName="requirements"
+          (change)="addRequirement($event)"
+        >
+          <option value="-1" disabled>Seleccione los requisitos</option>
+          @for (requirement of requirementList; track requirement.id) {
+            <option
+              value="{{ requirement.id }}"
+              [title]="requirement.description"
+            >
+              {{ requirement.requirement }}
+            </option>
+          }
+        </select>
+      </div>
+      <div class="flex flex-col w-full">
+        <h2>Requisitos Seleccionados</h2>
+        <ul>
+          @for (requirement of selectedRequirement; track requirement.id) {
+            <li
+              class="flex flex-row justify-between items-center w-full my-2 pl-2 border rounded-md bg-white p-2"
+            >
+              <span>{{ requirement.requirement }}</span>
+              <button
+                type="button"
+                (click)="removeRequirement(requirement.id)"
+                class="border rounded-md bg-red-500 text-white hover:bg-red-600 transition px-5 w-fit"
+              >
+                Eliminar
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="flex flex-col w-full my-2 items-end">
+        <button
+          type="submit"
+          class="h-8 border rounded-md bg-primary text-bg-color disabled:opacity-50 transition disabled:hover:bg-primary hover:bg-selected hover:text-white mt-5 px-5 w-fit"
+        >
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
 </main>
 
 <ng-template #modal></ng-template>

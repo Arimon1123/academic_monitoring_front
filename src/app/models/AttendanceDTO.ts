@@ -1,4 +1,4 @@
-export interface AttendanceDTO{
+export interface AttendanceDTO {
   id: number;
   attendance: number;
   date: Date;

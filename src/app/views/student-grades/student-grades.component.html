@@ -1,46 +1,80 @@
-<main class="flex flex-col items-center h-[85vh] bg-bg-color rounded-md border overflow-y-auto">
+<main
+  class="flex flex-col items-center h-[85vh] bg-bg-color rounded-md border overflow-y-auto"
+>
   <section class="w-4/5 py-2 px-4 mt-2">
     <h1 class="font-semibold text-lg">Notas</h1>
     <div class="flex my-2 w-2/5 justify-between">
       <div class="flex flex-col">
         <div class="flex my-1">
-          <span class="font-bold">Estudiante: </span> <span class="ml-2">{{studentData.name}} {{studentData.fatherLastname}} {{studentData.motherLastname}}</span>
+          <span class="font-bold">Estudiante: </span>
+          <span class="ml-2"
+            >{{ studentData.name }} {{ studentData.fatherLastname }}
+            {{ studentData.motherLastname }}</span
+          >
         </div>
         <div class="flex my-1">
-          <span class="font-bold">Curso: </span> <span class="ml-2">{{studentData.studentClass}}</span>
+          <span class="font-bold">Curso: </span>
+          <span class="ml-2">{{ studentData.studentClass }}</span>
         </div>
       </div>
     </div>
   </section>
-  <table class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5">
+  <table
+    class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
+  >
     <thead class="bg-selected text-white h-10">
-    <tr>
-      <th class="w-48 border text-center first:border-l first:rounded-tl-lg last:rounded-tr-lg border-gray font-extralight">Estudiante</th>
-      <th class="w-48 border text-center  border-gray font-extralight">Primer Bimestre</th>
-      <th class="w-48 border text-center  border-gray font-extralight">Segundo Bimestre</th>
-      <th class="w-48 border text-center  border-gray font-extralight">Tercer Bimestre</th>
-      <th class="w-48 border text-center  border-gray font-extralight">Cuarto Bimestre</th>
-      <th class="w-48 border text-center first:border-l last:rounded-tr-lg border-gray font-extralight">Nota Total</th>
-    </tr>
+      <tr>
+        <th
+          class="w-48 border text-center first:border-l first:rounded-tl-lg last:rounded-tr-lg border-gray font-extralight"
+        >
+          Estudiante
+        </th>
+        <th class="w-48 border text-center border-gray font-extralight">
+          Primer Bimestre
+        </th>
+        <th class="w-48 border text-center border-gray font-extralight">
+          Segundo Bimestre
+        </th>
+        <th class="w-48 border text-center border-gray font-extralight">
+          Tercer Bimestre
+        </th>
+        <th class="w-48 border text-center border-gray font-extralight">
+          Cuarto Bimestre
+        </th>
+        <th
+          class="w-48 border text-center first:border-l last:rounded-tr-lg border-gray font-extralight"
+        >
+          Nota Total
+        </th>
+      </tr>
     </thead>
     <tbody>
-      @for(rows of table; track rows.student){
+      @for (rows of table; track rows.subject) {
         <tr>
-          <td class="border text-center  h-10">{{rows.subject}}</td>
-          @for(grades of rows.grades; track grades.grade; let last = $last){
-            <td class="h-fit border text-center hover:opacity-70 transition-opacity">
-              @if(!last){
-                <a class="inline-block w-full h-full"
-                   [routerLink]="['/studentActivities','student',studentData.id,'assignation',grades.assignationId,'bimester',grades.bimester]"
-                   [ngClass]="{'text-red-500': grades.grade < 51}"
+          <td class="border text-center h-10">{{ rows.subject }}</td>
+          @for (grades of rows.grades; track grades.grade; let last = $last) {
+            <td
+              class="h-fit border text-center hover:opacity-70 transition-opacity"
+            >
+              @if (!last) {
+                <a
+                  class="inline-block w-full h-full"
+                  [routerLink]="[
+                    '/studentActivities',
+                    'student',
+                    studentData.id,
+                    'assignation',
+                    grades.assignationId,
+                    'bimester',
+                    grades.bimester
+                  ]"
+                  [ngClass]="{ 'text-red-500': grades.grade < 51 }"
                 >
-                  {{grades.grade }}
+                  {{ grades.grade }}
                 </a>
-              }
-              @else{
-                <a class="inline-block w-full h-full"
-                >
-                  {{grades.grade}}
+              } @else {
+                <a class="inline-block w-full h-full">
+                  {{ grades.grade }}
                 </a>
               }
             </td>

@@ -5,17 +5,23 @@ import { SubjectDTO } from '../models/SubjectDTO';
 import { ResponseDTO } from '../models/ResponseDTO';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubjectService {
-
   API_URL = environment.API_URL;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   saveSubject(subject: SubjectDTO) {
-    return this.http.post<ResponseDTO<string>>(`${this.API_URL}/subject`, subject, { withCredentials: true });
+    return this.http.post<ResponseDTO<string>>(
+      `${this.API_URL}/subject`,
+      subject,
+      { withCredentials: true },
+    );
   }
   getSubjectsByGrade(id: number) {
-    return this.http.get<ResponseDTO<SubjectDTO[]>>(`${this.API_URL}/subject/grade/${id}`, { withCredentials: true });
+    return this.http.get<ResponseDTO<SubjectDTO[]>>(
+      `${this.API_URL}/subject/grade/${id}`,
+      { withCredentials: true },
+    );
   }
 }

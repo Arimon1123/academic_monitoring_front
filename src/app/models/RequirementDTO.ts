@@ -1,5 +1,5 @@
 export interface RequirementDTO {
-    id: number;
-    requirement: string;
-    description: string;
+  id: number;
+  requirement: string;
+  description: string;
 }

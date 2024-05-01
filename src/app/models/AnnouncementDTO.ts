@@ -1,9 +1,9 @@
-import {ImageDTO} from "./ImageDTO";
+import { ImageDTO } from './ImageDTO';
 
-export interface AnnouncementDTO{
+export interface AnnouncementDTO {
   id: number;
-  title:string;
-  message:string;
+  title: string;
+  message: string;
   date: Date;
   publishingDate: Date;
   receivers: string;

@@ -1,4 +1,4 @@
-export interface LastMessageDTO{
+export interface LastMessageDTO {
   id: number;
   name: string;
   content: string;

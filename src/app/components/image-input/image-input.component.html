@@ -1,7 +1,16 @@
 <label>
- <span class="flex flex-row justify-center items-center w-48 p-1  border rounded-md bg-white hover:bg-active hover:text-white transition-colors">
+  <span
+    class="flex flex-row justify-center items-center w-48 p-1 border rounded-md bg-white hover:bg-active hover:text-white transition-colors"
+  >
     Seleccionar archivos
   </span>
-  <input type="file" [max]="maxFile" maxlength="5mb" [multiple]="multiple" hidden (change)="showImages($event)"
-         accept="image/*">
+  <input
+    type="file"
+    [max]="maxFile"
+    maxlength="5mb"
+    [multiple]="multiple"
+    hidden
+    (change)="showImages($event)"
+    accept="image/*"
+  />
 </label>

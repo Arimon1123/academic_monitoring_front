@@ -1,5 +1,5 @@
 export interface ImageDTO {
-    image: File | null;
-    url: string;
-    id: string;
+  image: File | null;
+  url: string;
+  id: string;
 }

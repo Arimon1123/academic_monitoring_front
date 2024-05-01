@@ -1,127 +1,228 @@
-<main class="flex flex-col items-center rounded-md border bg-bg-color h-[85vh] overflow-y-scroll">
+<main
+  class="flex flex-col items-center rounded-md border bg-bg-color h-[85vh] overflow-y-scroll"
+>
   <h1 class="w-4/5 text-start mt-2 text-lg font-semibold">Actividades</h1>
   <div class="flex mb-2 w-4/5 justify-start">
     <div class="flex flex-col mr-64">
       <div class="flex my-1">
-        <span class="font-bold">Curso: </span> <span class="ml-2">{{assignation.className}}</span>
+        <span class="font-bold">Curso: </span>
+        <span class="ml-2">{{ assignation.className }}</span>
       </div>
       <div class="flex my-1">
-        <span class="font-bold">Profesor: </span> <span class="ml-2">{{assignation.teacherName}}</span>
+        <span class="font-bold">Profesor: </span>
+        <span class="ml-2">{{ assignation.teacherName }}</span>
       </div>
     </div>
     <div class="flex flex-col">
       <div class="flex my-1">
-        <span class="font-bold">Materia: </span> <span class="ml-2">{{assignation.subjectName}}</span>
+        <span class="font-bold">Materia: </span>
+        <span class="ml-2">{{ assignation.subjectName }}</span>
       </div>
     </div>
   </div>
   <div class="flex md:flex-row flex-col w-4/5 mb-2 justify-between">
-    <section class="flex flex-col md:w-5/12 w-full bg-white p-2 items-center border rounded-md h-[65vh] " >
+    <section
+      class="flex flex-col md:w-5/12 w-full bg-white p-2 items-center border rounded-md h-[65vh]"
+    >
       <h2 class="font-semibold w-full text-start">Lista de actividades</h2>
-        <div class="w-full h-4/5 overflow-y-auto flex flex-col">
-          <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
-            <summary class="cursor-pointer">Saber : {{totalPercentage['SABER']}} %</summary>
-            @for(activity of activities['SABER']; track activity.id){
-              <ul class="flex flex-col w-full overflow-y-scroll items-center">
-                <li class="border rounded-md bg-white p-3 my-1 w-full">
-                  <div class="flex justify-around xl:flex-row flex-col w-full" >
-                    <div class="flex flex-col xl:w-5/12 w-full">
-                      <h1 class="block w-full">{{activity.name}}</h1>
-                      <span>Dimension: {{activity.dimension}}</span>
-                      <span>Valor: {{activity.value}} %</span>
-                    </div>
-                    <div class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full ">
-                      <button (click)="onUpdate(activity)" class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors">Editar</button>
-                      <button (click)="onDeleteActivity(activity)" class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors">Eliminar</button>
-                    </div>
+      <div class="w-full h-4/5 overflow-y-auto flex flex-col">
+        <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
+          <summary class="cursor-pointer">
+            Saber : {{ totalPercentage["SABER"] }} %
+          </summary>
+          @for (activity of activities["SABER"]; track activity.id) {
+            <ul class="flex flex-col w-full overflow-y-scroll items-center">
+              <li class="border rounded-md bg-white p-3 my-1 w-full">
+                <div class="flex justify-around xl:flex-row flex-col w-full">
+                  <div class="flex flex-col xl:w-5/12 w-full">
+                    <h1 class="block w-full">{{ activity.name }}</h1>
+                    <span>Dimension: {{ activity.dimension }}</span>
+                    <span>Valor: {{ activity.value }} %</span>
                   </div>
-                </li>
-              </ul>
-            }
-          </details>
-          <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
-            <summary class="cursor-pointer">Decidir : {{totalPercentage['DECIDIR']}}%</summary>
-            @for(activity of activities['DECIDIR']; track activity.id){
-              <ul class="flex flex-col w-full overflow-y-scroll items-center">
-                <li class="border rounded-md bg-white p-3 my-1 w-full">
-                  <div class="flex justify-around xl:flex-row flex-col w-full" >
-                    <div class="flex flex-col xl:w-5/12 w-full">
-                      <h1 class="block w-full">{{activity.name}}</h1>
-                      <span>Dimension: {{activity.dimension}}</span>
-                      <span>Valor: {{activity.value}} %</span>
-                    </div>
-                    <div class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full ">
-                      <button (click)="onUpdate(activity)" class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors">Editar</button>
-                      <button (click)="onDeleteActivity(activity)" class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors">Eliminar</button>
-                    </div>
+                  <div
+                    class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full"
+                  >
+                    <button
+                      (click)="onUpdate(activity)"
+                      class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      (click)="onDeleteActivity(activity)"
+                      class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors"
+                    >
+                      Eliminar
+                    </button>
                   </div>
-                </li>
-              </ul>
-            }
-          </details>
-          <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
-            <summary class="cursor-pointer "> Ser : {{totalPercentage['SER']}}%</summary>
-            @for(activity of activities['SER']; track activity.id){
-              <ul class="flex flex-col w-full overflow-y-scroll items-center">
-                <li class="border rounded-md bg-white p-3 my-1 w-full">
-                  <div class="flex justify-around xl:flex-row flex-col w-full" >
-                    <div class="flex flex-col xl:w-5/12 w-full">
-                      <h1 class="block w-full">{{activity.name}}</h1>
-                      <span>Dimension: {{activity.dimension}}</span>
-                      <span>Valor: {{activity.value}} %</span>
-                    </div>
-                    <div class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full ">
-                      <button (click)="onUpdate(activity)" class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors">Editar</button>
-                      <button (click)="onDeleteActivity(activity)" class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors">Eliminar</button>
-                    </div>
+                </div>
+              </li>
+            </ul>
+          }
+        </details>
+        <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
+          <summary class="cursor-pointer">
+            Decidir : {{ totalPercentage["DECIDIR"] }}%
+          </summary>
+          @for (activity of activities["DECIDIR"]; track activity.id) {
+            <ul class="flex flex-col w-full overflow-y-scroll items-center">
+              <li class="border rounded-md bg-white p-3 my-1 w-full">
+                <div class="flex justify-around xl:flex-row flex-col w-full">
+                  <div class="flex flex-col xl:w-5/12 w-full">
+                    <h1 class="block w-full">{{ activity.name }}</h1>
+                    <span>Dimension: {{ activity.dimension }}</span>
+                    <span>Valor: {{ activity.value }} %</span>
                   </div>
-                </li>
-              </ul>
-            }
-          </details>
-          <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
-            <summary class="cursor-pointer">Hacer : {{totalPercentage['HACER']}}%</summary>
-            @for(activity of activities['HACER']; track activity.id){
-              <ul class="flex flex-col w-full overflow-y-scroll items-center">
-                <li class="border rounded-md bg-white p-3 my-1 w-full">
-                  <div class="flex justify-around xl:flex-row flex-col w-full" >
-                    <div class="flex flex-col xl:w-5/12 w-full">
-                      <h1 class="block w-full">{{activity.name}}</h1>
-                      <span>Dimension: {{activity.dimension}}</span>
-                      <span>Valor: {{activity.value}} %</span>
-                    </div>
-                    <div class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full ">
-                      <button (click)="onUpdate(activity)" class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors">Editar</button>
-                      <button (click)="onDeleteActivity(activity)" class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors">Eliminar</button>
-                    </div>
+                  <div
+                    class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full"
+                  >
+                    <button
+                      (click)="onUpdate(activity)"
+                      class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      (click)="onDeleteActivity(activity)"
+                      class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors"
+                    >
+                      Eliminar
+                    </button>
                   </div>
-                </li>
-              </ul>
-            }
-          </details>
-        </div>
+                </div>
+              </li>
+            </ul>
+          }
+        </details>
+        <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
+          <summary class="cursor-pointer">
+            Ser : {{ totalPercentage["SER"] }}%
+          </summary>
+          @for (activity of activities["SER"]; track activity.id) {
+            <ul class="flex flex-col w-full overflow-y-scroll items-center">
+              <li class="border rounded-md bg-white p-3 my-1 w-full">
+                <div class="flex justify-around xl:flex-row flex-col w-full">
+                  <div class="flex flex-col xl:w-5/12 w-full">
+                    <h1 class="block w-full">{{ activity.name }}</h1>
+                    <span>Dimension: {{ activity.dimension }}</span>
+                    <span>Valor: {{ activity.value }} %</span>
+                  </div>
+                  <div
+                    class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full"
+                  >
+                    <button
+                      (click)="onUpdate(activity)"
+                      class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      (click)="onDeleteActivity(activity)"
+                      class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          }
+        </details>
+        <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
+          <summary class="cursor-pointer">
+            Hacer : {{ totalPercentage["HACER"] }}%
+          </summary>
+          @for (activity of activities["HACER"]; track activity.id) {
+            <ul class="flex flex-col w-full overflow-y-scroll items-center">
+              <li class="border rounded-md bg-white p-3 my-1 w-full">
+                <div class="flex justify-around xl:flex-row flex-col w-full">
+                  <div class="flex flex-col xl:w-5/12 w-full">
+                    <h1 class="block w-full">{{ activity.name }}</h1>
+                    <span>Dimension: {{ activity.dimension }}</span>
+                    <span>Valor: {{ activity.value }} %</span>
+                  </div>
+                  <div
+                    class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full"
+                  >
+                    <button
+                      (click)="onUpdate(activity)"
+                      class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors"
+                    >
+                      Editar
+                    </button>
+                    <button
+                      (click)="onDeleteActivity(activity)"
+                      class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          }
+        </details>
+      </div>
 
-      <div class="flex flex-row  items-center w-full px-3 py-2 justify-between">
-        <button (click)="onNewActivity()" class="border rounded-md bg-active h-fit w-fit md:px-3 md:py-1 p-0.5 text-sm text-white hover:bg-sky-700 transition-colors ">Nueva actividad</button>
-        <span>Total: <span [ngClass]="{'text-red-500 font-bold': totalPercentage['TOTAL'] > 100} "> {{totalPercentage['TOTAL']}} %</span> </span>
+      <div class="flex flex-row items-center w-full px-3 py-2 justify-between">
+        <button
+          (click)="onNewActivity()"
+          class="border rounded-md bg-active h-fit w-fit md:px-3 md:py-1 p-0.5 text-sm text-white hover:bg-sky-700 transition-colors"
+        >
+          Nueva actividad
+        </button>
+        <span
+          >Total:
+          <span
+            [ngClass]="{
+              'text-red-500 font-bold': totalPercentage['TOTAL'] > 100
+            }"
+          >
+            {{ totalPercentage["TOTAL"] }} %</span
+          >
+        </span>
       </div>
     </section>
-    @if(showForm){
-      <section class="flex flex-col md:w-[55%] w-full bg-white p-2 items-center border rounded-md md:h-[60vh] h-fit">
+    @if (showForm) {
+      <section
+        class="flex flex-col md:w-[55%] w-full bg-white p-2 items-center border rounded-md md:h-[60vh] h-fit"
+      >
         <h2 class="font-semibold w-full text-start">{{ title }}</h2>
-        <form class="flex flex-col w-full p-3 items-end h-full" [formGroup]="activityForm" (ngSubmit)="onSubmit()">
+        <form
+          class="flex flex-col w-full p-3 items-end h-full"
+          [formGroup]="activityForm"
+          (ngSubmit)="onSubmit()"
+        >
           <div class="flex flex-col w-full my-2">
             <label for="name">Nombre: </label>
-            <input type="text" id="name" class="border rounded-md text-sm border-gray-400" placeholder="Nombre de la actividad" formControlName="name" >
+            <input
+              type="text"
+              id="name"
+              class="border rounded-md text-sm border-gray-400"
+              placeholder="Nombre de la actividad"
+              formControlName="name"
+            />
           </div>
           <div class="flex flex-col w-full my-2">
             <label for="value">Valor: </label>
-            <input type="text" id="value" class="border rounded-md text-sm border-gray-400" placeholder="Valor de actividad" formControlName="value">
+            <input
+              type="text"
+              id="value"
+              class="border rounded-md text-sm border-gray-400"
+              placeholder="Valor de actividad"
+              formControlName="value"
+            />
           </div>
-          <div  class="flex flex-col w-full my-2">
+          <div class="flex flex-col w-full my-2">
             <label for="dimension">Dimesion: </label>
-            <select class="border rounded-md text-sm border-gray-400" id="dimension" formControlName="dimension">
-              <option value="-1" selected disabled>Seleccione una dimension</option>
+            <select
+              class="border rounded-md text-sm border-gray-400"
+              id="dimension"
+              formControlName="dimension"
+            >
+              <option value="-1" selected disabled>
+                Seleccione una dimension
+              </option>
               <option value="HACER">Hacer</option>
               <option value="SABER">Saber</option>
               <option value="SER">Ser</option>
@@ -129,7 +230,11 @@
             </select>
           </div>
           <div class="flex flex-row justify-end items-end w-full h-full my-2">
-            <button class="border rounded-md bg-primary h-fit w-fit px-3 py-1 text-white hover:bg-blue-600 transition-colors">Guardar</button>
+            <button
+              class="border rounded-md bg-primary h-fit w-fit px-3 py-1 text-white hover:bg-blue-600 transition-colors"
+            >
+              Guardar
+            </button>
           </div>
         </form>
       </section>

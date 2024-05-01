@@ -3,20 +3,24 @@ import CryptoJS from 'crypto-js';
 import { environment } from '../environments/environment.development';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LocalStorageService {
-
-  constructor() { }
+  constructor() {}
 
   setItem(key: string, value: string) {
-    const encryptedValue = CryptoJS.AES.encrypt(value, environment.storageSecret).toString();
+    const encryptedValue = CryptoJS.AES.encrypt(
+      value,
+      environment.storageSecret,
+    ).toString();
     localStorage.setItem(key, encryptedValue);
   }
   getItem(key: string) {
     const value = localStorage.getItem(key);
     if (value) {
-       return CryptoJS.AES.decrypt(value, environment.storageSecret).toString(CryptoJS.enc.Utf8);
+      return CryptoJS.AES.decrypt(value, environment.storageSecret).toString(
+        CryptoJS.enc.Utf8,
+      );
     } else {
       return null;
     }
@@ -25,5 +29,4 @@ export class LocalStorageService {
   removeItem(key: string) {
     localStorage.removeItem(key);
   }
-
 }

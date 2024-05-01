@@ -5,14 +5,15 @@ import { GradeDTO } from '../models/GradeDTO';
 import { ResponseDTO } from '../models/ResponseDTO';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GradeService {
-
   API_URL = environment.API_URL;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAllGrades() {
-    return this.http.get<ResponseDTO<GradeDTO[]>>(`${this.API_URL}/grade`, { withCredentials: true });
+    return this.http.get<ResponseDTO<GradeDTO[]>>(`${this.API_URL}/grade`, {
+      withCredentials: true,
+    });
   }
 }

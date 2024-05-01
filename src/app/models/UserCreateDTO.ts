@@ -1,14 +1,14 @@
-import { RoleDTO } from "./RoleDTO";
+import { RoleDTO } from './RoleDTO';
 
 export interface UserCreateDTO {
-    id?: number;
-    name?: string;
-    lastname?: string;
-    email?: string;
-    phone?: string;
-    username?: string;
-    ci?: string;
-    address?: string;
-    academicEmail?: string;
-    roles?: RoleDTO[];
+  id?: number;
+  name?: string;
+  lastname?: string;
+  email?: string;
+  phone?: string;
+  username?: string;
+  ci?: string;
+  address?: string;
+  academicEmail?: string;
+  roles?: RoleDTO[];
 }

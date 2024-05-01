@@ -1,35 +1,31 @@
-import { Component } from '@angular/core';
-import {AnnouncementDTO} from "../../models/AnnouncementDTO";
-import {AnnouncementService} from "../../service/announcement.service";
-import {DatePipe} from "@angular/common";
+import { Component, OnInit } from '@angular/core';
+import { AnnouncementDTO } from '../../models/AnnouncementDTO';
+import { AnnouncementService } from '../../service/announcement.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-announcements',
   standalone: true,
-  imports: [
-    DatePipe
-  ],
+  imports: [DatePipe],
   templateUrl: './announcements.component.html',
-  styleUrl: './announcements.component.css'
+  styleUrl: './announcements.component.css',
 })
-export class AnnouncementsComponent {
+export class AnnouncementsComponent implements OnInit {
   announcements: AnnouncementDTO[];
   constructor(private announcementService: AnnouncementService) {
     this.announcements = [];
   }
-  ngOnInit(){
+  ngOnInit() {
     this.getAnnouncements();
   }
-  getAnnouncements(){
-    this.announcementService.getAnnouncements(1, 'PARENTS', 2).subscribe(
-      {
-        next: (response) => {
-          this.announcements = response.content;
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      }
-    )
+  getAnnouncements() {
+    this.announcementService.getAnnouncements(1, 'PARENTS', 2).subscribe({
+      next: (response) => {
+        this.announcements = response.content;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 }

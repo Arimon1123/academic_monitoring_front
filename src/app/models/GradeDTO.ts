@@ -1,5 +1,5 @@
 export interface GradeDTO {
-    id: number;
-    section: string;
-    number: number;
+  id: number;
+  section: string;
+  number: number;
 }

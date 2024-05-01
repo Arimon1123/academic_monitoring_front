@@ -1,13 +1,13 @@
-import {StudentDTO} from "./StudentDTO";
+import { StudentDTO } from './StudentDTO';
+import { ImageDTO } from './ImageDTO';
 
-export interface PermissionDTO{
+export interface PermissionDTO {
   id: number;
   date: Date;
   permissionStartDate: Date;
-  permissionEndDate : Date;
+  permissionEndDate: Date;
   reason: string;
   permissionStatus: number;
-  images: string[];
+  images: ImageDTO[];
   student: StudentDTO;
-
 }

@@ -1,48 +1,66 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ParentService } from '../../service/parent.service';
 import { ResponseDTO } from '../../models/ResponseDTO';
 import { ParentDTO } from '../../models/ParentDTO';
 import { GradeDTO } from '../../models/GradeDTO';
 import { GradeService } from '../../service/grade.service';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ClassService } from '../../service/class.service';
 import { ClassListDTO } from '../../models/ClassListDTO';
 import { StudentCreateDTO } from '../../models/StudentCreateDTO';
 import { StudentService } from '../../service/student.service';
-import {ModalService} from "../../service/modal.service";
+import { ModalService } from '../../service/modal.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-student-register',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './student-register.component.html',
-  styleUrl: './student-register.component.css'
+  styleUrl: './student-register.component.css',
 })
 export class StudentRegisterComponent implements OnInit {
-  @ViewChild('modal') content: TemplateRef<any> | undefined;
+  @ViewChild('modal') content: TemplateRef<unknown> | undefined;
   minDate = this.calculateMinDate();
   maxDate = this.calculateMaxDate();
   parentList: ParentDTO[] = [];
   selectedParentList: ParentDTO[] = [];
   gradeList: GradeDTO[] = [];
   classList: ClassListDTO[] = [];
-  constructor(private parentService: ParentService,
+  constructor(
+    private parentService: ParentService,
     private gradeService: GradeService,
     private classService: ClassService,
     private studentService: StudentService,
-    private modalService: ModalService) { }
+    private modalService: ModalService,
+  ) {}
 
   studentForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    fatherLastname: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    motherLastname: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    fatherLastname: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
+    motherLastname: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
     ci: new FormControl('', [Validators.required, Validators.minLength(3)]),
     birthDate: new FormControl('', [Validators.required]),
     rude: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    address: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    address: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
     phone: new FormControl('', [Validators.required, Validators.minLength(3)]),
     classId: new FormControl('', [Validators.required]),
-    gradeId: new FormControl('-1',),
+    gradeId: new FormControl('-1'),
   });
 
   parentForm: FormGroup = new FormGroup({
@@ -54,13 +72,12 @@ export class StudentRegisterComponent implements OnInit {
       next: (data: ResponseDTO<GradeDTO[]>) => {
         this.gradeList = data.content;
       },
-      error: (error: any) => {
+      error: (error: HttpErrorResponse) => {
         alert('Error al cargar los grados ' + error.error.message);
       },
       complete: () => {
         console.log('complete');
-      }
-
+      },
     });
   }
   searchParents() {
@@ -69,7 +86,7 @@ export class StudentRegisterComponent implements OnInit {
       next: (data: ResponseDTO<ParentDTO[]>) => {
         console.log(data.content);
         this.parentList = data.content;
-      }
+      },
     });
   }
 
@@ -92,21 +109,20 @@ export class StudentRegisterComponent implements OnInit {
     }
     this.selectedParentList.push(parent);
   }
-  searchClass($event: any) {
-    const gradeId = $event.target.value;
+  searchClass(event: Event) {
+    const gradeId = parseInt((event.target as HTMLInputElement).value);
     const year = new Date().getFullYear();
     const shift = 1;
-    this.classService.getClassListByGradeIdAndYearAndShift(gradeId, year, shift).subscribe(
-      {
+    this.classService
+      .getClassListByGradeIdAndYearAndShift(gradeId, year, shift)
+      .subscribe({
         next: (data: ResponseDTO<ClassListDTO[]>) => {
           this.classList = data.content;
-
         },
-        error: (error: any) => {
+        error: (error: HttpErrorResponse) => {
           alert('Error al cargar las clases ' + error.error.message);
-        }
-      }
-    );
+        },
+      });
   }
   existsStudentByCi() {
     if (this.studentForm.controls['ci'].errors) {
@@ -116,9 +132,9 @@ export class StudentRegisterComponent implements OnInit {
     this.studentService.existsStudentByCi(ci).subscribe({
       next: (data: ResponseDTO<boolean>) => {
         if (data.content) {
-          this.studentForm.controls['ci'].setErrors({ 'exists': true });
+          this.studentForm.controls['ci'].setErrors({ exists: true });
         }
-      }
+      },
     });
   }
   existsStudentByRude() {
@@ -129,13 +145,15 @@ export class StudentRegisterComponent implements OnInit {
     this.studentService.existsStudentByRude(rude).subscribe({
       next: (data: ResponseDTO<boolean>) => {
         if (data.content) {
-          this.studentForm.controls['rude'].setErrors({ 'exists': true });
+          this.studentForm.controls['rude'].setErrors({ exists: true });
         }
-      }
+      },
     });
   }
   removeParent(parentId: number) {
-    this.selectedParentList = this.selectedParentList.filter((parent) => parent.id !== parentId);
+    this.selectedParentList = this.selectedParentList.filter(
+      (parent) => parent.id !== parentId,
+    );
   }
   onSubmit() {
     const student: StudentCreateDTO = {
@@ -148,20 +166,19 @@ export class StudentRegisterComponent implements OnInit {
       address: this.studentForm.value.address,
       rude: this.studentForm.value.rude,
       classId: this.studentForm.value.classId,
-      parentId: [...this.selectedParentList.map((parent) => parent.id)]
-    }
+      parentId: [...this.selectedParentList.map((parent) => parent.id)],
+    };
     this.studentService.saveStudent(student).subscribe({
       next: (data: ResponseDTO<string>) => {
         this.openModal(data.message);
         this.formReset();
       },
-      error: (error: any) => {
-        this.openModal('Error al registrar el estudiante ' + error.error.message)
-      }
-    })
-  }
-  getErrors() {
-    console.log(this.studentForm.controls['ci'].errors);
+      error: (error: HttpErrorResponse) => {
+        this.openModal(
+          'Error al registrar el estudiante ' + error.error.message,
+        );
+      },
+    });
   }
   formReset() {
     this.studentForm.reset();
@@ -171,10 +188,15 @@ export class StudentRegisterComponent implements OnInit {
     this.studentForm.updateValueAndValidity();
     this.parentList = [];
   }
-  openModal(message: string){
-    this.modalService.open(
-      {
-        content:this.content!, options: {size: 'small', title: 'Registro de Estudiante', message: message, isSubmittable: false}
-      });
+  openModal(message: string) {
+    this.modalService.open({
+      content: this.content!,
+      options: {
+        size: 'small',
+        title: 'Registro de Estudiante',
+        message: message,
+        isSubmittable: false,
+      },
+    });
   }
 }

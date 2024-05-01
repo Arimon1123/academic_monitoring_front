@@ -1,112 +1,112 @@
 {
-    "schedule": [
+  "schedule": [
+    {
+      "shift": 1,
+      "hours": [
         {
-            "shift": 1,
-            "hours": [
-                {
-                    "start": "08:00:00",
-                    "end": "8:45:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 1
-                },
-                {
-                    "start": "8:45:00",
-                    "end": "9:30:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 2
-                },
-                {
-                    "start": "9:30:00",
-                    "end": "10:15:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 3
-                },
-                {
-                    "start": "10:15:00",
-                    "end": "11:00:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 4
-                },
-                {
-                    "start": "11:15:00",
-                    "end": "12:00:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 5
-                },
-                {
-                    "start": "12:00:00",
-                    "end": "12:45:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 6
-                },
-                {
-                    "start": "12:45:00",
-                    "end": "13:30:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 7
-                }
-            ]
+          "start": "08:00:00",
+          "end": "8:45:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 1
         },
         {
-            "shift": 2,
-            "hours": [
-                {
-                    "start": "13:30",
-                    "end": "14:15",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 1
-                },
-                {
-                    "start": "14:15:00",
-                    "end": "15:00:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 2
-                },
-                {
-                    "start": "15:00",
-                    "end": "15:45",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 3
-                },
-                {
-                    "start": "16:00:00",
-                    "end": "16:45:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 4
-                },
-                {
-                    "start": "16:45:00",
-                    "end": "17:30:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 5
-                },
-                {
-                    "start": "17:30:00",
-                    "end": "18:15:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 6
-                },
-                {
-                    "start": "18:15:00",
-                    "end": "19:00:00",
-                    "isAvailable": "true",
-                    "reason": "none",
-                    "period": 7
-                }
-            ]
+          "start": "8:45:00",
+          "end": "9:30:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 2
+        },
+        {
+          "start": "9:30:00",
+          "end": "10:15:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 3
+        },
+        {
+          "start": "10:15:00",
+          "end": "11:00:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 4
+        },
+        {
+          "start": "11:15:00",
+          "end": "12:00:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 5
+        },
+        {
+          "start": "12:00:00",
+          "end": "12:45:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 6
+        },
+        {
+          "start": "12:45:00",
+          "end": "13:30:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 7
         }
-    ]
+      ]
+    },
+    {
+      "shift": 2,
+      "hours": [
+        {
+          "start": "13:30",
+          "end": "14:15",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 1
+        },
+        {
+          "start": "14:15:00",
+          "end": "15:00:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 2
+        },
+        {
+          "start": "15:00",
+          "end": "15:45",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 3
+        },
+        {
+          "start": "16:00:00",
+          "end": "16:45:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 4
+        },
+        {
+          "start": "16:45:00",
+          "end": "17:30:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 5
+        },
+        {
+          "start": "17:30:00",
+          "end": "18:15:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 6
+        },
+        {
+          "start": "18:15:00",
+          "end": "19:00:00",
+          "isAvailable": true,
+          "reason": "none",
+          "period": 7
+        }
+      ]
+    }
+  ]
 }

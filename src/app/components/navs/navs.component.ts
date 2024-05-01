@@ -1,49 +1,51 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { AuthService } from '../../service/auth-service.service';
-import {Router, RouterLink, RouterLinkActive} from '@angular/router';
-import { RouteDTO } from '../../models/RouteDTO';
-import  routes from '../../consts/routes.json';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import routes from '../../consts/routes.json';
 import { initFlowbite } from 'flowbite';
 
-import {UserDetailsDTO} from "../../models/UserDetailsDTO";
-import {RouteTupleDTO} from "../../models/RouteTupleDTO";
+import { UserDetailsDTO } from '../../models/UserDetailsDTO';
+import { RouteTupleDTO } from '../../models/RouteTupleDTO';
 
 @Component({
   selector: 'app-navs',
   standalone: true,
-  imports: [
-    RouterLink,
-    RouterLinkActive
-  ],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './navs.component.html',
-  styleUrl: './navs.component.css'
+  styleUrl: './navs.component.css',
 })
 export class NavsComponent implements OnInit, OnChanges {
-
-  routesList: RouteTupleDTO = {} as RouteTupleDTO
+  routesList: RouteTupleDTO = {} as RouteTupleDTO;
   @Input() userDetails: UserDetailsDTO;
   @Output() logoutEvent = new EventEmitter<boolean>();
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService) {
     this.userDetails = {} as UserDetailsDTO;
   }
-  ngOnChanges(){
+  ngOnChanges() {
     console.log(this.userDetails);
     this.buildRoutes();
   }
   ngOnInit() {
     setTimeout(() => {
       initFlowbite();
-    },500)
+    }, 500);
   }
-  buildRoutes(){
-    console.log(this.userDetails.role)
+  buildRoutes() {
+    console.log(this.userDetails.role);
     if (this.userDetails.role === 'ADMINISTRATIVE') {
       this.routesList = routes.ADMINISTRATIVE;
     }
-    if(this.userDetails.role === 'TEACHER'){
+    if (this.userDetails.role === 'TEACHER') {
       this.routesList = routes.TEACHER;
     }
-    if(this.userDetails.role === 'PARENT'){
+    if (this.userDetails.role === 'PARENT') {
       this.routesList = routes.PARENT;
     }
   }
@@ -52,16 +54,16 @@ export class NavsComponent implements OnInit, OnChanges {
     this.authService.logout().subscribe({
       complete: () => {
         this.logoutEvent.emit(true);
-      }
+      },
     });
   }
-  showList(id: string){
+  showList(id: string) {
     const element = document.getElementById(id);
     const display = element?.style.display;
-    if(display === '' || display === 'none'){
+    if (display === '' || display === 'none') {
       element!.style.display = 'flex';
     }
-    if(display === 'flex'){
+    if (display === 'flex') {
       element!.style.display = '';
     }
   }

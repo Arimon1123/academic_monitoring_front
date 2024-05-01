@@ -1,4 +1,4 @@
-export interface AttendanceReportDTO{
+export interface AttendanceReportDTO {
   attendance: number;
   count: number;
   classes: number;

@@ -1,48 +1,119 @@
-<main class="flex flex-col items-center h-[85vh] border rounded-md  bg-bg-color overflow-y-auto overflow-x-hidden lg:overflow-x-scroll">
-  <h1 class="inline-block w-3/5 font-semibold text-start text-lg my-2">Nuevo aviso</h1>
-  <form [formGroup]="announcementForm" (ngSubmit)="saveAnnouncement()" class="flex flex-col w-3/5 justify-center ">
+<main
+  class="flex flex-col items-center h-[85vh] border rounded-md bg-bg-color overflow-y-auto overflow-x-hidden lg:overflow-x-scroll"
+>
+  <h1 class="inline-block w-3/5 font-semibold text-start text-lg my-2">
+    Nuevo aviso
+  </h1>
+  <form
+    [formGroup]="announcementForm"
+    (ngSubmit)="saveAnnouncement()"
+    class="flex flex-col w-3/5 justify-center"
+  >
     <label for="title">Titulo</label>
-    <input id="title" type="text" formControlName="title" class="border rounded-md text-sm border-gray-400">
+    <input
+      id="title"
+      type="text"
+      formControlName="title"
+      class="border rounded-md text-sm border-gray-400"
+    />
     <label for="message">Mensaje</label>
-    <textarea id="message" type="text" formControlName="message" cols="5" class="resize-none border rounded-md text-sm border-gray-400"></textarea>
+    <textarea
+      id="message"
+      type="text"
+      formControlName="message"
+      cols="5"
+      class="resize-none border rounded-md text-sm border-gray-400"
+    ></textarea>
     <label for="publishingDate">Fecha de publicación</label>
-    <input id="publishingDate" type="date" formControlName="publishingDate" class="border rounded-md text-sm border-gray-400">
+    <input
+      id="publishingDate"
+      type="date"
+      formControlName="publishingDate"
+      class="border rounded-md text-sm border-gray-400"
+    />
     <label for="receiver">Destinatarios</label>
-    <select id="receiver" formControlName="receiver"class="border rounded-md text-sm border-gray-400">
+    <select
+      id="receiver"
+      formControlName="receiver"
+      class="border rounded-md text-sm border-gray-400"
+    >
       <option value="PARENTS">Padres</option>
       <option value="TEACHERS">Profesores</option>
       <option value="ALL">Todos</option>
     </select>
-    <div class="flex flex-col w-full p-2 justify-around border rounded-md my-2 bg-white">
+    <div
+      class="flex flex-col w-full p-2 justify-around border rounded-md my-2 bg-white"
+    >
       <h2>Sección</h2>
       <div class="flex flex-row justify-around">
         <div class="flex flex-row w-5/12 items-center">
           <label for="primary">Primaria</label>
-          <input id="primary" type="checkbox" name="section" value="1" formControlName="primarySection" class="rounded-md w-5 h-5 focus:ring-transparent focus:ring-0 mx-2 checked:bg-primary transition-colors">
+          <input
+            id="primary"
+            type="checkbox"
+            name="section"
+            value="1"
+            formControlName="primarySection"
+            class="rounded-md w-5 h-5 focus:ring-transparent focus:ring-0 mx-2 checked:bg-primary transition-colors"
+          />
         </div>
         <div class="flex flex-row w-5/12">
           <label for="highSchool">Secundaria</label>
-          <input id="highSchool" type="checkbox" name="section" value="2" formControlName="highSchoolSection" class="rounded-md w-5 h-5 focus:ring-transparent focus:ring-0 mx-2  checked:bg-primary transition-colors ">
+          <input
+            id="highSchool"
+            type="checkbox"
+            name="section"
+            value="2"
+            formControlName="highSchoolSection"
+            class="rounded-md w-5 h-5 focus:ring-transparent focus:ring-0 mx-2 checked:bg-primary transition-colors"
+          />
         </div>
       </div>
     </div>
-    <div class="flex flex-col w-full p-2 justify-around border rounded-md my-2 bg-white">
+    <div
+      class="flex flex-col w-full p-2 justify-around border rounded-md my-2 bg-white"
+    >
       <h2>Turno</h2>
-     <div class="flex flex-row justify-around">
-       <div class="flex flex-row w-5/12 items-center">
-         <label for="morning">Mañana</label>
-         <input type="radio" name="shift" id="morning" value="1" formControlName="shift" class=" focus:ring-transparent focus:ring-0 mx-2  checked:bg-primary transition-colors ">
-       </div>
-       <div class="div.flex flex-row w-5/12 items-center">
-         <label for="evening">Tarde</label>
-         <input type="radio" name="shift" id="evening" value="2" formControlName="shift" class=" focus:ring-transparent focus:ring-0 mx-2  checked:bg-primary transition-colors ">
-       </div>
-
-     </div>
+      <div class="flex flex-row justify-around">
+        <div class="flex flex-row w-5/12 items-center">
+          <label for="morning">Mañana</label>
+          <input
+            type="radio"
+            name="shift"
+            id="morning"
+            value="1"
+            formControlName="shift"
+            class="focus:ring-transparent focus:ring-0 mx-2 checked:bg-primary transition-colors"
+          />
+        </div>
+        <div class="div.flex flex-row w-5/12 items-center">
+          <label for="evening">Tarde</label>
+          <input
+            type="radio"
+            name="shift"
+            id="evening"
+            value="2"
+            formControlName="shift"
+            class="focus:ring-transparent focus:ring-0 mx-2 checked:bg-primary transition-colors"
+          />
+        </div>
+      </div>
     </div>
-    <app-image-input maxFile=10 [multiple]="true" (uploadImageEvent)="onUpdateImages($event)"></app-image-input>
-    <app-image-carrousel [images]="imageList" (deleteImageEvent)="onUpdateImages($event)" ></app-image-carrousel>
-    <button type="submit" class="border rounded-md bg-primary h-fit w-fit px-3 py-1 text-white hover:bg-active transition-colors">Guardar</button>
+    <app-image-input
+      maxFile="10"
+      [multiple]="true"
+      (uploadImageEvent)="onUpdateImages($event)"
+    ></app-image-input>
+    <app-image-carrousel
+      [images]="imageList"
+      (deleteImageEvent)="onUpdateImages($event)"
+    ></app-image-carrousel>
+    <button
+      type="submit"
+      class="border rounded-md bg-primary h-fit w-fit px-3 py-1 text-white hover:bg-active transition-colors"
+    >
+      Guardar
+    </button>
   </form>
 </main>
 

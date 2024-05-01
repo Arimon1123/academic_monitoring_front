@@ -5,15 +5,16 @@ import { ResponseDTO } from '../models/ResponseDTO';
 import { ParentDTO } from '../models/ParentDTO';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ParentService {
-
   API_URL = environment.API_URL;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getParentByCi(ci: string) {
-    return this.http.get<ResponseDTO<ParentDTO[]>>(`${this.API_URL}/parent`, { params: { 'ci': ci }, withCredentials: true },);
+    return this.http.get<ResponseDTO<ParentDTO[]>>(`${this.API_URL}/parent`, {
+      params: { ci: ci },
+      withCredentials: true,
+    });
   }
-
 }

@@ -1,10 +1,9 @@
-import { RoleDTO } from "./RoleDTO";
+import { RoleDTO } from './RoleDTO';
 
-export interface UserDTO{
-    id: number;
-    username: string;
-    password: string;
-    role : RoleDTO[];
-    status: number;
-  
-} 
+export interface UserDTO {
+  id: number;
+  username: string;
+  password: string;
+  role: RoleDTO[];
+  status: number;
+}
