@@ -13,25 +13,33 @@ export class ScheduleService {
   getScheduleByClassroom(id: number) {
     return this.http.get<ResponseDTO<ScheduleDTO[]>>(
       `${this.API_URL}/schedule/classroom/${id}`,
-      { withCredentials: true },
+      { withCredentials: true }
     );
   }
   getScheduleByTeacher(id: number) {
     return this.http.get<ResponseDTO<ScheduleDTO[]>>(
       `${this.API_URL}/schedule/teacher/${id}`,
-      { withCredentials: true },
+      { withCredentials: true }
     );
   }
   getScheduleByClass(id: number) {
     return this.http.get<ResponseDTO<ScheduleDTO[]>>(
       `${this.API_URL}/schedule/class/${id}`,
-      { withCredentials: true },
+      { withCredentials: true }
     );
   }
   getScheduleBySubjectAndClassId(classId: number, subjectId: number) {
     return this.http.get<ResponseDTO<ScheduleDTO[]>>(
       `${this.API_URL}/schedule/class/${classId}/subject/${subjectId}`,
-      { withCredentials: true },
+      { withCredentials: true }
+    );
+  }
+  getTeacherConsultHours(teacherId: number) {
+    return this.http.get<ResponseDTO<ScheduleDTO[]>>(
+      `${this.API_URL}/schedule/teacher/${teacherId}/consultHours`,
+      {
+        withCredentials: true,
+      }
     );
   }
 }

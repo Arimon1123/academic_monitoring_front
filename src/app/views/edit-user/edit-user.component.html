@@ -1,20 +1,28 @@
-<main class="h-[85vh] overflow-y-hidden flex justify-center">
-  <div
-    class="border rounded-md bg-bg-color flex flex-col items-center box-border overflow-y-scroll w-full md:w-2/5"
-  >
-    <h1 class="text-lg font-semibold my-5">Edición de Usuario</h1>
-    <form [formGroup]="userForm" class="w-4/5" (ngSubmit)="onSubmit()">
-      <div class="flex flex-col w-full my-3">
-        <h2 class="text-md font-semibold text-start mb-3">Datos personales</h2>
-        <div class="flex flex-col lg:flex-row w-full justify-between">
+<main
+  class="h-[87vh] flex justify-center w-full border rounded-md bg-bg-color p-2">
+  <div class="flex flex-col items-center box-border w-full lg:w-3/5 my-1 overflow-y-auto">
+    <h1 class="text-lg font-semibold my-1">Edición de Usuario</h1>
+    <app-user-card [user]="user" class="w-full lg:w-4/5 my-1"></app-user-card>
+    <details
+      class="flex flex-col my-1 border rounded-md p-3 bg-white w-full lg:w-4/5">
+      <summary
+        class="p-1 rounded-md inline text-md font-semibold text-start cursor-pointer hover:bg-gray-100 transition-colors">
+        Datos personales
+      </summary>
+      <form [formGroup]="userForm" (ngSubmit)="onPersonDataSubmitHandler()">
+        <div class="flex flex-col lg:flex-row w-full justify-between my-1">
           <div class="flex flex-col lg:w-[45%] w-full">
             <label for="name"> Nombre</label>
             <input
               id="name"
               type="text"
               formControlName="name"
-              class="border border-gray-400 rounded-md px-2 mb-3 w-full"
-            />
+              class="border border-gray-400 rounded-md px-2 mb-3 w-full" />
+            @if (
+              userForm.get('name')?.invalid && userForm.get('name')?.touched
+            ) {
+              <span class="text-red-600 text-sm">Nombre Invalido</span>
+            }
           </div>
           <div class="flex flex-col lg:w-[45%] w-full">
             <label for="lastname"> Apellido</label>
@@ -22,8 +30,13 @@
               id="lastname"
               type="text"
               formControlName="lastname"
-              class="border border-gray-400 rounded-md px-2 mb-3 w-full"
-            />
+              class="border border-gray-400 rounded-md px-2 mb-3 w-full" />
+            @if (
+              userForm.get('lastname')?.invalid &&
+              userForm.get('lastname')?.touched
+            ) {
+              <span class="text-red-600 text-sm">Nombre Invalido</span>
+            }
           </div>
         </div>
         <div class="flex w-full flex-col lg:flex-row justify-between">
@@ -33,8 +46,17 @@
               id="ci"
               type="text"
               formControlName="ci"
-              class="border border-gray-400 rounded-md px-2 mb-3 w-full"
-            />
+              class="border border-gray-400 rounded-md px-2 mb-3 w-full" />
+            @if (
+              userForm.get('ci')?.invalid &&
+              userForm.get('ci')?.touched &&
+              !userForm.get('ci')?.getError('ciExists')
+            ) {
+              <span class="text-red-600 text-sm">CI Invalido</span>
+            }
+            @if (userForm.get('ci')?.getError('ciExists')) {
+              <span class="text-red-600 text-sm">CI ya registrado</span>
+            }
           </div>
           <div class="flex flex-col lg:w-[45%] w-full">
             <label for="email"> Email</label>
@@ -42,88 +64,252 @@
               id="email"
               type="email"
               formControlName="email"
-              class="border border-gray-400 rounded-md px-2 mb-3 w-full"
-            />
+              class="border border-gray-400 rounded-md px-2 mb-3 w-full" />
+            @if (
+              userForm.get('email')?.invalid &&
+              userForm.get('email')?.touched &&
+              !userForm.get('email')?.getError('emailExists')
+            ) {
+              <span class="text-red-600 text-sm">Email Invalido</span>
+            }
+            @if (userForm.get('email')?.getError('emailExists')) {
+              <span class="text-red-600 text-sm">Email ya registrado</span>
+            }
           </div>
         </div>
-        <div class="flex flex-col">
-          <label for="phone"> Teléfono</label>
-          <input
-            id="phone"
-            type="tel"
-            formControlName="phone"
-            class="border border-gray-400 rounded-md px-2 mb-3 w-full"
-          />
+        <div class="flex w-full flex-col lg:flex-row justify-between">
+          <div class="flex flex-col lg:w-[45%] w-full">
+            <label for="phone"> Teléfono</label>
+            <input
+              id="phone"
+              type="tel"
+              formControlName="phone"
+              class="border border-gray-400 rounded-md px-2 mb-3 w-full" />
+            @if (
+              userForm.get('phone')?.invalid &&
+              userForm.get('phone')?.touched &&
+              !userForm.get('phone')?.getError('phoneExists')
+            ) {
+              <span class="text-red-600 text-sm">Teléfono Invalido</span>
+            }
+            @if (userForm.get('phone')?.getError('phoneExists')) {
+              <span class="text-red-600 text-sm">Teléfono ya registrado</span>
+            }
+          </div>
+          <div class="flex flex-col lg:w-[45%] w-full">
+            <label for="address"> Dirección</label>
+            <textarea
+              id="address"
+              type="email"
+              formControlName="address"
+              class="border border-gray-400 rounded-md px-2 mb-3 w-full resize-none"></textarea>
+            @if (
+              userForm.get('address')?.invalid &&
+              userForm.get('address')?.touched
+            ) {
+              <span class="text-red-600 text-sm">Address Invalido</span>
+            }
+          </div>
         </div>
-      </div>
-      @if (user.roles) {
-        <h2 class="text-md font-semibold text-start">Roles</h2>
-        <div class="flex flex-col w-full border rounded-md p-3 mb-3 bg-white">
-          <label
-            class="inline-flex justify-between items-center mb-5 cursor-pointer"
-          >
-            <span
-              class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
-              >Administrador</span
-            >
-            <input
-              type="checkbox"
-              [checked]="checkRole('ADMINISTRATIVE')"
-              value="false"
-              formControlName="admin"
-              class="sr-only peer"
-            />
-            <div
-              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
-            ></div>
-          </label>
-          <label
-            class="inline-flex justify-between items-center mb-5 cursor-pointer"
-          >
-            <span
-              class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
-              >Profesor</span
-            >
-            <input
-              type="checkbox"
-              [checked]="checkRole('TEACHER')"
-              value="false"
-              formControlName="teacher"
-              class="sr-only peer"
-            />
-            <div
-              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
-            ></div>
-          </label>
-          <label
-            class="inline-flex justify-between items-center mb-5 cursor-pointer"
-          >
-            <span
-              class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
-              >Padre</span
-            >
-            <input
-              type="checkbox"
-              [checked]="checkRole('FATHER')"
-              value="false"
-              formControlName="father"
-              class="sr-only peer"
-            />
-            <div
-              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
-            ></div>
-          </label>
+        <div class="flex items-end justify-end w-full">
+          <button
+            type="submit"
+            class="disabled:opacity-60 w-28 bg-primary rounded-md text-white py-1"
+            [disabled]="userForm.invalid">
+            Guardar
+          </button>
         </div>
-      }
-      <div class="flex items-end justify-end w-full">
-        <button
-          type="submit"
-          class="w-1/3 bg-primary rounded-md text-white py-1"
-        >
-          Guardar
-        </button>
+      </form>
+    </details>
+    <details
+      class="flex flex-col my-1 border rounded-md p-3 bg-white w-full lg:w-4/5">
+      <summary
+        class="p-1 rounded-md inline text-md font-semibold text-start cursor-pointer hover:bg-gray-100 transition-colors">
+        Acceso del usuario
+      </summary>
+      <div class="flex w-full flex-col items-center">
+        @if (user.status === 2) {
+          <p class="my-1">
+            En este momento el usuario
+            <span class="font-semibold"
+              >{{ user.name }} {{ user.lastname }}</span
+            >
+            con CI <span class="font-semibold">{{ user.ci }} NO</span> cuenta
+            con acceso al sistema
+          </p>
+          <div class="flex flex-col w-full border rounded-md items-center p-2">
+            <h3 class="text-lg font-bold my-1">
+              Desea permitir el acceso a este usuario?
+            </h3>
+            <button
+              (click)="onUnblockUserHandler(user.username)"
+              class="w-28 bg-accepted rounded-md  hover:bg-acceptedHover transition-colors text-white py-0.5 my-1">
+              Permitir
+            </button>
+          </div>
+        } @else {
+          <p class="my-1">
+            En este momento el usuario
+            <span class="font-semibold"
+              >{{ user.name }} {{ user.lastname }}</span
+            >
+            con CI <span class="font-semibold">{{ user.ci }}</span> cuenta con
+            acceso al sistema
+          </p>
+          <div class="flex flex-col w-full border rounded-md items-center p-2">
+            <h3 class="text-lg font-bold my-1">
+              Desea bloquear el acceso a este usuario?
+            </h3>
+            <button
+              (click)="onBlockUserHandler(user.username)"
+              class="w-28 bg-rejected rounded-md hover:bg-rejectedHover transition-colors text-white py-0.5 my-1">
+              Bloquear
+            </button>
+          </div>
+        }
       </div>
-    </form>
+    </details>
+      <details
+        class="flex flex-col border rounded-md p-3 my-1 bg-white w-full lg:w-4/5">
+        <summary
+          class="p-1 rounded-md inline text-md font-semibold text-start cursor-pointer hover:bg-gray-100 transition-colors">
+          Roles
+        </summary>
+        <form [formGroup]="roleForm" (ngSubmit)="onRoleFormSubmitHandler()">
+          <h3>Selección de roles</h3>
+          <div
+            class="flex md:flex-row flex-col w-full p-2 border rounded-md my-1 md:justify-around items-center space-y-2 space-x-2">
+            <label
+              class="inline-flex w-56 justify-between items-center cursor-pointer p-2 rounded-md hover:bg-gray-200 transition-colors">
+              <span
+                class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
+                >Administrador</span
+              >
+              <input
+                type="checkbox"
+                value="false"
+                class="sr-only peer"
+                formControlName="admin" />
+              <div
+                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+            <label
+              class="inline-flex justify-between items-center cursor-pointer p-2 rounded-md hover:bg-gray-200 transition-colors w-56">
+              <span
+                class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
+                >Profesor</span
+              >
+              <input
+                type="checkbox"
+                value="false"
+                class="sr-only peer"
+                formControlName="teacher" />
+              <div
+                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+            <label
+              class="inline-flex justify-between items-center cursor-pointer p-2 rounded-md hover:bg-gray-200 transition-colors w-56">
+              <span
+                class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
+                >Padre</span
+              >
+              <input
+                type="checkbox"
+                value="false"
+                class="sr-only peer"
+                formControlName="parent" />
+              <div
+                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div class="flex items-end justify-end w-full">
+            <button
+              type="submit"
+              class="w-28 bg-primary rounded-md text-white py-1">
+              Guardar
+            </button>
+          </div>
+        </form>
+      </details>
+    @if (userDetails !== undefined) {
+      <details
+        class="flex flex-col border rounded-md p-3 my-1 bg-white w-full lg:w-4/5 ">
+        <summary
+          class="p-1 rounded-md inline text-md font-semibold text-start cursor-pointer hover:bg-gray-100 transition-colors w-full">
+          Información sobre el Profesor
+        </summary>
+        <details class="flex flex-col border rounded-md p-3 mb-3 bg-white my-1">
+          <summary
+            class="p-1 rounded-md inline text-md font-semibold text-start cursor-pointer hover:bg-gray-100 transition-colors">
+            Email Académico
+          </summary>
+          <form
+            [formGroup]="teacherForm"
+            (ngSubmit)="onSubmitAcademicEmailHandler()">
+            <div class="flex flex-col w-full my-1">
+              <label for="academicEmail">Email Académico</label>
+              <input
+                type="email"
+                id="academicEmail"
+                formControlName="academicEmail"
+                class="border border-gray-400 rounded-md px-2 mb-3 w-full" />
+              @if (
+                teacherForm.get('academicEmail')?.invalid &&
+                teacherForm.get('academicEmail')?.touched &&
+                !teacherForm.get('academicEmail')?.getError('emailExists')
+              ) {
+                <span class="text-red-600 text-sm">Email Invalido</span>
+              }
+              @if (teacherForm.get('academicEmail')?.getError('emailExists')) {
+                <span class="text-red-600 text-sm">Email ya registrado</span>
+              }
+            </div>
+            <div class="flex items-end justify-end w-full">
+              <button
+                type="submit"
+                class="w-28 bg-primary rounded-md text-white py-1">
+                Guardar
+              </button>
+            </div>
+          </form>
+        </details>
+        <details class="flex flex-col border rounded-md p-3 mb-3 bg-white my-1">
+          <summary
+            class="p-1 rounded-md inline text-md font-semibold text-start cursor-pointer hover:bg-gray-100 transition-colors">
+            Selección de materias
+          </summary>
+          <app-subject-selection
+            [selectedSubjects]="subjects"
+            (subjectEventEmitter)="onUpdateSubjectsHandler($event)"
+            class="my-1"></app-subject-selection>
+          <div class="flex items-end justify-end w-full">
+            <button
+              (click)="onSubmitSubjectHandler()"
+              type="button"
+              class="w-28 bg-primary rounded-md text-white py-1">
+              Guardar
+            </button>
+          </div>
+        </details>
+        <details class="flex flex-col border rounded-md p-3 mb-3 bg-white my-1">
+          <summary
+            class="p-1 rounded-md inline text-md font-semibold text-start cursor-pointer hover:bg-gray-100 transition-colors w-full">
+            Horarios de Consulta
+          </summary>
+          <app-schedule-selection
+            [teacherData]="teacherData"
+            (scheduleEventEmitter)="onUpdateScheduleHandler($event)"
+            class="overflow-x-auto my-1"></app-schedule-selection>
+          <div class="flex items-end justify-end w-full">
+            <button
+              (click)="onSubmitConsultHoursHandler()"
+              class="w-28 bg-primary rounded-md text-white py-1">
+              Guardar
+            </button>
+          </div>
+        </details>
+      </details>
+    }
   </div>
 </main>
 

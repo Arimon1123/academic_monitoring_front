@@ -41,7 +41,7 @@ export class SubjectRegisterComponent implements OnInit {
     private gradeService: GradeService,
     private requirementService: RequirementsService,
     private subjectService: SubjectService,
-    private modalService: ModalService,
+    private modalService: ModalService
   ) {}
   ngOnInit(): void {
     this.gradeService
@@ -63,6 +63,9 @@ export class SubjectRegisterComponent implements OnInit {
       hours: this.subjectForm.value.hours,
       gradeId: this.subjectForm.value.grade,
       requirements: [...this.selectedRequirement],
+      status: 1,
+      gradeName: '',
+      section: '',
     };
     this.subjectService.saveSubject(subject).subscribe({
       next: (data: ResponseDTO<string>) => {
@@ -84,12 +87,12 @@ export class SubjectRegisterComponent implements OnInit {
 
   addRequirement(event: Event) {
     const selectedRequirement = this.requirementList.find(
-      (r) => r.id == parseInt((event.target as HTMLInputElement).value),
+      r => r.id == parseInt((event.target as HTMLInputElement).value)
     );
     if (selectedRequirement) {
       this.selectedRequirement.push(selectedRequirement);
       this.requirementList = this.requirementList.filter(
-        (r) => r.id != parseInt((event.target as HTMLInputElement).value),
+        r => r.id != parseInt((event.target as HTMLInputElement).value)
       );
       this.subjectForm.controls['requirements'].setValue('-1');
       this.subjectForm.updateValueAndValidity();
@@ -98,11 +101,11 @@ export class SubjectRegisterComponent implements OnInit {
   }
   removeRequirement(id: number) {
     console.log(id);
-    const requirement = this.selectedRequirement.find((r) => r.id === id);
+    const requirement = this.selectedRequirement.find(r => r.id === id);
     if (requirement) {
       console.log(requirement);
       this.selectedRequirement = this.selectedRequirement.filter(
-        (r) => r.id != id,
+        r => r.id != id
       );
       this.requirementList.push(requirement);
     }

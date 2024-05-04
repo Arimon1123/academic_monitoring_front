@@ -1,0 +1,50 @@
+<div class="w-full my-2">
+  <h2 class="text-lg ">Selección de Materias</h2>
+  <div class="flex flex-col w-full">
+    <label for="gradeSelect" class="my-2 flex flex-col">
+      <span class="w-20 inline-block">Grado</span>
+      <select name="" id="gradeSelect"  (change)="onChangeGradeSelectHandler($event)" class="w-full border p-1 rounded-md px-3 ">
+        @for (grade of gradeList ; track grade.id){
+          <option value="{{grade.id}}">
+            <span>{{grade.number}} ° {{grade.section}}</span>
+          </option>
+        }
+      </select>
+    </label>
+    <label class="my-2 flex flex-col">
+      <span class="w-20 inline-block">Materia </span>
+      <select (change)="onChangeSubjectSelectHandler($event)" class="w-full border  rounded-md p-1 px-3 text-gray-600">
+        <option selected disabled value="0">
+         Seleccione una materia
+        </option>
+        @for(subject of subjectList ; track subject.id){
+          <option value="{{subject.id}}">
+            <span>{{subject.name}}</span>
+          </option>
+        } @empty {
+          <option disabled>
+            No se encontraron materias registradas
+          </option>
+        }
+      </select>
+    </label>
+  </div>
+  @if(selectedSubjects!.length > 0 ){
+    <h3 class="ml-0.5">Materias seleccionadas</h3>
+    <ul class="space-y-1 flex flex-col items-center">
+      @for(subject of selectedSubjects ; track subject.id){
+        <li class="flex justify-around border rounded-md p-2 bg-white cursor-default max-w-[42rem] xl:w-[40rem] w-full"  >
+          <div class="flex w-4/5 justify-around sm:flex-row flex-col">
+            <span class="inline-block w-56">Nombre: {{subject.name}} </span>
+            <span class="inline-block w-56">Grado:  {{subject.gradeName}} {{subject.section}}</span>
+          </div>
+          <button  class="cursor-pointer" (click)="removeSubject(subject)"> ❌ </button>
+          <!--    TODO: refactor to icon component
+              <i class="fa-solid fa-trash" style="color: #f50505"></i>-->
+        </li>
+      }
+    </ul>
+  } @else {
+    <span class="inline-block w-full text-center">Ninguna materia seleccionada</span>
+  }
+</div>

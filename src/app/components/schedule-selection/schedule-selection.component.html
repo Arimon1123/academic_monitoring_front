@@ -1,0 +1,62 @@
+<div class="flex flex-col my-2 ">
+  <table class="table-fixed table border-separate border-spacing-0 min-w-[60rem]">
+    <tr class="border bg-primary text-white">
+      <th
+        class="w-10 max-w-16 text-center border first:border-l first:rounded-tl-lg border-gray"
+      >
+        Horario
+      </th>
+      <th class="w-10 max-w-16 text-center border border-gray">
+        Lunes
+      </th>
+      <th class="w-10 max-w-16 text-center border border-gray">
+        Martes
+      </th>
+      <th class="w-10 max-w-16 text-center border border-gray">
+        Miércoles
+      </th>
+      <th class="w-10 max-w-16 text-center border border-gray">
+        Jueves
+      </th>
+      <th
+        class="w-10 max-w-16 text-center border first:border-l last:rounded-tr-lg border-gray"
+      >
+        Viernes
+      </th>
+    </tr>
+    @for (day of showedSchedule; track day; let idx = $index) {
+      <tr>
+        <td
+          class="border text-sm text-center h-10 first:border-l last:rounded-tr-lg border-gray"
+        >
+          {{ hours[idx].start }} - {{ hours[idx].end }}
+        </td>
+        @for (
+            period of day;
+          track period.period;
+          let dayIdx = $index
+          ) {
+          <td
+            class="w-10 max-w-16 border cursor-pointer text-center text-white hover:opacity-95 first:border-l border-gray"
+            [ngClass]="getCellClasses(period)"
+            (click)="selectSchedule(period, dayIdx)"
+          >
+            @if (
+              !period.isAvailable && period.reason === "selected"
+              ) {
+              <span class="text-sm">Seleccionado</span>
+            }
+            @if (
+              !period.isAvailable && period.reason !== "selected"
+              ) {
+              <span class="text-sm">No disponible</span>
+            }
+            @if (period.isAvailable) {
+              <span class="text-sm">Disponible</span>
+            }
+          </td>
+        }
+      </tr>
+    }
+  </table>
+</div>

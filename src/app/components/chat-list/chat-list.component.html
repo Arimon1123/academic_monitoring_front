@@ -1,5 +1,5 @@
 <p>chat-list works!</p>
-<ul class="p-2 space-y-2 lg:w-4/5 w-full">
+<ul class="p-2 space-y-2  w-full">
   @for (message of lastMessageList; track message.id) {
     <li
       tabindex="0"
@@ -9,7 +9,7 @@
     >
       <div class="flex flex-row w-full">
         <div class="mr-2">
-          @if (message.uuid !== null) {
+          @if (null !== message.uuid) {
             <img
               [src]="API_URL + '/file/image/' + message.uuid"
               class="rounded-full size-10"

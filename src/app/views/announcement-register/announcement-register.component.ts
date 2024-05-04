@@ -30,7 +30,7 @@ export class AnnouncementRegisterComponent implements OnInit {
   constructor(
     private announcementService: AnnouncementService,
     private gradeService: GradeService,
-    private modalService: ModalService,
+    private modalService: ModalService
   ) {
     this.imageList = [];
     this.gradeList = [];
@@ -60,15 +60,15 @@ export class AnnouncementRegisterComponent implements OnInit {
   saveAnnouncement() {
     let announcement: AnnouncementDTO = {} as AnnouncementDTO;
     const primaryIds = this.gradeList
-      .filter((v) => {
+      .filter(v => {
         return v.section === 'Primaria';
       })
-      .map((v) => v.id);
+      .map(v => v.id);
     const highSchoolIds = this.gradeList
-      .filter((v) => {
+      .filter(v => {
         return v.section === 'Secundaria';
       })
-      .map((v) => v.id);
+      .map(v => v.id);
     console.log(primaryIds);
     let gradesIds: number[] = [];
     gradesIds = [
@@ -86,7 +86,7 @@ export class AnnouncementRegisterComponent implements OnInit {
       message: this.announcementForm.get('message')?.value,
       date: new Date(),
       publishingDate: new Date(
-        this.announcementForm.get(`publishingDate`)?.value,
+        this.announcementForm.get(`publishingDate`)?.value
       ),
       receivers: JSON.stringify({
         receiver: this.announcementForm.get('receiver')?.value,
@@ -102,7 +102,7 @@ export class AnnouncementRegisterComponent implements OnInit {
       formData.append('images', image.image as Blob);
     });
     this.announcementService.saveAnnouncement(formData).subscribe({
-      next: (value) => {
+      next: value => {
         console.log(value.message);
         this.modalService.open({
           content: this.content!,

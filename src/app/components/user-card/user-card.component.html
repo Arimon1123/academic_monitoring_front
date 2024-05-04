@@ -1,0 +1,96 @@
+@if(user){
+  <div
+    class="flex flex-col items-center justify-center rounded-lg border w-full bg-white">
+    <div class="w-full title-grid items-center justify-between my-2 px-2">
+      <div class="rounded-full w-full h-12 flex justify-center">
+        @if (user.imageUrl) {
+          <img
+            ngSrc="{{ user.imageUrl }}"
+            width="3rem"
+            height="3rem"
+            loading="lazy"
+            alt="user image"
+            class="rounded-full max-h-12 max-w-12 w-auto h-auto" />
+      } @else {
+          <img
+            class="w-auto h-auto"
+            ngSrc="./assets/user.svg"
+            alt="user image" height="48" width="48"/>
+      }
+      </div>
+      <div class="flex flex-col justify-center">
+              <span class="text-lg text-center"
+              >{{ user.name }} {{ user.lastname }}</span
+              >
+      </div>
+      @if(user.status === 1){
+        <span
+          class="text-xs py-0.5 px-3 w-fit border rounded-full text-center bg-green-500 text-white">
+                Activo
+              </span>
+      } @else {
+        <span
+          class="text-sm p-0.5 w-fit border rounded-full text-center bg-red-500 text-white">
+                Sin acceso
+              </span>
+      }
+    </div>
+    <hr class="w-11/12">
+    <div class="flex w-full flex-wrap justify-center space-x-1 my-2">
+      @for (role of user.roles; track role.id) {
+        <span
+          class="rounded-md border py-0.5 px-2 text-white text-sm"
+          [ngClass]="roleColor[role.name]">
+                {{ currentRoles[role.name] }}
+              </span>
+      }
+    </div>
+    <div class="flex flex-col justify-between my-2">
+      <section class="flex flex-row w-full ">
+        <div class="xl:w-52 w-fit">
+          <section class="flex items-center">
+                    <span class="flex h-4 w-4 items-center justify-center mr-4">
+                      <img ngSrc="assets/email.svg" alt="user icon" height="16" width="16">
+                    </span>
+            <span class="" title="">{{ user.email }}</span>
+          </section>
+          <section class="flex items-center">
+                    <span class="flex h-4 w-4 items-center justify-center mr-4">
+                      <img ngSrc="assets/phone.svg" alt="user icon" height="16" width="16">
+                    </span>
+            <span class="" title="{{ user.phone }}">{{
+                user.phone
+              }}</span>
+          </section>
+        </div>
+        <div class="xl:w-52 w-fit">
+          <section class="flex items-center">
+                    <span
+                      class="flex h-4 w-4 items-center justify-center mr-4"
+                      title="ci">
+                      <img ngSrc="assets/id.svg" alt="user icon" height="16" width="16">
+                    </span>
+            <span title="{{ user.ci }}">{{ user.ci }}</span>
+          </section>
+          <section class="flex items-center">
+                    <span
+                      class="flex h-4 w-4 items-center justify-center mr-4"
+                      title="ci">
+                      <img ngSrc="assets/address.svg" alt="user icon" height="16" width="16">
+                    </span>
+            <span title="{{ user.address }}">{{ user.address }}</span>
+          </section>
+        </div>
+      </section>
+      @if (isForEditing){
+        <section class="flex rounded-md p-1 w-full justify-center">
+          <a
+            [routerLink]="['/editUser',user.id]"
+            class="my-1 h-fit box-border w-fit py-0.5 px-3 rounded-full border bg-primary text-white hover:bg-active transition-colors">
+            Editar
+          </a>
+        </section>
+      }
+    </div>
+  </div>
+}

@@ -26,12 +26,12 @@ export class PermissionDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private permissionService: PermissionService,
-    private modalService: ModalService,
+    private modalService: ModalService
   ) {
     this.reason = '';
     this.permissionDTO = {} as PermissionDTO;
     this.permissionId = 0;
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(params => {
       this.permissionId = params['id'];
     });
   }
@@ -43,10 +43,10 @@ export class PermissionDetailsComponent implements OnInit {
       next: (data: ResponseDTO<PermissionDTO>) => {
         this.permissionDTO = data.content;
         this.permissionDTO.permissionStartDate = new Date(
-          this.permissionDTO.permissionStartDate,
+          this.permissionDTO.permissionStartDate
         );
         this.permissionDTO.permissionEndDate = new Date(
-          this.permissionDTO.permissionEndDate,
+          this.permissionDTO.permissionEndDate
         );
         this.permissionDTO.date = new Date(this.permissionDTO.date);
         console.log(this.permissionDTO);

@@ -14,11 +14,22 @@ import { RoleDTO } from '../../models/RoleDTO';
 import { NgOptimizedImage } from '@angular/common';
 import { ModalService } from '../../service/modal.service';
 import { ResponseDTO } from '../../models/ResponseDTO';
+import { SubjectDTO } from '../../models/SubjectDTO';
+import { HttpErrorResponse } from '@angular/common/http';
+import { debounceTime } from 'rxjs';
+import { SubjectSelectionComponent } from '../../components/subject-selection/subject-selection.component';
+import { ScheduleSelectionComponent } from '../../components/schedule-selection/schedule-selection.component';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [ReactiveFormsModule, ModalComponent, NgOptimizedImage],
+  imports: [
+    ReactiveFormsModule,
+    ModalComponent,
+    NgOptimizedImage,
+    SubjectSelectionComponent,
+    ScheduleSelectionComponent,
+  ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
@@ -27,7 +38,55 @@ export class UsersComponent {
     private userService: UserService,
     private personService: PersonService,
     private modalService: ModalService
-  ) {}
+  ) {
+    this.userForm = new FormGroup({
+      name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+      lastname: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+      ]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      phone: new FormControl('', [
+        Validators.required,
+        Validators.minLength(7),
+        Validators.maxLength(10),
+        Validators.pattern('^[0-9]*$'),
+      ]),
+      address: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+      ]),
+      ci: new FormControl('', [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(12),
+        Validators.pattern('^\\d{5,10}(?:[\\s-]\\w{1,2})?$'),
+      ]),
+      role: new FormControl('TEACHER', [
+        Validators.required,
+        Validators.minLength(4),
+      ]),
+      workEmail: new FormControl('', [Validators.required, Validators.email]),
+    });
+    this.userForm
+      .get('ci')
+      ?.valueChanges.pipe(debounceTime(500))
+      .subscribe(() => {
+        this.checkCi();
+      });
+    this.userForm
+      .get('email')
+      ?.valueChanges.pipe(debounceTime(500))
+      .subscribe(() => {
+        this.checkEmail();
+      });
+    this.userForm
+      .get('phone')
+      ?.valueChanges.pipe(debounceTime(500))
+      .subscribe(() => {
+        this.checkPhone();
+      });
+  }
   @ViewChild('modal') modal: TemplateRef<unknown> | undefined;
   imageFile: File | null = null;
   userImage: string = '../../assets/user.svg';
@@ -35,62 +94,36 @@ export class UsersComponent {
   requestSend = false;
   modalMessage = '';
   modalTitle = '';
-
-  userForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    lastname: new FormControl('', [
-      Validators.required,
-      Validators.minLength(4),
-    ]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [
-      Validators.required,
-      Validators.minLength(7),
-      Validators.maxLength(10),
-      Validators.pattern('^[0-9]*$'),
-    ]),
-    address: new FormControl('', [
-      Validators.required,
-      Validators.minLength(4),
-    ]),
-    ci: new FormControl('', [
-      Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(12),
-      Validators.pattern('^\\d{5,10}(?:[\\s-]\\w{1,2})?$'),
-    ]),
-    role: new FormControl('TEACHER', [
-      Validators.required,
-      Validators.minLength(4),
-    ]),
-    workEmail: new FormControl('', [Validators.required, Validators.email]),
-  });
+  subjectList: SubjectDTO[] = [];
+  userForm: FormGroup;
 
   onSubmit() {
     this.requestSend = true;
-    if (this.userForm.controls.role.value !== 'TEACHER') {
-      this.userForm.controls.workEmail.setValidators([Validators.email]);
+    if (this.userForm.controls['role'].value !== 'TEACHER') {
+      this.userForm.controls['workEmail'].setValidators([Validators.email]);
     }
-
     const currentRoles = JSON.parse(JSON.stringify(roles));
     const selected = currentRoles.roles.find(
-      (role: RoleDTO) => role.name === this.userForm.controls.role.value
+      (role: RoleDTO) => role.name === this.userForm.controls['role'].value
     );
     if (this.userForm.valid) {
       const user: UserCreateDTO = {
-        name: this.userForm.controls.name!.value!,
-        lastname: this.userForm.controls.lastname.value!,
-        email: this.userForm.controls.email.value!,
-        phone: this.userForm.controls.phone.value!,
-        address: this.userForm.controls.address.value!,
-        ci: this.userForm.controls.ci.value!,
-        academicEmail: this.userForm.controls.workEmail.value!,
+        name: this.userForm.controls['name']!.value!,
+        lastname: this.userForm.controls['lastname'].value!,
+        email: this.userForm.controls['email'].value!,
+        phone: this.userForm.controls['phone'].value!,
+        address: this.userForm.controls['address'].value!,
+        ci: this.userForm.controls['ci'].value!,
+        academicEmail: this.userForm.controls['workEmail'].value!,
         roles: [selected],
       };
       const formData = new FormData();
       formData.append('user', JSON.stringify(user));
       if (this.hasImage) {
         formData.append('image', this.imageFile as Blob);
+      }
+      if (this.subjectList.length > 0) {
+        formData.append('subjects', JSON.stringify(this.subjectList));
       }
       this.userService.createUser(formData).subscribe({
         next: (data: ResponseDTO<string>) => {
@@ -101,8 +134,7 @@ export class UsersComponent {
           this.userForm.reset();
           this.userImage = '../../assets/user.svg';
         },
-        error: (error: any) => {
-          console.log(error);
+        error: (error: HttpErrorResponse) => {
           this.modalMessage = error.error.message;
           this.modalTitle = 'Error al crear el usuario';
           this.openModal();
@@ -116,8 +148,10 @@ export class UsersComponent {
       alert('Formulario invalido');
     }
   }
-  onFileSelected(event: any) {
-    this.imageFile = event.target.files[0];
+  onFileSelectedHandler(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (!target.files) return;
+    this.imageFile = target.files.item(0);
     console.log(this.imageFile);
     this.hasImage = true;
     const reader = new FileReader();
@@ -127,16 +161,19 @@ export class UsersComponent {
     };
   }
   checkEmail() {
+    console.log(this.userForm.controls['email'].getError('emailExists'));
     if (this.userForm.get('email')?.errors) {
       return;
     }
     this.personService
-      .existsByEmail(this.userForm.controls.email.value ?? '')
+      .existsByEmail(this.userForm.controls['email'].value ?? '')
       .subscribe({
-        next: (data: any) => {
-          console.log(data);
-          if (data) {
-            this.userForm.controls.email.setErrors({ emailExists: true });
+        next: (data: ResponseDTO<boolean>) => {
+          console.log(data.content);
+          if (data.content) {
+            this.userForm.controls['email'].setErrors({
+              emailExists: data.content,
+            });
           }
         },
       });
@@ -146,12 +183,12 @@ export class UsersComponent {
       return;
     }
     this.personService
-      .existsByPhone(this.userForm.controls.phone.value ?? '')
+      .existsByPhone(this.userForm.controls['phone'].value ?? '')
       .subscribe({
-        next: (data: any) => {
+        next: (data: ResponseDTO<boolean>) => {
           console.log(data);
-          if (data) {
-            this.userForm.controls.phone.setErrors({ phoneExists: true });
+          if (data.content) {
+            this.userForm.controls['phone'].setErrors({ phoneExists: true });
           }
         },
       });
@@ -161,20 +198,20 @@ export class UsersComponent {
       return;
     }
     this.personService
-      .existsByCi(this.userForm.controls.ci.value ?? '')
+      .existsByCi(this.userForm.controls['ci'].value ?? '')
       .subscribe({
-        next: (data: any) => {
-          console.log(data);
-          if (data) {
-            this.userForm.controls.ci.setErrors({ ciExists: true });
+        next: (data: ResponseDTO<boolean>) => {
+          console.log(data.content);
+          if (data.content) {
+            this.userForm.controls['ci'].setErrors({ ciExists: true });
           }
         },
       });
   }
 
-  changeValidators($event: any) {
-    if ($event.target.value === 'TEACHER') {
-      this.userForm.controls.workEmail.setValidators([
+  changeValidators(event: Event) {
+    if ((event.target as HTMLInputElement).value === 'TEACHER') {
+      this.userForm.controls['workEmail'].setValidators([
         Validators.required,
         Validators.email,
       ]);
@@ -182,7 +219,6 @@ export class UsersComponent {
     } else {
       this.userForm.get('workEmail')?.clearValidators();
       this.userForm.get('workEmail')?.updateValueAndValidity();
-      console.log(this.userForm.controls.workEmail.errors);
     }
   }
   openModal() {
@@ -197,5 +233,9 @@ export class UsersComponent {
         isSubmittable: false,
       },
     });
+  }
+  onUpdateSubjectHandler(newSubjects: SubjectDTO[]) {
+    this.subjectList = newSubjects;
+    console.log('subjects updated', this.subjectList);
   }
 }

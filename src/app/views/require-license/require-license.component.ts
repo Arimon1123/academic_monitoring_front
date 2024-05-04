@@ -11,7 +11,6 @@ import { PermissionCreateDTO } from '../../models/PermissionCreateDTO';
 import { ResponseDTO } from '../../models/ResponseDTO';
 import { StudentDTO } from '../../models/StudentDTO';
 import { StudentService } from '../../service/student.service';
-import { LocalStorageService } from '../../service/local-storage.service';
 import { ModalService } from '../../service/modal.service';
 import { ImageInputComponent } from '../../components/image-input/image-input.component';
 import { ImageCarrouselComponent } from '../../components/image-carrousel/image-carrousel.component';
@@ -38,7 +37,7 @@ export class RequireLicenseComponent implements OnInit {
     private permissionService: PermissionService,
     private studentService: StudentService,
     private modalService: ModalService,
-    private userDataService: UserDataService,
+    private userDataService: UserDataService
   ) {
     this.todayDate = new Date().toISOString().split('T')[0];
     this.tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
@@ -60,7 +59,7 @@ export class RequireLicenseComponent implements OnInit {
   }
   ngOnInit() {
     this.userDataService.currentUser.subscribe({
-      next: (data) => {
+      next: data => {
         this.parentInfo = data!;
       },
     });
@@ -88,7 +87,7 @@ export class RequireLicenseComponent implements OnInit {
   onSubmit() {
     console.log(this.images);
     const formData = new FormData();
-    this.images.forEach((image) => {
+    this.images.forEach(image => {
       formData.append('images', image.image as Blob);
     });
 

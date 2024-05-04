@@ -11,6 +11,10 @@
     {
       "id": 3,
       "name": "PARENT"
+    },
+    {
+      "id": 4,
+      "name": "STUDENT"
     }
   ],
   "role_names": {

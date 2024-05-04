@@ -5,5 +5,8 @@ export interface SubjectDTO {
   name: string;
   hours: number;
   gradeId: number;
+  status: number;
+  gradeName: string;
+  section: string;
   requirements: RequirementDTO[];
 }

@@ -7,7 +7,7 @@
       >
         <div class="flex items-center justify-between">
           <h3 class="text-lg font-semibold">{{ announcement.title }}</h3>
-          <p class="text-sm">{{ announcement.date | date: "dd/MM/yyyy" }}</p>
+          <p class="text-sm">{{ announcement.publishingDate | date: "dd/MM/yyyy" }}</p>
         </div>
         <hr />
         <div class="flex flex-col w-full items-center">
@@ -15,13 +15,12 @@
             {{ announcement.message }}
           </p>
           <hr />
-          @for (image of announcement.images; track image) {
-            <img
-              src="{{ image }}"
-              alt="image related to the announcement"
-              class="max-w-64 max-h-64 aspect-auto h-64"
-            />
-          }
+          <div class="w-full justify-center">
+            <app-image-carrousel
+              [imageUrls]="announcement.images"
+              [isForCreating]="false">
+            </app-image-carrousel>
+          </div>
         </div>
       </li>
     }

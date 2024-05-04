@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './views/login/login.component';
-import { ModalComponent } from './components/modal/modal.component';
 import { authGuard } from './guard/auth.guard';
 import { EditUserComponent } from './views/edit-user/edit-user.component';
 import { HomeComponent } from './views/home/home.component';
@@ -25,6 +24,7 @@ import { ReportCardsComponent } from './views/report-cards/report-cards.componen
 import { AnnouncementRegisterComponent } from './views/announcement-register/announcement-register.component';
 import { ChatsComponent } from './views/chats/chats.component';
 import { ReportsComponent } from './views/reports/reports.component';
+import { TestComponent } from './views/test/test.component';
 
 export const routes: Routes = [
   {
@@ -41,22 +41,14 @@ export const routes: Routes = [
   {
     path: 'userList',
     component: UserListComponent,
-    canActivate: [authGuard],
-    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'unauthorized',
     component: UnauthorizedComponent,
   },
   {
-    path: 'modal',
-    component: ModalComponent,
-  },
-  {
     path: 'editUser/:id',
     component: EditUserComponent,
-    canActivate: [authGuard],
-    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'subjectRegister',
@@ -73,6 +65,8 @@ export const routes: Routes = [
   {
     path: 'assignation',
     component: AssignationComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'requirePermission',
@@ -125,10 +119,8 @@ export const routes: Routes = [
     component: AnnouncementRegisterComponent,
   },
   {
-    path: '',
+    path: 'home',
     component: HomeComponent,
-    canActivate: [authGuard],
-    data: { roles: ['ADMINISTRATIVE', 'FATHER', 'TEACHER'] },
   },
   {
     path: 'chat',
@@ -137,5 +129,9 @@ export const routes: Routes = [
   {
     path: 'reports',
     component: ReportsComponent,
+  },
+  {
+    path: 'test',
+    component: TestComponent,
   },
 ];

@@ -58,10 +58,13 @@
           </div>
         </div>
 
-        <h2 class="font-semibold tex">Archivos adicionales</h2>
-        <app-image-carrousel
-          [images]="permissionDTO.images"
-        ></app-image-carrousel>
+       <div class="w-full flex justify-center flex-col">
+         <h2 class="font-semibold tex">Archivos adicionales</h2>
+         <app-image-carrousel
+           [imageUrls]="permissionDTO.images"
+           [isForCreating]="false"
+         ></app-image-carrousel>
+       </div>
       }
 
       <div class="flex justify-evenly my-5">

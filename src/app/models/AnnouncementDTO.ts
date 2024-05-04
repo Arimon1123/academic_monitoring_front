@@ -1,5 +1,3 @@
-import { ImageDTO } from './ImageDTO';
-
 export interface AnnouncementDTO {
   id: number;
   title: string;

@@ -1,7 +1,9 @@
 import { PersonDTO } from './PersonDTO';
+import { SubjectDTO } from './SubjectDTO';
 
 export interface TeacherDTO {
   id: number;
   person: PersonDTO;
-  academicEmail: String;
+  academicEmail: string;
+  subjects: SubjectDTO[];
 }

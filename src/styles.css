@@ -10,6 +10,9 @@
   }
 }
 
+html {
+  overflow: hidden;
+}
 /* Estilos para el scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

@@ -9,6 +9,11 @@
         "id": 5,
         "route": "/studentRegister",
         "title": "Registro de Estudiante"
+      },
+      {
+        "id": 6,
+        "route": "/subjectRegister",
+        "title": "Registro de Materias"
       }
     ]
   },

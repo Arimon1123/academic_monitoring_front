@@ -1,5 +1,4 @@
 import { StudentDTO } from './StudentDTO';
-import { ImageDTO } from './ImageDTO';
 
 export interface PermissionDTO {
   id: number;
@@ -8,6 +7,6 @@ export interface PermissionDTO {
   permissionEndDate: Date;
   reason: string;
   permissionStatus: number;
-  images: ImageDTO[];
+  images: string[];
   student: StudentDTO;
 }

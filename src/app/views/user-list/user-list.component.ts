@@ -1,7 +1,7 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { UserDataDTO } from '../../models/UserDataDTO';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   FormControl,
   FormGroup,
@@ -12,7 +12,9 @@ import { ModalComponent } from '../../components/modal/modal.component';
 import { ModalService } from '../../service/modal.service';
 import { role_names } from '../../consts/roles.json';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { UserCardComponent } from '../../components/user-card/user-card.component';
 
 @Component({
   selector: 'app-user-list',
@@ -23,11 +25,13 @@ import { RouterLink } from '@angular/router';
     ReactiveFormsModule,
     ModalComponent,
     RouterLink,
+    NgOptimizedImage,
+    UserCardComponent,
   ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css',
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
   search: {
     page: number;
     size: number;
@@ -45,10 +49,19 @@ export class UserListComponent {
   isForBlock = false;
   searchForm: FormGroup;
   userList: UserDataDTO[] = [];
+  queryParams: Params | undefined;
+  roleColor: { [key: string]: string };
   constructor(
     private userService: UserService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private activeRoute: ActivatedRoute,
+    private router: Router
   ) {
+    this.roleColor = {
+      ADMINISTRATIVE: 'bg-teal-600',
+      TEACHER: 'bg-cyan-600',
+      PARENT: 'bg-sky-600',
+    };
     this.searchForm = new FormGroup({
       name: new FormControl('', []),
       lastname: new FormControl('', []),
@@ -63,6 +76,63 @@ export class UserListComponent {
       lastname: '',
       ci: '',
     };
+    this.searchForm.get('name')?.valueChanges.subscribe({
+      next: value => {
+        this.router.navigate([], {
+          queryParams: (this.queryParams = {
+            ...this.queryParams,
+            name: value,
+          }),
+        });
+      },
+    });
+    this.searchForm.get('lastname')?.valueChanges.subscribe({
+      next: value => {
+        this.router.navigate([], {
+          queryParams: (this.queryParams = {
+            ...this.queryParams,
+            lastname: value,
+          }),
+        });
+      },
+    });
+    this.searchForm.get('ci')?.valueChanges.subscribe({
+      next: value => {
+        this.router.navigate([], {
+          queryParams: (this.queryParams = {
+            ...this.queryParams,
+            ci: value,
+          }),
+        });
+      },
+    });
+    this.searchForm.get('role')?.valueChanges.subscribe({
+      next: value => {
+        this.queryParams = {
+          ...this.queryParams,
+          role: value,
+        };
+      },
+    });
+  }
+  ngOnInit() {
+    this.getSearchParamsFromUrl().then(() => {
+      this.setFormValuesFromParams(this.queryParams ?? {});
+    });
+  }
+  async getSearchParamsFromUrl() {
+    const params = await firstValueFrom(this.activeRoute.queryParams);
+    this.queryParams = params;
+    console.log(params);
+  }
+  setFormValuesFromParams(params: Params) {
+    const paramValues = {
+      name: params['name'] ?? '',
+      lastname: params['lastname'] ?? '',
+      role: params['role'] ?? '',
+      ci: params['ci'] ?? '',
+    };
+    this.searchForm.setValue(paramValues);
   }
   onSearch() {
     this.requestSend = true;
@@ -81,13 +151,12 @@ export class UserListComponent {
       size: 10,
     };
     this.userList = [];
-    console.log(this.search);
     this.userService.getUserList(this.search!).subscribe({
       next: data => {
-        console.log(data);
+        console.log(data.content);
         this.userList = data.content.content;
-        this.totalPages = data.totalPages;
-        this.currentPage = data.number + 1;
+        this.totalPages = data.content.totalPages;
+        this.currentPage = data.content.number + 1;
       },
       error: (error: HttpErrorResponse) => {
         this.requestSend = false;

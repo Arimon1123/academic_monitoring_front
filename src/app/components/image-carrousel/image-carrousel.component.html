@@ -1,20 +1,37 @@
-<ul class="flex flex-wrap basis-48 my-2 overflow-y-scroll">
-  @for (image of images; track image.id) {
-    <li class="mx-2">
-      <button
-        type="button"
-        (click)="deleteImage(image.id)"
-        class="flex justify-center items-center relative left-[85%] top-[15%] bg-bg-color rounded-md w-5 h-5 hover:bg-primary transition-colors"
-      >
-        <i
-          class="fas fa-trash-alt [color:#0072f5] hover:[color:#f9f9f9] transition-colors"
-        ></i>
-      </button>
-      <img
-        src="{{ image.url }}"
-        alt="{{ image.image?.name }}"
-        class="w-48 h-48 min-h-32 min-w-32 aspect-auto border rounded-md"
-      />
-    </li>
+<ul class="flex flex-wrap basis-48 my-2 overflow-x-auto justify-center">
+  @if(isForCreating){
+    @for (image of images; track image.id) {
+      <li class="mx-2">
+        <button
+          type="button"
+          (click)="deleteImage(image.id)"
+          class="flex justify-center items-center relative left-[85%] top-[15%] bg-bg-color rounded-md w-5 h-5 hover:bg-primary transition-colors"
+        >
+          <i
+            class="fas fa-trash-alt [color:#0072f5] hover:[color:#f9f9f9] transition-colors"
+          ></i>
+        </button>
+        <a href="{{image}}" target="_blank">
+          <img
+            src="{{image.url}}"
+            alt="{{ image.image?.name }}"
+            class="w-48 h-48 min-h-32 min-w-32 aspect-auto border rounded-md"
+          />
+        </a>
+      </li>
+    }
+  } @else {
+    @for(image of imageUrls; track  image){
+      <li class="mx-2">
+          <a href="{{image}}" target="_blank">
+            <img
+              src="{{image}}"
+              alt="image"
+              class="w-64  min-h-32  aspect-auto border rounded-md"
+            />
+          </a>
+      </li>
+    }
   }
+
 </ul>

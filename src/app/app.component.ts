@@ -91,7 +91,6 @@ export class AppComponent implements OnInit {
       },
     });
   }
-
   getRoleDetails() {
     this.userService.getUserRoleDetails(this.currentRole).subscribe({
       next: (data: ResponseDTO<UserDetailsDTO>) => {
@@ -108,7 +107,6 @@ export class AppComponent implements OnInit {
     this.router.navigate(['']).then();
     if (isLogged) this.getUserDetails();
   }
-
   updateUserData() {
     this.userDataService.setUserDetails(this.userDetails);
   }

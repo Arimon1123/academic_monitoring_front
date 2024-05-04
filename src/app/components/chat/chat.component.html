@@ -21,9 +21,10 @@
         message of messages;
         track message;
         let i = $index;
-        let last = $last
+        let last = $last;
+        let first = $first;
       ) {
-        @if (!last && getDate(message.date) !== getDate(messages[i + 1].date)) {
+        @if (!first && getDate(messages[i - 1].date) !== getDate(message.date)) {
           <li class="flex justify-center w-full">
             <span class="text-xs">{{
               message.date | date: "dd/MM/yyyy" : "America/La_Paz" : "en-ES"

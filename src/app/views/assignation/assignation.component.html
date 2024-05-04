@@ -83,7 +83,7 @@
             <option value="0">Seleccionar docente</option>
             @for (teacher of teacherList; track teacher.id) {
               <option value="{{ teacher.id }}">
-                {{ teacher.person.name }}
+                {{ teacher.person.name }} {{teacher.person.lastname}}
               </option>
             }
           </select>
@@ -111,7 +111,7 @@
           </div>
           <div class="flex w-full flex-end">
             <button
-              (click)="getSchedules()"
+              (click)="onClickShowScheduleHandler()"
               class="border rounded-md bg-selected text-white p-2 text-sm"
             >
               Obtener horarios
@@ -119,72 +119,16 @@
           </div>
         }
         @if (showSchedule) {
-          <div class="flex flex-col my-2">
-            <h3 class="text-md font-normal text-start my-2">Horario</h3>
-            <table class="table-fixed table border-separate border-spacing-0">
-              <tr class="border bg-primary text-white">
-                <th
-                  class="w-10 max-w-16 text-center border first:border-l first:rounded-tl-lg border-gray"
-                >
-                  Horario
-                </th>
-                <th class="w-10 max-w-16 text-center border border-gray">
-                  Lunes
-                </th>
-                <th class="w-10 max-w-16 text-center border border-gray">
-                  Martes
-                </th>
-                <th class="w-10 max-w-16 text-center border border-gray">
-                  Miércoles
-                </th>
-                <th class="w-10 max-w-16 text-center border border-gray">
-                  Jueves
-                </th>
-                <th
-                  class="w-10 max-w-16 text-center border first:border-l last:rounded-tr-lg border-gray"
-                >
-                  Viernes
-                </th>
-              </tr>
-              @for (day of showedSchedule; track day; let idx = $index) {
-                <tr>
-                  <td
-                    class="border text-sm text-center h-10 first:border-l last:rounded-tr-lg border-gray"
-                  >
-                    {{ hours[idx].start }} - {{ hours[idx].end }}
-                  </td>
-                  @for (
-                    period of day;
-                    track period.period;
-                    let dayIdx = $index
-                  ) {
-                    <td
-                      class="w-10 max-w-16 border cursor-pointer text-center text-white hover:opacity-95 first:border-l border-gray"
-                      [ngClass]="getCellClasses(period)"
-                      (click)="selectSchedule(period, dayIdx)"
-                    >
-                      @if (
-                        !period.isAvailable && period.reason === "selected"
-                      ) {
-                        <span class="text-sm">Seleccionado</span>
-                      }
-                      @if (
-                        !period.isAvailable && period.reason !== "selected"
-                      ) {
-                        <span class="text-sm">No disponible</span>
-                      }
-                      @if (period.isAvailable) {
-                        <span class="text-sm">Disponible</span>
-                      }
-                    </td>
-                  }
-                </tr>
-              }
-            </table>
-          </div>
+          <app-schedule-selection [teacherData]="selectedTeacher"
+                                  [classRoomData]="selectedClassroom"
+                                  [selectedSubject]="selectedSubject"
+                                  [classData]="selectedClass"
+                                  [isForAssignation]="true"
+                                  (scheduleEventEmitter)="onUpdateScheduleHandler($event)"
+          ></app-schedule-selection>
           <div class="w-full flex justify-end">
             <button
-              (click)="onSubmit()"
+              (click)="onSubmitHandler()"
               class="bg-primary text-white border rounded-md py-1 px-3"
             >
               Asignar

@@ -7,6 +7,7 @@ import { UserDetailsDTO } from '../models/UserDetailsDTO';
 import { UserDataDTO } from '../models/UserDataDTO';
 import { UserCreateDTO } from '../models/UserCreateDTO';
 import { PageDTO } from '../models/PageDTO';
+import { RoleDTO } from '../models/RoleDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,7 @@ export class UserService {
       ci: string;
     } | null
   ) {
-    return this.http.get<PageDTO<ResponseDTO<UserDataDTO[]>>>(
+    return this.http.get<ResponseDTO<PageDTO<UserDataDTO[]>>>(
       `${this.API_URL}/user`,
       {
         params: {
@@ -79,16 +80,36 @@ export class UserService {
       { responseType: 'json', withCredentials: true }
     );
   }
-  updateUser(user: UserCreateDTO) {
-    return this.http.put<ResponseDTO<string>>(`${this.API_URL}/user`, user, {
-      responseType: 'json',
-      withCredentials: true,
-    });
-  }
   getUserRoleDetails(role: string) {
     return this.http.get<ResponseDTO<UserDetailsDTO>>(
       `${this.API_URL}/auth/role`,
       { responseType: 'json', withCredentials: true, params: { role: role } }
     );
+  }
+  getUserDetails(role: string, username: string) {
+    return this.http.get<ResponseDTO<UserDetailsDTO>>(
+      `${this.API_URL}/user/details`,
+      {
+        responseType: 'json',
+        withCredentials: true,
+        params: { role: role, username: username },
+      }
+    );
+  }
+  updateUserRoles(user: UserDTO) {
+    return this.http.put<ResponseDTO<string>>(
+      `${this.API_URL}/user/roles`,
+      user,
+      {
+        responseType: 'json',
+        withCredentials: true,
+      }
+    );
+  }
+  updateUser(user: UserCreateDTO) {
+    return this.http.put<ResponseDTO<string>>(`${this.API_URL}/user`, user, {
+      responseType: 'json',
+      withCredentials: true,
+    });
   }
 }
