@@ -1,6 +1,6 @@
 <main
   class="flex flex-col items-center w-full border rounded-md bg-bg-color h-[85vh] overflow-y-scroll p-2">
-  <h1 class="text-xl font-bold">
+  <h1 class="text-xl font-bold my-2">
     Registro de usuario
   </h1>
   <form
@@ -139,8 +139,8 @@
             class="border border-gray-400 rounded-md px-3 p-1 outline-none"
             formControlName="role"
             (change)="changeValidators($event)">
-            <option value="ADMINISTRATIVE">Administrative</option>
-            <option selected value="TEACHER">Profesor</option>
+            <option value="ADMINISTRATIVE" selected>Administrativo</option>
+            <option value="TEACHER">Profesor</option>
             <option value="PARENT">Padre</option>
           </select>
         </div>
@@ -153,6 +153,16 @@
               type="email"
               class="h-8 border border-gray-400 rounded-md pl-3 outline-none"
               formControlName="workEmail" />
+            @if (
+              userForm.get('workEmail')?.invalid &&
+              userForm.get('workEmail')?.touched &&
+              !userForm.get('workEmail')?.getError('emailExists')
+              ) {
+              <span class="text-red-600 text-sm">Email Invalido</span>
+            }
+            @if (userForm.get('workEmail')?.getError('emailExists')) {
+              <span class="text-red-600 text-sm">Email ya registrado</span>
+            }
           </div>
           <app-subject-selection
             (subjectEventEmitter)="

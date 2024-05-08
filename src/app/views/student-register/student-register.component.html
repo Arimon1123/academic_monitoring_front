@@ -1,8 +1,9 @@
 <main class="flex flex-col items-center w-full">
   <section class="grid lg:grid-cols-3A grid-rows-none w-full gap-5">
     <div
-      class="h-fit max-h-[85vh] border rounded-md bg-bg-color p-5 box-border justify-start items-center overflow-y-hidden"
+      class="h-fit max-h-[85vh] border rounded-md bg-bg-color p-2 box-border justify-start items-center overflow-y-hidden"
     >
+      <h2>Búsqueda de padre</h2>
       <form [formGroup]="parentForm" (ngSubmit)="searchParents()" class="flex">
         <input
           type="text"
@@ -41,7 +42,7 @@
       </ul>
     </div>
     <div
-      class="h-[85vh] w-full border rounded-md bg-bg-color p-5 box-border justify-start items-center overflow-auto"
+      class="h-[85vh] w-full border rounded-md bg-bg-color px-5 py-2 box-border justify-start items-center overflow-auto"
     >
       <h1 class="text-lg font-semibold">Registro de Estudiante</h1>
       <form

@@ -1,18 +1,20 @@
 <main
-  class="flex flex-col h-[87vh] border rounded-md bg-bg-color overflow-y-hidden overflow-x-hidden lg:overflow-x-scroll"
+  class="flex flex-col h-[87vh] border rounded-md bg-bg-color overflow-y-auto"
 >
-  <div class="w-full flex justify-start p-4">
-    <h1 class="text-lg font-semibold text-start">Asignación de horarios</h1>
+  <div class="w-full flex justify-center">
+    <h1 class="text-xl font-bold my-2">
+      Asignación de materias
+    </h1>
   </div>
   <div
-    class="xl:grid xl:grid-cols-assignation flex flex-col gap-5 justify-evenly px-2"
+    class="xl:grid xl:grid-cols-assignation flex flex-col justify-evenly px-2"
   >
-    <div class="flex md:flex-row flex-coljustify-evenly">
+    <div class="flex md:flex-row flex-col justify-evenly space-y-2 md:space-y-0">
       <div
-        class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border"
+        class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-[75vh] md:mx-2 mx-0 box-border md:h-96"
       >
         <h2 class="text-md font-semibold my-4">Grado</h2>
-        <ul>
+        <ul class="w-full overflow-auto">
           @for (grade of gradeList; track grade.id) {
             <li class="flex justify-center my-2">
               <button
@@ -28,19 +30,19 @@
       </div>
       @if (selectedGrade) {
         <div
-          class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border"
+          class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-[75vh]  md:mx-2 mx-0 box-border md:h-96"
           #course
         >
           <h2 class="text-md font-semibold my-4">Paralelo</h2>
-          <ul>
-            @for (class of classList; track class.id) {
+          <ul class="w-full overflow-auto">
+            @for (classR of classList; track classR.id) {
               <li class="flex justify-center my-2">
                 <button
                   class="border rounded-md p-2 w-32 transition-colors hover:bg-active hover:text-white"
-                  (click)="selectClass(class)"
-                  [ngClass]="getClassClasses(class.id)"
+                  (click)="selectClass(classR)"
+                  [ngClass]="getClassClasses(classR.id)"
                 >
-                  {{ class.identifier }}
+                  {{ classR.identifier }}
                 </button>
               </li>
             }
@@ -49,11 +51,12 @@
       }
       @if (selectedClass) {
         <div
-          class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border"
+          class="flex flex-col border rounded-md bg-white h-fit w-full pb-2 justify-start items-center xl:h-[75vh] md:mx-2 mx-0 box-border md:h-96"
+          #subject
         >
           <h2 class="text-md font-semibold my-4">Materia</h2>
-          <ul>
-            @for (subject of subjectList; track subject.id) {
+          <ul class="w-full overflow-auto">
+            @for (subject of subjectList; track $index) {
               <li class="flex justify-center my-2">
                 <button
                   class="border rounded-md p-2 w-32 transition-colors hover:bg-active hover:text-white"
@@ -70,17 +73,18 @@
     </div>
     @if (selectedSubject.id) {
       <div
-        class="flex flex-col w-full h-fit xl:h-[75vh] border rounded-md bg-white p-2 overflow-y-scroll"
+        class="flex flex-col w-full h-fit xl:h-[75vh] border rounded-md bg-white p-4 overflow-auto m-2 md:m-0"
+        #schedule
       >
         <h2 class="text-md font-semibold text-start mb-2">Asignación</h2>
         <h3 class="text-md font-normal text-start mb-2">Profesor</h3>
-        <div class="flex w-full justify-between">
+        <div class="flex w-full justify-between my-2">
           <select
             (change)="selectTeacher($event)"
             [(ngModel)]="selectedTeacher.id"
-            class="w-4/5 h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+            class="w-4/5 h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary p-0"
           >
-            <option value="0">Seleccionar docente</option>
+            <option value="0" disabled selected>Seleccionar docente</option>
             @for (teacher of teacherList; track teacher.id) {
               <option value="{{ teacher.id }}">
                 {{ teacher.person.name }} {{teacher.person.lastname}}
@@ -90,12 +94,12 @@
         </div>
         @if (selectedSubject) {
           <div class="flex flex-col justify-start w-full">
-            <h3 class="text-md font-normal text-start my-2">Aulas</h3>
+            <h3 class="text-md font-normal text-start ">Aulas</h3>
             <ul
-              class="flex flex-row my-2 lg:overflow-x-hidden overflow-x-scroll w-full"
+              class="flex flex-row my-2 overflow-x-auto w-full space-x-2 p-2"
             >
               @for (classroom of classroomList; track classroom.id) {
-                <li class="mr-2">
+                <li class="" a >
                   <button
                     class="border rounded-md p-2 w-32 transition-colors hover:bg-active hover:text-white"
                     (click)="selectClassroom(classroom)"
@@ -119,14 +123,15 @@
           </div>
         }
         @if (showSchedule) {
-          <app-schedule-selection [teacherData]="selectedTeacher"
+          <app-schedule-selection
+            class="overflow-auto" [teacherData]="selectedTeacher"
                                   [classRoomData]="selectedClassroom"
                                   [selectedSubject]="selectedSubject"
                                   [classData]="selectedClass"
                                   [isForAssignation]="true"
                                   (scheduleEventEmitter)="onUpdateScheduleHandler($event)"
           ></app-schedule-selection>
-          <div class="w-full flex justify-end">
+          <div class="w-full flex justify-end my-2">
             <button
               (click)="onSubmitHandler()"
               class="bg-primary text-white border rounded-md py-1 px-3"

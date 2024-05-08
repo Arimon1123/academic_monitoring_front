@@ -1,5 +1,7 @@
-<p>chat-list works!</p>
-<ul class="p-2 space-y-2  w-full">
+<h3 class="font-semibold text-lg ml-1">Chats</h3>
+<input placeholder="Busca un chat" [(ngModel)]="search" (ngModelChange)="onSearchInputChangeHandler()"
+class="w-full border rounded-md focus:outline-1 focus:outline-active outline-active px-2">
+<ul class="py-2 space-y-2  w-full">
   @for (message of lastMessageList; track message.id) {
     <li
       tabindex="0"
@@ -28,7 +30,15 @@
             <p class="font-bold text-amber-600 truncate w-full">
               {{ message.name }} {{ message.lastname }}
             </p>
-            <p class="truncate w-full">{{ message.content }}</p>
+            @if (message.sender === userData.user.username) {
+              <p class="text-gray-500 truncate w-full">
+                Tú: {{ message.content }}
+              </p>
+            } @else {
+              <p class="text-gray-500 truncate w-full">
+                {{ message.content }}
+              </p>
+            }
           </div>
           <div class="flex flex-col">
             <span class="text-xs">{{ message.date | date: "HH:mm" }}</span>

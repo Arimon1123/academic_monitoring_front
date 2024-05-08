@@ -87,13 +87,13 @@
         <h2 class="text-white font-semibold">Menu</h2>
         @for (route of routesList.uniqueRoutes; track route.id) {
           <li
-            class="flex items-center justify-center w-fu p-2 border border-white transition duration-75 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700"
+            class="flex items-center justify-center w-full border border-white transition duration-75 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700"
             data-drawer-target="logo-sidebar"
             data-drawer-toggle="logo-sidebar"
           >
             <a
               routerLink="{{ route.route }}"
-              class="text-white w-full h-full"
+              class="text-white w-full h-full p-2"
               role="menuitem"
               >{{ route.title }}</a
             >
@@ -106,7 +106,7 @@
             <button
               type="button"
               (click)="showList('dropdown-' + student.id)"
-              class="flex items-center w-full p-2 border border-white transition duration-75 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700"
+              class="flex items-center w-full border border-white transition duration-75 p-2 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700"
               [attr.aria-controls]="'dropdown-' + student.id"
             >
               <span
@@ -136,13 +136,13 @@
             >
               @for (route of routesList.childRoutes; track route.id) {
                 <li
-                  class="flex items-center justify-start w-11/12 p-2 border border-white transition duration-75 rounded-lg group hover:bg-active"
+                  class="flex items-center justify-start w-11/12 border border-white transition duration-75 rounded-lg group hover:bg-active"
                   data-drawer-target="logo-sidebar"
                   data-drawer-toggle="logo-sidebar"
                 >
                   <a
                     [routerLink]="route.route + '/' + student.id"
-                    class="ml-2 text-white text-center inline w-full h-full"
+                    class="text-white text-center p-2 inline w-full h-full"
                     role="menuitem"
                     >{{ route.title }}</a
                   >

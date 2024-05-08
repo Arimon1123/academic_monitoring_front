@@ -25,8 +25,13 @@
       class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
     >
       <thead class="bg-selected text-white">
+      <th
+        class="w-10 border text-center first:border-l first:rounded-tl-lg border-gray font-extralight sticky left-0 h-fit bg-active"
+      >
+        Nro
+      </th>
         <th
-          class="w-64 border text-center first:border-l first:rounded-tl-lg border-gray font-extralight sticky left-0 h-fit bg-active"
+          class="w-64 border text-center h-fit bg-active"
         >
           Estudiante
         </th>
@@ -45,9 +50,11 @@
         </th>
       </thead>
       <tbody>
+
         @for (student of table; track student.student.id; let idx = $index) {
           <tr>
-            <td class="border text-start pl-5 sticky left-0 bg-white truncate">
+            <td class="border text-center sticky left-0 bg-white truncate">{{idx + 1 }}</td>
+            <td class="border text-start pl-5 bg-white truncate">
               {{ student.student.fatherLastname }}
               {{ student.student.motherLastname }} {{ student.student.name }}
             </td>

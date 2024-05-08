@@ -54,7 +54,7 @@ export class PermissionDetailsComponent implements OnInit {
     });
   }
   openModal(title: string, message: string) {
-    this.modalService.open({
+    return this.modalService.open({
       content: this.content!,
       options: {
         isSubmittable: false,
@@ -81,13 +81,14 @@ export class PermissionDetailsComponent implements OnInit {
       .rejectPermission(this.permissionId, this.reason)
       .subscribe({
         next: (data: ResponseDTO<string>) => {
-          this.openModal('Permiso Rechazado', data.message);
+          this.openModal('Permiso Rechazado', data.message).subscribe({
+            complete: () => {
+              this.router.navigate(['/permissionList']);
+            },
+          });
         },
         error: (error: HttpErrorResponse) => {
           this.openModal('Error', error.message);
-        },
-        complete: () => {
-          this.router.navigate(['/permissionList']);
         },
       });
   }
@@ -105,8 +106,7 @@ export class PermissionDetailsComponent implements OnInit {
         },
       })
       .subscribe({
-        next: (data: string) => {
-          this.reason = data;
+        complete: () => {
           this.rejectPermission();
         },
       });

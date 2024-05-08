@@ -1,4 +1,10 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { GradeDTO } from '../../models/GradeDTO';
 import { ClassListDTO } from '../../models/ClassListDTO';
 import { SubjectDTO } from '../../models/SubjectDTO';
@@ -30,7 +36,10 @@ import { ScheduleSelectionComponent } from '../../components/schedule-selection/
   styleUrl: './assignation.component.css',
 })
 export class AssignationComponent implements OnInit {
-  @ViewChild('modal') content: TemplateRef<unknown> | undefined;
+  @ViewChild('modal') contentEl: TemplateRef<unknown> | undefined;
+  @ViewChild('course') courseEl: ElementRef | undefined;
+  @ViewChild('subject') subjectEl: ElementRef | undefined;
+  @ViewChild('schedule') scheduleEl: ElementRef | undefined;
   showSchedule = false;
   currentAssignation: AssignationCreateDTO = {} as AssignationCreateDTO;
 
@@ -101,12 +110,20 @@ export class AssignationComponent implements OnInit {
     this.showSchedule = false;
     this.selectedGrade = grade;
     this.getClassByGrade(grade);
+    setTimeout(() => {
+      this.courseEl?.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }, 250);
   }
   selectClass(classDto: ClassListDTO) {
     this.showSchedule = false;
     this.selectedClass = classDto;
     this.getAssignationOptions();
     this.getSubjectsByGrade(this.selectedGrade);
+    setTimeout(() => {
+      this.subjectEl?.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }, 250);
   }
   selectTeacher(event: Event) {
     this.showSchedule = false;
@@ -126,6 +143,11 @@ export class AssignationComponent implements OnInit {
     this.showSchedule = false;
     this.selectedSubject = subjectDTO;
     this.getAssignationOptions();
+    setTimeout(() => {
+      this.scheduleEl?.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }, 250);
   }
 
   getAssignationOptions() {
@@ -150,14 +172,20 @@ export class AssignationComponent implements OnInit {
           this.teacherList = data.teachers.content;
           this.classroomList = data.classrooms.content;
           this.currentAssignation = data.assignation.content;
-          this.selectedTeacher =
-            this.teacherList.find(
-              teacher => teacher.id === this.currentAssignation.teacherId
-            ) || ({} as TeacherDTO);
-          this.selectedClassroom =
-            this.classroomList.find(
-              classroom => classroom.id === this.currentAssignation.classroomId
-            ) || ({} as ClassroomDTO);
+          if (this.currentAssignation) {
+            this.selectedTeacher =
+              this.teacherList.find(
+                teacher => teacher.id === this.currentAssignation.teacherId
+              ) || ({} as TeacherDTO);
+            this.selectedClassroom =
+              this.classroomList.find(
+                classroom =>
+                  classroom.id === this.currentAssignation.classroomId
+              ) || ({} as ClassroomDTO);
+          } else {
+            this.selectedTeacher = { id: 0 } as TeacherDTO;
+            this.selectedClassroom = {} as ClassroomDTO;
+          }
         },
         error: (error: Error) => {
           this.openModal('Error', error.message);
@@ -215,7 +243,7 @@ export class AssignationComponent implements OnInit {
 
   openModal(title: string, message: string) {
     this.modalService.open({
-      content: this.content!,
+      content: this.contentEl!,
       options: {
         isSubmittable: false,
         title: title,
@@ -229,5 +257,9 @@ export class AssignationComponent implements OnInit {
   }
   onClickShowScheduleHandler() {
     this.showSchedule = true;
+  }
+  showCurrentClassroom(event: Event) {
+    console.log(event);
+    (event.target as HTMLInputElement).scrollIntoView({ behavior: 'smooth' });
   }
 }

@@ -19,6 +19,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { debounceTime } from 'rxjs';
 import { SubjectSelectionComponent } from '../../components/subject-selection/subject-selection.component';
 import { ScheduleSelectionComponent } from '../../components/schedule-selection/schedule-selection.component';
+import { TeacherService } from '../../service/teacher.service';
 
 @Component({
   selector: 'app-users',
@@ -37,7 +38,8 @@ export class UsersComponent {
   constructor(
     private userService: UserService,
     private personService: PersonService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private teacherService: TeacherService
   ) {
     this.userForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -60,9 +62,9 @@ export class UsersComponent {
         Validators.required,
         Validators.minLength(5),
         Validators.maxLength(12),
-        Validators.pattern('^\\d{5,10}(?:[\\s-]\\w{1,2})?$'),
+        Validators.pattern('^\\d{5,12}(?:[\\s-]\\w{1,2})?$'),
       ]),
-      role: new FormControl('TEACHER', [
+      role: new FormControl('ADMINISTRATIVE', [
         Validators.required,
         Validators.minLength(4),
       ]),
@@ -85,6 +87,12 @@ export class UsersComponent {
       ?.valueChanges.pipe(debounceTime(500))
       .subscribe(() => {
         this.checkPhone();
+      });
+    this.userForm
+      .get('workEmail')
+      ?.valueChanges.pipe(debounceTime(500))
+      .subscribe(() => {
+        this.checkWorkEmail();
       });
   }
   @ViewChild('modal') modal: TemplateRef<unknown> | undefined;
@@ -189,6 +197,23 @@ export class UsersComponent {
           console.log(data);
           if (data.content) {
             this.userForm.controls['phone'].setErrors({ phoneExists: true });
+          }
+        },
+      });
+  }
+  checkWorkEmail() {
+    if (this.userForm.get('workEmail')?.errors) {
+      return;
+    }
+    this.teacherService
+      .existsByAcademicEmail(this.userForm.controls['workEmail'].value ?? '')
+      .subscribe({
+        next: (data: ResponseDTO<boolean>) => {
+          console.log(data);
+          if (data.content) {
+            this.userForm.controls['workEmail'].setErrors({
+              emailExists: true,
+            });
           }
         },
       });

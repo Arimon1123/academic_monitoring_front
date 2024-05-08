@@ -1,6 +1,7 @@
 <main
   class="h-[87vh] flex justify-center w-full border rounded-md bg-bg-color p-2">
-  <div class="flex flex-col items-center box-border w-full lg:w-3/5 my-1 overflow-y-auto">
+  <div
+    class="flex flex-col items-center box-border w-full lg:w-3/5 my-1 overflow-y-auto">
     <h1 class="text-lg font-semibold my-1">Edición de Usuario</h1>
     <app-user-card [user]="user" class="w-full lg:w-4/5 my-1"></app-user-card>
     <details
@@ -143,7 +144,7 @@
             </h3>
             <button
               (click)="onUnblockUserHandler(user.username)"
-              class="w-28 bg-accepted rounded-md  hover:bg-acceptedHover transition-colors text-white py-0.5 my-1">
+              class="w-28 bg-accepted rounded-md hover:bg-acceptedHover transition-colors text-white py-0.5 my-1">
               Permitir
             </button>
           </div>
@@ -169,71 +170,71 @@
         }
       </div>
     </details>
-      <details
-        class="flex flex-col border rounded-md p-3 my-1 bg-white w-full lg:w-4/5">
-        <summary
-          class="p-1 rounded-md inline text-md font-semibold text-start cursor-pointer hover:bg-gray-100 transition-colors">
-          Roles
-        </summary>
-        <form [formGroup]="roleForm" (ngSubmit)="onRoleFormSubmitHandler()">
-          <h3>Selección de roles</h3>
-          <div
-            class="flex md:flex-row flex-col w-full p-2 border rounded-md my-1 md:justify-around items-center space-y-2 space-x-2">
-            <label
-              class="inline-flex w-56 justify-between items-center cursor-pointer p-2 rounded-md hover:bg-gray-200 transition-colors">
-              <span
-                class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
-                >Administrador</span
-              >
-              <input
-                type="checkbox"
-                value="false"
-                class="sr-only peer"
-                formControlName="admin" />
-              <div
-                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-            </label>
-            <label
-              class="inline-flex justify-between items-center cursor-pointer p-2 rounded-md hover:bg-gray-200 transition-colors w-56">
-              <span
-                class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
-                >Profesor</span
-              >
-              <input
-                type="checkbox"
-                value="false"
-                class="sr-only peer"
-                formControlName="teacher" />
-              <div
-                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-            </label>
-            <label
-              class="inline-flex justify-between items-center cursor-pointer p-2 rounded-md hover:bg-gray-200 transition-colors w-56">
-              <span
-                class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
-                >Padre</span
-              >
-              <input
-                type="checkbox"
-                value="false"
-                class="sr-only peer"
-                formControlName="parent" />
-              <div
-                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-          <div class="flex items-end justify-end w-full">
-            <button
-              type="submit"
-              class="w-28 bg-primary rounded-md text-white py-1">
-              Guardar
-            </button>
-          </div>
-        </form>
-      </details>
+    <details
+      class="flex flex-col border rounded-md p-3 my-1 bg-white w-full lg:w-4/5">
+      <summary
+        class="p-1 rounded-md inline text-md font-semibold text-start cursor-pointer hover:bg-gray-100 transition-colors">
+        Roles
+      </summary>
+      <form [formGroup]="roleForm" (ngSubmit)="onRoleFormSubmitHandler()">
+        <h3>Selección de roles</h3>
+        <div
+          class="flex xl:flex-row lg:flex-col md:flex-row flex-col w-full p-2 border rounded-md my-1 md:justify-around items-center">
+          <label
+            class="inline-flex w-56 justify-between items-center cursor-pointer p-2 rounded-md hover:bg-gray-200 transition-colors">
+            <span
+              class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
+              >Administrador</span
+            >
+            <input
+              type="checkbox"
+              value="false"
+              class="sr-only peer"
+              formControlName="admin" />
+            <div
+              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          </label>
+          <label
+            class="inline-flex justify-between items-center cursor-pointer p-2 rounded-md hover:bg-gray-200 transition-colors w-56">
+            <span
+              class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
+              >Profesor</span
+            >
+            <input
+              type="checkbox"
+              value="false"
+              class="sr-only peer"
+              formControlName="teacher" />
+            <div
+              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          </label>
+          <label
+            class="inline-flex justify-between items-center cursor-pointer p-2 rounded-md hover:bg-gray-200 transition-colors w-56">
+            <span
+              class="me-5 text-md font-medium text-gray-900 dark:text-gray-300"
+              >Padre</span
+            >
+            <input
+              type="checkbox"
+              value="false"
+              class="sr-only peer"
+              formControlName="parent" />
+            <div
+              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          </label>
+        </div>
+        <div class="flex items-end justify-end w-full">
+          <button
+            type="submit"
+            class="w-28 bg-primary rounded-md text-white py-1">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </details>
     @if (userDetails !== undefined) {
       <details
-        class="flex flex-col border rounded-md p-3 my-1 bg-white w-full lg:w-4/5 ">
+        class="flex flex-col border rounded-md p-3 my-1 bg-white w-full lg:w-4/5">
         <summary
           class="p-1 rounded-md inline text-md font-semibold text-start cursor-pointer hover:bg-gray-100 transition-colors w-full">
           Información sobre el Profesor

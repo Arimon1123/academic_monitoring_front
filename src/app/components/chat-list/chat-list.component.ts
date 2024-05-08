@@ -5,22 +5,25 @@ import { UserDetailsDTO } from '../../models/UserDetailsDTO';
 import { environment } from '../../environments/environment.development';
 import { DatePipe } from '@angular/common';
 import { RxStompService } from '../../service/rx-stomp.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chat-list',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, FormsModule],
   templateUrl: './chat-list.component.html',
   styleUrl: './chat-list.component.css',
 })
 export class ChatListComponent implements OnInit {
   @Input() userData: UserDetailsDTO = {} as UserDetailsDTO;
   @Output() receiverEmitter = new EventEmitter<number>();
+  search: string = '';
   lastMessageList: LastMessageDTO[] = [];
+  completeMessageList: LastMessageDTO[] = [];
   protected API_URL = environment.API_URL;
   constructor(
     private chatService: ChatService,
-    private rxStompService: RxStompService,
+    private rxStompService: RxStompService
   ) {}
   ngOnInit() {
     this.subscribeToNotifications();
@@ -30,10 +33,10 @@ export class ChatListComponent implements OnInit {
     this.rxStompService
       .watch('/topic/notification/' + this.userData.user.username)
       .subscribe({
-        next: (lastNotification) => {
+        next: lastNotification => {
           const lastMessage = JSON.parse(lastNotification.body);
-          this.lastMessageList = this.lastMessageList
-            .map((message) => {
+          this.completeMessageList = this.lastMessageList
+            .map(message => {
               if (message.chatId === lastMessage.chatId) {
                 message = lastMessage;
               }
@@ -42,14 +45,16 @@ export class ChatListComponent implements OnInit {
             .sort((a, b) => {
               return new Date(b.date).getTime() - new Date(a.date).getTime();
             });
+          this.lastMessageList = this.completeMessageList;
           console.log(this.lastMessageList);
         },
       });
   }
   getLatestMessages() {
     this.chatService.getLastMessages(this.userData.user.username).subscribe({
-      next: (response) => {
+      next: response => {
         this.lastMessageList = response.content;
+        this.completeMessageList = response.content;
       },
     });
   }
@@ -63,5 +68,10 @@ export class ChatListComponent implements OnInit {
         this.receiverEmitter.emit(userId);
       }
     }
+  }
+  onSearchInputChangeHandler() {
+    this.lastMessageList = this.completeMessageList.filter(m => {
+      return m.username.includes(this.search);
+    });
   }
 }

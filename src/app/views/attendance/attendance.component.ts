@@ -32,20 +32,27 @@ export class AttendanceComponent implements OnInit {
   weekdays: { [key: string]: number };
   todayDate: Date;
   attendanceDates: AttendanceDateDTO[];
+  charDict: { [key: number]: string } = {
+    1: '✔',
+    2: '✘',
+    3: 'Lic.',
+    4: '-',
+    0: '•',
+  };
   constructor(
     private attendanceService: AttendanceService,
     private permissionService: PermissionService,
     private studentService: StudentService,
     private modalService: ModalService,
     private activeRoute: ActivatedRoute,
-    private assignationService: AssignationService,
+    private assignationService: AssignationService
   ) {
     this.todayDate = new Date(
       new Date().getFullYear() +
         '-' +
         (new Date().getMonth() + 1) +
         '-' +
-        new Date().getDate(),
+        new Date().getDate()
     );
     this.studentList = [];
     this.permissionList = [];
@@ -84,7 +91,7 @@ export class AttendanceComponent implements OnInit {
   }
   ngOnInit() {
     this.activeRoute.params.subscribe({
-      next: (data) => {
+      next: data => {
         this.getAllLists(data['id']);
       },
     });
@@ -100,13 +107,13 @@ export class AttendanceComponent implements OnInit {
         this.attendanceService.getAttendanceDatesByAssignationId(assignationId),
       assignation: this.assignationService.getAssignationById(assignationId),
     }).subscribe({
-      next: (data) => {
+      next: data => {
         this.studentList = data.students.content;
         this.attendanceDTO = data.attendance.content.map(
           (attendance: AttendanceDTO) => {
             attendance.date = new Date(attendance.date + ' 00:00:0000');
             return attendance;
-          },
+          }
         );
         console.log(this.attendanceDTO.length);
         this.permissionList = data.permissions.content;
@@ -114,7 +121,7 @@ export class AttendanceComponent implements OnInit {
           (attendanceDate: AttendanceDateDTO) => {
             attendanceDate.date = new Date(attendanceDate.date + ' 00:00:0000');
             return attendanceDate;
-          },
+          }
         );
         this.assignationDTO = data.assignation.content;
         this.buildTable();
@@ -124,11 +131,11 @@ export class AttendanceComponent implements OnInit {
   buildTable() {
     const table: { student: StudentDTO; attendance: AttendanceDTO[] }[] = [];
     for (const student of this.studentList) {
-      let attendance = this.attendanceDTO.filter((attendance) => {
+      let attendance = this.attendanceDTO.filter(attendance => {
         return attendance.studentId === student.id;
       });
       if (attendance.length === 0 && this.attendanceDates.length > 0) {
-        attendance = this.attendanceDates.map((attendanceDate) => {
+        attendance = this.attendanceDates.map(attendanceDate => {
           return {
             id: 0,
             attendance: 4,
@@ -139,14 +146,14 @@ export class AttendanceComponent implements OnInit {
         });
       }
       if (attendance.length < this.attendanceDates.length) {
-        const missingDates = this.attendanceDates.filter((attendanceDate) => {
+        const missingDates = this.attendanceDates.filter(attendanceDate => {
           return !attendance.find(
-            (attendance) =>
+            attendance =>
               attendance.date.toLocaleDateString() ===
-              attendanceDate.date.toLocaleDateString(),
+              attendanceDate.date.toLocaleDateString()
           );
         });
-        missingDates.map((attendanceDate) => {
+        missingDates.map(attendanceDate => {
           attendance.push({
             id: 0,
             attendance: 4,
@@ -165,7 +172,7 @@ export class AttendanceComponent implements OnInit {
     const lastAttendance = this.attendanceDates[0];
     console.log(this.todayDate.getDay() + 1);
     const weekdayControl = this.assignationDTO.schedule.find(
-      (schedule) => this.weekdays[schedule.weekday] === this.todayDate.getDay(),
+      schedule => this.weekdays[schedule.weekday] === this.todayDate.getDay()
     );
     if (!weekdayControl) {
       alert('No hay clases hoy');
@@ -176,10 +183,10 @@ export class AttendanceComponent implements OnInit {
       lastAttendance.date.toDateString() !== this.todayDate.toDateString()
     ) {
       this.attendanceDates.unshift({ id: 0, date: this.todayDate });
-      this.table.map((row) => {
+      this.table.map(row => {
         const attendance = row.attendance;
         const permission = this.permissionList.find(
-          (permission) => permission.student.id === row.student.id,
+          permission => permission.student.id === row.student.id
         );
         if (permission) {
           attendance.unshift({
@@ -192,7 +199,7 @@ export class AttendanceComponent implements OnInit {
         } else {
           attendance.unshift({
             id: 0,
-            attendance: -1,
+            attendance: 0,
             date: this.todayDate,
             assignationId: this.assignationDTO.id,
             studentId: row.student.id,
@@ -219,7 +226,7 @@ export class AttendanceComponent implements OnInit {
       case 2:
         attendance.attendance = 1;
         break;
-      case -1:
+      case 0:
         attendance.attendance = 1;
         break;
       case 3:

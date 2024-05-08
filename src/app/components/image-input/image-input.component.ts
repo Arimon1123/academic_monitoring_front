@@ -20,7 +20,7 @@ export class ImageInputComponent implements OnInit {
   @Input({ transform: numberAttribute }) maxFile: number | undefined;
   @Input() multiple: boolean | undefined;
   @Output() uploadImageEvent = new EventEmitter<ImageDTO[]>();
-  images: ImageDTO[] = [];
+  @Input() images: ImageDTO[] = [];
 
   ngOnInit() {
     console.log(this.maxFile, this.multiple);
@@ -47,7 +47,6 @@ export class ImageInputComponent implements OnInit {
       }
     }
     this.uploadImageEvent.emit(this.images);
-    this.images = [];
   }
   getImageUrl(image: File) {
     return URL.createObjectURL(image);

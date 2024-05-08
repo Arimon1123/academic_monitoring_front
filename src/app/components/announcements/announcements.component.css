@@ -1,0 +1,8 @@
+#announcements {
+  opacity:1;
+  transition: opacity 1s;
+}
+
+#announcements.fadeOut {
+  opacity:0;
+}

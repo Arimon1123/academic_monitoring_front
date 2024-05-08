@@ -1,5 +1,5 @@
 <ul class="flex flex-wrap basis-48 my-2 overflow-x-auto justify-center">
-  @if(isForCreating){
+  @if(isForSaving){
     @for (image of images; track image.id) {
       <li class="mx-2">
         <button
@@ -11,11 +11,11 @@
             class="fas fa-trash-alt [color:#0072f5] hover:[color:#f9f9f9] transition-colors"
           ></i>
         </button>
-        <a href="{{image}}" target="_blank">
+        <a href="{{image.url}}" target="_blank">
           <img
             src="{{image.url}}"
             alt="{{ image.image?.name }}"
-            class="w-48 h-48 min-h-32 min-w-32 aspect-auto border rounded-md"
+            class="h-48 min-h-32 min-w-32 aspect-auto border rounded-md"
           />
         </a>
       </li>
@@ -27,7 +27,7 @@
             <img
               src="{{image}}"
               alt="image"
-              class="w-64  min-h-32  aspect-auto border rounded-md"
+              class=" min-h-32 min-w-32 max-h-56 aspect-auto border rounded-md"
             />
           </a>
       </li>

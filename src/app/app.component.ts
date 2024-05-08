@@ -97,6 +97,10 @@ export class AppComponent implements OnInit {
         this.userDetails = data.content;
       },
       complete: () => {
+        this.localStorage.setItem(
+          'userDetails',
+          JSON.stringify(this.userDetails)
+        );
         this.updateUserData();
         this.isLogged = true;
       },

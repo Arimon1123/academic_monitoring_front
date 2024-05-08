@@ -56,7 +56,7 @@ export class SubjectRegisterComponent implements OnInit {
       });
   }
 
-  onSubmit() {
+  onSubmitSubjectFormHandler() {
     const subject: SubjectDTO = {
       id: 0,
       name: this.subjectForm.value.name,
@@ -81,6 +81,8 @@ export class SubjectRegisterComponent implements OnInit {
       },
       complete: () => {
         this.openModal();
+        this.subjectForm.reset();
+        this.selectedRequirement = [];
       },
     });
   }

@@ -34,8 +34,14 @@
         class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
       >
         <thead class="bg-selected text-white">
+        <th
+          class="w-10 border text-center first:border-l first:rounded-tl-lg  border-gray font-extralight"
+        >
+          Nro
+        </th>
+
           <th
-            class="w-72 border text-center first:border-l first:rounded-tl-lg border-gray font-extralight"
+            class="w-72 border text-center  border-gray font-extralight"
           >
             Estudiante
           </th>
@@ -47,9 +53,12 @@
             </th>
           }
         </thead>
-        @for (row of table; track row.student) {
+        @for (row of table; track row.student; let index = $index) {
           <tr>
             <td class="border text-center">
+              {{index + 1}}
+            </td>
+            <td class="border text-start pl-5">
               {{ row.student.fatherLastname }} {{ row.student.motherLastname }},
               {{ row.student.name }}
             </td>
@@ -67,21 +76,7 @@
                       attendance.attendance !== 3
                   }"
                 >
-                  @if (attendance.attendance === 1) {
-                    ✔
-                  }
-                  @if (attendance.attendance === 2) {
-                    ✘
-                  }
-                  @if (attendance.attendance === 3) {
-                    Lic.
-                  }
-                  @if (attendance.attendance === -1) {
-                    ₳
-                  }
-                  @if (attendance.attendance === 4) {
-                    -
-                  }
+                  {{charDict[attendance.attendance]}}
                 </button>
               </td>
             }

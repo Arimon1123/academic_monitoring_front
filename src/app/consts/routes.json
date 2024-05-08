@@ -2,7 +2,7 @@
   "ADMINISTRATIVE": {
     "uniqueRoutes": [
       { "id": 1, "route": "/userRegister", "title": "Registro de Usuario" },
-      { "id": 2, "route": "/userList", "title": "Usuarios" },
+      { "id": 2, "route": "/userList", "title": "Búsqueda de usuarios" },
       { "id": 3, "route": "/assignation", "title": "Asignación de Materias" },
       { "id": 4, "route": "/permissionList", "title": "Licencias pendientes" },
       {
@@ -14,12 +14,28 @@
         "id": 6,
         "route": "/subjectRegister",
         "title": "Registro de Materias"
+      },
+      {
+        "id": 14,
+        "route": "/reportCards",
+        "title": "Boleta de notas"
+      },
+      {
+        "id": 15,
+        "route": "/announcementRegister",
+        "title" : "Registro de Anuncios"
+      },
+      {
+        "id": 16,
+        "route": "/reports",
+        "title" : "Reportes"
       }
     ]
   },
   "TEACHER": {
     "uniqueRoutes": [
-      { "id": 9, "route": "/teacherSchedule", "title": "Horarios" }
+      { "id": 9, "route": "/teacherSchedule", "title": "Horarios" },
+      { "id": 17, "route": "/chat", "title": "Chats" }
     ],
     "childRoutes": [
       { "id": 6, "route": "/attendance", "title": "Asistencia" },
@@ -29,7 +45,8 @@
   },
   "PARENT": {
     "uniqueRoutes": [
-      { "id": 12, "route": "/requirePermission", "title": "Licencias" }
+      { "id": 12, "route": "/requirePermission", "title": "Licencias" },
+      { "id": 13, "route": "/chat", "title": "Chats" }
     ],
     "childRoutes": [
       { "id": 10, "route": "/studentSchedule", "title": "Horario" },

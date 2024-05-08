@@ -1,15 +1,15 @@
 <main
   class="flex flex-col h-[85vh] w-full justify-start items-center bg-bg-color border rounded-md overflow-y-scroll"
 >
-  <div class="w-full flex justify-start p-4">
-    <h1 class="text-lg font-semibold text-start">Boletas de notas</h1>
-  </div>
-  <div class="flex flex-row w-full my-2">
+  <h1 class="text-xl font-bold my-2">
+    Boletas de notas
+  </h1>
+  <div class="flex flex-row w-full my-2 justify-center">
     <div
-      class="flex flex-col border rounded-md bg-white h-fit w-1/5 pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border"
+      class="flex flex-col border rounded-md bg-white h-fit w-1/5 pb-2 justify-start items-center xl:h-[75vh] mx-2 box-border"
     >
       <h2 class="my-2 font-semibold">Grado</h2>
-      <ul>
+      <ul class="overflow-auto w-full">
         @for (grade of gradeList; track grade.id) {
           <li class="flex justify-center my-2">
             <button
@@ -25,13 +25,13 @@
     </div>
     @if (classList.length > 0) {
       <div
-        class="flex flex-col border rounded-md bg-white h-fit w-1/5 pb-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border"
+        class="flex flex-col border rounded-md bg-white h-fit w-1/5 pb-2 justify-start items-center xl:h-[75vh] mx-2 box-border"
       >
         <h2 class="my-2 font-semibold">Cursos</h2>
-        <ul>
+        <ul class="overflow-auto">
           @for (classDTO of classList; track classDTO.id) {
             <li
-              class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36"
+              class="flex items-center justify-evenly my-2 bg-slate-200 border rounded-md p-2 w-36"
             >
               <span>{{ classDTO.grade }} {{ classDTO.identifier }} </span>
               <input
@@ -48,80 +48,74 @@
 
     @if (selectedClass.length > 0) {
       <section
-        class="flex flex-col border rounded-md bg-white h-fit w-3/5 max-w-[45rem] py-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border"
+        class="flex flex-col border rounded-md bg-white h-fit w-full max-w-[45rem] py-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border"
       >
         <h2 class="my-2 font-semibold">Bimestre</h2>
-        <ul class="flex flex-row flex-wrap justify-center">
-          <li
-            class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2"
-          >
-            1 bimestre
-            <input
-              type="radio"
-              name="bimester"
-              id="bimester"
-              [disabled]="isFinalReport"
-              (change)="onBimesterChange($event)"
-              checked
-              value="1"
-            />
-          </li>
-          <li
-            class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2"
-          >
-            2 bimestre
-            <input
-              type="radio"
-              name="bimester"
-              id="secondBimester"
-              [disabled]="isFinalReport"
-              (change)="onBimesterChange($event)"
-              value="2"
-            />
-          </li>
-          <li
-            class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2"
-          >
-            3 bimestre
-            <input
-              type="radio"
-              name="bimester"
-              id="thirdBimester"
-              [disabled]="isFinalReport"
-              (change)="onBimesterChange($event)"
-              value="3"
-            />
-          </li>
-          <li
-            class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2"
-          >
-            4 bimestre
-            <input
-              type="radio"
-              name="bimester"
-              id="fourthBimester"
-              [disabled]="isFinalReport"
-              [checked]="isFinalReport"
-              (change)="onBimesterChange($event)"
-              value="4"
-            />
-          </li>
-          <li
-            class="flex items-center justify-evenly my-2 bg-bg-color border rounded-md p-2 w-36 max-h-12 m-2"
-          >
-            Notas finales
-            <input
-              type="checkbox"
-              (change)="onFinalReportChange($event)"
-              name="isFinal"
-              id="isFinal"
-            />
-          </li>
-        </ul>
+        <form  [formGroup]="bimesterForm">
+          <ul class="flex flex-row flex-wrap justify-center">
+            <li
+              class="flex items-center justify-evenly my-2 bg-slate-200 border rounded-md p-2 w-36 max-h-12 m-2"
+            >
+              1 bimestre
+              <input
+                formControlName="bimester"
+                type="radio"
+                name="bimester"
+                id="bimester"
+                checked
+                value="1"
+              />
+            </li>
+            <li
+              class="flex items-center justify-evenly my-2 bg-slate-200 border rounded-md p-2 w-36 max-h-12 m-2"
+            >
+              2 bimestre
+              <input
+                formControlName="bimester"
+                type="radio"
+                name="bimester"
+                id="secondBimester"
+                value="2"
+              />
+            </li>
+            <li
+              class="flex items-center justify-evenly my-2 bg-slate-200 border rounded-md p-2 w-36 max-h-12 m-2"
+            >
+              3 bimestre
+              <input
+                formControlName="bimester"
+                type="radio"
+                name="bimester"
+                id="thirdBimester"
+                value="3"
+              />
+            </li>
+            <li
+              class="flex items-center justify-evenly my-2 bg-slate-200 border rounded-md p-2 w-36 max-h-12 m-2"
+            >
+              4 bimestre
+              <input
+                formControlName="bimester"
+                type="radio"
+                name="bimester"
+                id="fourthBimester"
+                value="4"
+              />
+            </li>
+          </ul>
+        </form>
+        <label>Notas finales
+          <input
+            type="checkbox"
+            (change)="onFinalReportChange($event)"
+            name="isFinal"
+            id="isFinal"
+          />
+         </label>
         <div class="flex w-full justify-end px-2">
           <button
             class="bg-primary text-white border rounded-md py-1 px-3"
-            (click)="downloadReportCards()"
+            (click)="onDownloadReportCardsHandler()"
           >
             Generar boletas
           </button>

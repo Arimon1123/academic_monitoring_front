@@ -5,14 +5,20 @@ import { GradeService } from '../../service/grade.service';
 import { ResponseDTO } from '../../models/ResponseDTO';
 import { ClassService } from '../../service/class.service';
 import { ReportCardService } from '../../service/reportcard.service';
-import { FormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { NgClass, NgStyle } from '@angular/common';
 import { ModalService } from '../../service/modal.service';
 
 @Component({
   selector: 'app-report-cards',
   standalone: true,
-  imports: [FormsModule, NgStyle, NgClass],
+  imports: [FormsModule, NgStyle, NgClass, ReactiveFormsModule],
   templateUrl: './report-cards.component.html',
   styleUrl: './report-cards.component.css',
 })
@@ -24,11 +30,12 @@ export class ReportCardsComponent implements OnInit {
   selectedGradeId: number;
   bimester: number;
   isFinalReport: boolean;
+  bimesterForm: FormGroup;
   constructor(
     private gradeService: GradeService,
     private classService: ClassService,
     private reportCardService: ReportCardService,
-    private modalService: ModalService,
+    private modalService: ModalService
   ) {
     this.gradeList = [];
     this.classList = [];
@@ -36,6 +43,12 @@ export class ReportCardsComponent implements OnInit {
     this.bimester = 1;
     this.isFinalReport = false;
     this.selectedGradeId = 0;
+    this.bimesterForm = new FormGroup({
+      bimester: new FormControl(1, [Validators.required]),
+    });
+    this.bimesterForm.valueChanges.subscribe(val => {
+      console.log(val);
+    });
   }
   ngOnInit() {
     this.getGradeList();
@@ -65,23 +78,23 @@ export class ReportCardsComponent implements OnInit {
     if (target.checked) {
       this.selectedClass.push(newId);
     } else {
-      this.selectedClass = this.selectedClass.filter((id) => {
+      this.selectedClass = this.selectedClass.filter(id => {
         return id != newId;
       });
     }
     console.log(this.selectedClass);
   }
-  downloadReportCards() {
+  onDownloadReportCardsHandler() {
     if (this.isFinalReport) this.bimester = 4;
     this.openModal();
     this.reportCardService
       .generateReportCards(
         this.selectedClass,
-        this.bimester,
-        this.isFinalReport,
+        this.bimesterForm.value.bimester,
+        this.isFinalReport
       )
       .subscribe({
-        next: (value) => {
+        next: value => {
           const blob = new Blob([value], { type: 'application/zip' });
           const url = window.URL.createObjectURL(blob);
           const anchor = document.createElement('a');
@@ -91,25 +104,29 @@ export class ReportCardsComponent implements OnInit {
         },
       });
   }
-  onBimesterChange(event: Event) {
-    this.bimester = parseInt((event.target as HTMLInputElement).value);
-  }
   onFinalReportChange(event: Event) {
     this.isFinalReport = (event.target as HTMLInputElement).checked;
+    if (this.isFinalReport) {
+      this.bimesterForm.setValue({ bimester: '4' });
+      this.bimesterForm.updateValueAndValidity();
+    } else {
+      this.bimesterForm.setValue({ bimester: '1' });
+      this.bimesterForm.updateValueAndValidity();
+    }
   }
   getStyles(id: number) {
     return {
       'bg-active': this.selectedGradeId === id,
       'text-white': this.selectedGradeId === id,
-      'bg-bg-color': this.selectedGradeId !== id,
+      'bg-slate-200': this.selectedGradeId !== id,
     };
   }
   openModal() {
-    this.modalService.open({
+    return this.modalService.open({
       content: this.modal!,
       options: {
         title: 'Boletas de notas',
-        size: 'medium',
+        size: 'small',
         isSubmittable: false,
         message:
           'Las boletas de notas se están generando, por favor espere.\n' +

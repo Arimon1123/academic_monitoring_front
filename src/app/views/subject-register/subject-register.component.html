@@ -2,16 +2,16 @@
   class="flex flex-col items-center w-full h-[85vh] border rounded-md bg-bg-color"
 >
   <div
-    class="flex flex-col h-fit rounded-md p-5 justify-start items-center w-4/5"
+    class="flex flex-col h-fit rounded-md px-5 py-2 justify-start items-center w-4/5"
   >
-    <h1 class="text-start font-semibold my-5 text-lg w-4/5">
+    <h1 class="text-xl font-bold my-2">
       Registro de materia
     </h1>
 
     <form
       class="flex flex-col justify-center items-center w-4/5"
       [formGroup]="subjectForm"
-      (ngSubmit)="onSubmit()"
+      (ngSubmit)="onSubmitSubjectFormHandler()"
     >
       <div class="w-full flex flex-row justify-between">
         <div class="flex flex-col md:w-[49%] w-full my-2">
@@ -23,23 +23,29 @@
             placeholder="Nombre de la Materia"
             formControlName="name"
           />
+          @if(subjectForm.get('name')?.invalid && subjectForm.get('name')?.touched) {
+            <span class="text-red-500 text-sm">El nombre de la materia es requerido</span>
+          }
         </div>
         <div class="flex flex-col md:w-[49%] w-full my-2">
-          <label for="subjectHours">Horas de la Materia</label>
+          <label for="subjectHours">Carga horaria</label>
           <input
             type="number"
             class="w-full h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
             id="subjectHours"
-            placeholder="Horas"
+            placeholder="Carga horaria"
             formControlName="hours"
           />
+          @if(subjectForm.get('hours')?.invalid && subjectForm.get('hours')?.touched) {
+            <span class="text-red-500 text-sm">Las horas de la materia son requeridas</span>
+          }
         </div>
       </div>
       <div class="flex flex-col w-full my-2">
         <label for="grade">Grado</label>
         <select
           id="grade"
-          class="w-full h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+          class="w-full h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary p-0"
           formControlName="grade"
         >
           @for (grade of gradeList; track grade.id) {
@@ -53,7 +59,7 @@
         <label for="requirements">Requisitos</label>
         <select
           id="requirements"
-          class="h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+          class="h-9 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary p-0"
           formControlName="requirements"
           (change)="addRequirement($event)"
         >
@@ -67,6 +73,9 @@
             </option>
           }
         </select>
+        @if(subjectForm.get('requirements')?.invalid && subjectForm.get('requirements')?.touched) {
+          <span class="text-red-500 text-sm">Los requisitos de la materia son requeridos</span>
+        }
       </div>
       <div class="flex flex-col w-full">
         <h2>Requisitos Seleccionados</h2>
@@ -89,6 +98,7 @@
       </div>
       <div class="flex flex-col w-full my-2 items-end">
         <button
+          [disabled]="subjectForm.invalid"
           type="submit"
           class="h-8 border rounded-md bg-primary text-bg-color disabled:opacity-50 transition disabled:hover:bg-primary hover:bg-selected hover:text-white mt-5 px-5 w-fit"
         >

@@ -1,18 +1,191 @@
-<div
-  class="grid grid-cols-2 w-full self-center gap-2 overflow-x-scroll items-start justify-items-center justify-center"
->
+<div class="w-full h-[87vh] overflow-auto bg-bg-color rounded-md border" >
   <div
-    class="w-full p-2 border rounded-md bg-bg-color col-span-2 flex flex-col items-center h-fit"
+    class="grid grid-cols-2 w-full self-center gap-2 overflow-x-scroll items-start justify-items-center justify-center"
   >
-    <div class="p-2 border rounded bg-white flex flex-col items-center">
-      <h2 class="font-semibold text-lg my-2">Desempeño</h2>
-      <div class="flex w-fit justify-center">
+    <div
+      class="w-full p-2 rounded-md col-span-2 flex flex-col items-center h-fit"
+    >
+      <div class="p-2 border rounded bg-white flex flex-col items-center">
+        <h2 class="font-semibold text-lg my-2">Desempeño</h2>
+        <div class="flex w-fit justify-center">
+          <label>
+            <span>Grado: </span>
+            <select
+              class="p-1 border rounded-md"
+              [(ngModel)]="performanceGradeId"
+              (ngModelChange)="onPerformanceGradeChange()"
+            >
+              <optgroup label="Primaria">
+                <option value="1">Primero</option>
+                <option value="2">Segundo</option>
+                <option value="3">Tercero</option>
+                <option value="4">Cuarto</option>
+                <option value="5">Quinto</option>
+                <option value="6">Sexto</option>
+              </optgroup>
+              <optgroup label="Secundaria">
+                <option value="7">Primero</option>
+                <option value="8">Segundo</option>
+                <option value="9">Tercero</option>
+                <option value="10">Cuarto</option>
+                <option value="11">Quinto</option>
+                <option value="12">Sexto</option>
+              </optgroup>
+            </select>
+          </label>
+        </div>
+        <ngx-charts-line-chart
+          [results]="performanceData"
+          [view]="[1000, 300]"
+          [yAxisLabel]="'Calificación'"
+          [xAxisLabel]="'Bimestre'"
+          [showXAxisLabel]="true"
+          [showYAxisLabel]="true"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [xScaleMax]="100"
+          [xScaleMin]="0"
+          [yScaleMax]="perfoYMax !== 0 ? perfoYMax : 100"
+          [yScaleMin]="perfoYMin !== 100 ? perfoYMin : 0"
+          [scheme]="'picnic'"
+          [autoScale]="true"
+          [showGridLines]="true"
+        ></ngx-charts-line-chart>
+      </div>
+    </div>
+
+    <div
+      class="flex flex-col w-full h-full p-2 justify-start items-center "
+    >
+     <div class="border p-2 rounded-md bg-white flex flex-col justify-center  items-center h-full w-full">
+       <h2 class="font-semibold text-lg my-2">Asistencia</h2>
+       <div class="flex mx-2 flex-col w-full justify-center items-center">
+         <label class="my-2">
+           <span class="inline-block w-56">Fecha Inicial</span>
+           <input
+             type="date"
+             class="border rounded-md w-32 py-1 px-2"
+             [value]="startDateString"
+             [(ngModel)]="startDateString"
+             (ngModelChange)="onStartDateChange()"
+             id="startDate"
+           />
+         </label>
+         <label class="my-2">
+           <span class="inline-block w-56">Fecha Final</span>
+           <input
+             type="date"
+             class="border rounded-md w-32 py-1 px-2"
+             [value]="endDateString"
+             [(ngModel)]="endDateString"
+             (ngModelChange)="onEndDateChange()"
+           />
+         </label>
+         <label class="my-2">
+           <span class="inline-block w-56">Grado:</span>
+           <select
+             class="px-2 py-1 border rounded-md w-32"
+             [(ngModel)]="attendanceGradeId"
+             (ngModelChange)="onAttendanceGradeChange()"
+           >
+             <optgroup label="Primaria">
+               <option value="1">Primero</option>
+               <option value="2">Segundo</option>
+               <option value="3">Tercero</option>
+               <option value="4">Cuarto</option>
+               <option value="5">Quinto</option>
+               <option value="6">Sexto</option>
+             </optgroup>
+             <optgroup label="Secundaria">
+               <option value="7">Primero</option>
+               <option value="8">Segundo</option>
+               <option value="9">Tercero</option>
+               <option value="10">Cuarto</option>
+               <option value="11">Quinto</option>
+               <option value="12">Sexto</option>
+             </optgroup>
+           </select>
+         </label>
+       </div>
+       <ngx-charts-bar-vertical-stacked
+         class="flex w-full justify-center"
+         [results]="attendanceData"
+         xAxisLabel="Curso"
+         yAxisLabel="Asistencias"
+         [showXAxisLabel]="true"
+         [showYAxisLabel]="true"
+         legendTitle="Leyenda"
+         [showDataLabel]="true"
+         [xAxis]="true"
+         [yAxis]="true"
+         [legend]="true"
+         [view]="[700, 350]"
+         [scheme]="'forest'"
+         [customColors]="attendanceCustomColors"
+         [yScaleMax]="50"
+       ></ngx-charts-bar-vertical-stacked>
+     </div>
+    </div>
+    <div
+      class="flex flex-col w-full h-full p-2 items-center"
+    >
+      <div class="flex flex-col w-full p-2 border rounded-md bg-white  items-center justify-center">
+        <h2 class="font-semibold text-lg my-2">Rango de calificaciones</h2>
+        <div class="flex my-2">
+          <h3 class="font-semibold">Bimestre:</h3>
+          <div class="mx-2 inline-block">
+            <label for="bimester_1">1er bimester</label>
+            <input
+              class="mx-2"
+              type="radio"
+              value="1"
+              name="bimester"
+              id="bimester_1"
+              (change)="onBimesterChange($event)"
+              checked
+            />
+          </div>
+          <div class="mx-2 inline-block">
+            <label for="bimester_2">2do bimester</label>
+            <input
+              class="mx-2"
+              type="radio"
+              value="2"
+              name="bimester"
+              id="bimester_2"
+              (change)="onBimesterChange($event)"
+            />
+          </div>
+          <div class="mx-2 inline-block">
+            <label for="bimester_3">3er bimestre</label>
+            <input
+              class="mx-2"
+              type="radio"
+              value="3"
+              name="bimester"
+              id="bimester_3"
+              (change)="onBimesterChange($event)"
+            />
+          </div>
+          <div class="mx-2 inline-block">
+            <label for="bimester_4">4to bimestre</label>
+            <input
+              class="mx-2"
+              type="radio"
+              value="4"
+              name="bimester"
+              id="bimester_4"
+              (change)="onBimesterChange($event)"
+            />
+          </div>
+        </div>
         <label>
           <span>Grado: </span>
           <select
             class="p-1 border rounded-md"
-            [(ngModel)]="performanceGradeId"
-            (ngModelChange)="onPerformanceGradeChange()"
+            [(ngModel)]="gradeRangeGradeId"
+            (ngModelChange)="onRangeGradeChange()"
           >
             <optgroup label="Primaria">
               <option value="1">Primero</option>
@@ -32,185 +205,20 @@
             </optgroup>
           </select>
         </label>
+        @if (showGradeRange) {
+          <ngx-charts-pie-chart
+            [results]="gradeRangeData"
+            [view]="[700, 400]"
+            [legend]="true"
+            [labels]="true"
+            [customColors]="gradeRangeCustomColors"
+            [doughnut]="true"
+            [arcWidth]="0.6"
+          >
+          </ngx-charts-pie-chart>
+        }
       </div>
-      <ngx-charts-line-chart
-        [results]="performanceData"
-        [view]="[1000, 300]"
-        [yAxisLabel]="'Calificación'"
-        [xAxisLabel]="'Bimestre'"
-        [showXAxisLabel]="true"
-        [showYAxisLabel]="true"
-        [xAxis]="true"
-        [yAxis]="true"
-        [legend]="true"
-        [xScaleMax]="100"
-        [xScaleMin]="0"
-        [yScaleMax]="perfoYMax !== 0 ? perfoYMax : 100"
-        [yScaleMin]="perfoYMin !== 100 ? perfoYMin : 0"
-        [scheme]="'picnic'"
-        [autoScale]="true"
-        [showGridLines]="true"
-      ></ngx-charts-line-chart>
     </div>
   </div>
 
-  <div
-    class="flex flex-col w-full h-full p-2 justify-start items-center border rounded-md bg-bg-color"
-  >
-    <h2 class="font-semibold text-lg my-2">Asistencia</h2>
-    <div class="flex mx-2">
-      <label>
-        <span>Fecha Inicial</span>
-        <input
-          type="date"
-          class="border rounded-md w-fit py-1 px-2 m-1"
-          [value]="startDateString"
-          [(ngModel)]="startDateString"
-          (ngModelChange)="onStartDateChange()"
-          id="startDate"
-        />
-      </label>
-      <label>
-        <span>Fecha Final</span>
-        <input
-          type="date"
-          class="border rounded-md w-fit py-1 px-2 m-1"
-          [value]="endDateString"
-          [(ngModel)]="endDateString"
-          (ngModelChange)="onEndDateChange()"
-        />
-      </label>
-      <label>
-        <span>Grado:</span>
-        <select
-          class="p-1 border rounded-md"
-          [(ngModel)]="attendanceGradeId"
-          (ngModelChange)="onAttendanceGradeChange()"
-        >
-          <optgroup label="Primaria">
-            <option value="1">Primero</option>
-            <option value="2">Segundo</option>
-            <option value="3">Tercero</option>
-            <option value="4">Cuarto</option>
-            <option value="5">Quinto</option>
-            <option value="6">Sexto</option>
-          </optgroup>
-          <optgroup label="Secundaria">
-            <option value="7">Primero</option>
-            <option value="8">Segundo</option>
-            <option value="9">Tercero</option>
-            <option value="10">Cuarto</option>
-            <option value="11">Quinto</option>
-            <option value="12">Sexto</option>
-          </optgroup>
-        </select>
-      </label>
-    </div>
-    <ngx-charts-bar-vertical-stacked
-      [results]="attendanceData"
-      xAxisLabel="Curso"
-      yAxisLabel="Asistencias"
-      [showXAxisLabel]="true"
-      [showYAxisLabel]="true"
-      legendTitle="Leyenda"
-      [showDataLabel]="true"
-      [xAxis]="true"
-      [yAxis]="true"
-      [legend]="true"
-      [view]="[700, 350]"
-      [scheme]="'forest'"
-      [customColors]="attendanceCustomColors"
-      [yScaleMax]="50"
-    ></ngx-charts-bar-vertical-stacked>
-  </div>
-  <div
-    class="flex flex-col w-full h-full p-2 items-center border rounded-md bg-bg-color"
-  >
-    <h2 class="font-semibold text-lg my-2">Rango de calificaciones</h2>
-    <div class="flex">
-      <h3 class="font-semibold">Bimestre:</h3>
-      <div class="mx-2 inline-block">
-        <label for="bimester_1">1er bimester</label>
-        <input
-          class="mx-2"
-          type="radio"
-          value="1"
-          name="bimester"
-          id="bimester_1"
-          (change)="onBimesterChange($event)"
-          checked
-        />
-      </div>
-      <div class="mx-2 inline-block">
-        <label for="bimester_2">2do bimester</label>
-        <input
-          class="mx-2"
-          type="radio"
-          value="2"
-          name="bimester"
-          id="bimester_2"
-          (change)="onBimesterChange($event)"
-        />
-      </div>
-      <div class="mx-2 inline-block">
-        <label for="bimester_3">3er bimestre</label>
-        <input
-          class="mx-2"
-          type="radio"
-          value="3"
-          name="bimester"
-          id="bimester_3"
-          (change)="onBimesterChange($event)"
-        />
-      </div>
-      <div class="mx-2 inline-block">
-        <label for="bimester_4">4to bimestre</label>
-        <input
-          class="mx-2"
-          type="radio"
-          value="4"
-          name="bimester"
-          id="bimester_4"
-          (change)="onBimesterChange($event)"
-        />
-      </div>
-    </div>
-    <label>
-      <span>Grado: </span>
-      <select
-        class="p-1 border rounded-md"
-        [(ngModel)]="gradeRangeGradeId"
-        (ngModelChange)="onRangeGradeChange()"
-      >
-        <optgroup label="Primaria">
-          <option value="1">Primero</option>
-          <option value="2">Segundo</option>
-          <option value="3">Tercero</option>
-          <option value="4">Cuarto</option>
-          <option value="5">Quinto</option>
-          <option value="6">Sexto</option>
-        </optgroup>
-        <optgroup label="Secundaria">
-          <option value="7">Primero</option>
-          <option value="8">Segundo</option>
-          <option value="9">Tercero</option>
-          <option value="10">Cuarto</option>
-          <option value="11">Quinto</option>
-          <option value="12">Sexto</option>
-        </optgroup>
-      </select>
-    </label>
-    @if (showGradeRange) {
-      <ngx-charts-pie-chart
-        [results]="gradeRangeData"
-        [view]="[700, 400]"
-        [legend]="true"
-        [labels]="true"
-        [customColors]="gradeRangeCustomColors"
-        [doughnut]="true"
-        [arcWidth]="0.6"
-      >
-      </ngx-charts-pie-chart>
-    }
-  </div>
 </div>

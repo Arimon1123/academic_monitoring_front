@@ -1,28 +1,32 @@
-<div class="w-screen m-auto">
+<div class="m-auto overflow-auto">
   <h2 class="text-2xl font-semibold mx-2">Avisos</h2>
-  <ul class="flex flex-row overflow-x-scroll overflow-y-hidden">
-    @for (announcement of announcements; track announcement.id) {
-      <li
-        class="inline-block border p-2 m-2 rounded-md max-w-[30rem] min-w-[30rem] bg-white"
+      <div
+        #announcement
+        id="announcements"
+        class="inline-block border p-2 m-2 rounded-md max-w-[36rem] min-w-[30rem] bg-white"
       >
         <div class="flex items-center justify-between">
-          <h3 class="text-lg font-semibold">{{ announcement.title }}</h3>
-          <p class="text-sm">{{ announcement.publishingDate | date: "dd/MM/yyyy" }}</p>
+          <h3 class="text-lg font-semibold">{{ currentAnnouncement.title }}</h3>
+          <p class="text-sm">{{ currentAnnouncement.publishingDate | date: "dd/MM/yyyy" }}</p>
         </div>
         <hr />
         <div class="flex flex-col w-full items-center">
-          <p class="break-words my-2 text-start min-h-[7rem]">
-            {{ announcement.message }}
+          <p class="break-words my-2 text-start max-h-[7rem]">
+            {{ currentAnnouncement.message }}
           </p>
           <hr />
-          <div class="w-full justify-center">
+          <div class="w-full justify-center p-5">
             <app-image-carrousel
-              [imageUrls]="announcement.images"
-              [isForCreating]="false">
+              [imageUrls]="currentAnnouncement.images"
+              [isForSaving]="false">
             </app-image-carrousel>
           </div>
         </div>
-      </li>
-    }
-  </ul>
+      </div>
+  <button (click)="onChangeAnIndexHandler(index + 1)">
+    siguiente
+  </button>
+  <button (click)="onChangeAnIndexHandler(index - 1)">
+    anterior
+  </button>
 </div>

@@ -9,7 +9,6 @@ import { UserListComponent } from './views/user-list/user-list.component';
 import { UsersComponent } from './views/users/users.component';
 import { StudentRegisterComponent } from './views/student-register/student-register.component';
 import { AssignationComponent } from './views/assignation/assignation.component';
-import { logGuard } from './guard/log.guard';
 import { RequireLicenseComponent } from './views/require-license/require-license.component';
 import { PermissionListComponent } from './views/permission-list/permission-list.component';
 import { PermissionDetailsComponent } from './views/permission-details/permission-details.component';
@@ -30,7 +29,6 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [logGuard],
   },
   {
     path: 'userRegister',

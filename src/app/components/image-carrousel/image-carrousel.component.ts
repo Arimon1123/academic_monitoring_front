@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment.development';
 })
 export class ImageCarrouselComponent {
   @Input() images?: ImageDTO[] = [];
-  @Input() isForCreating? = true;
+  @Input() isForSaving? = true;
   @Input() imageUrls?: string[] = [];
   @Output() deleteImageEvent = new EventEmitter<ImageDTO[]>();
   protected API_URL = environment.API_URL;
