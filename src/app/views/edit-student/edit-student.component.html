@@ -1,0 +1,166 @@
+<main id="main"
+  class="w-full h-[87vh] flex flex-col p-2 border rounded-md bg-bg-color">
+  <div class="p-2">
+    @if (showParentSearch) {
+      <app-parent-search
+        (parentEventEmitter)="addParent($event)"></app-parent-search>
+    }
+  </div>
+  <div>
+    <h1 class="text-xl font-semibold my-2">Edición de Estudiante</h1>
+    <div class="w-full flex flex-col overflow-y-auto space-y-2">
+      <app-student-card [student]="student" class="w-full"></app-student-card>
+      <details class="w-full flex flex-col border rounded-md p-2 bg-white">
+        <summary
+          class="flex cursor-pointer hover:bg-slate-100 transition-colors p-2 rounded-md">
+          Datos personales
+        </summary>
+        <form [formGroup]="studentForm" class="p-2 space-y-2">
+          <div class="flex flex-col w-full">
+            <label for="name">Nombres</label>
+            <input
+              class="border border-gray-400 rounded-md px-2 w-full"
+              type="text"
+              id="name"
+              formControlName="name" />
+          </div>
+          <div class="flex flex-col lg:flex-row w-full justify-between my-1">
+            <div class="flex flex-col lg:w-[47%] w-full">
+              <label for="fatherLastname">Apellido Paterno</label>
+              <input
+                class="border border-gray-400 rounded-md px-2 w-full"
+                type="text"
+                id="fatherLastname"
+                formControlName="fatherLastname" />
+            </div>
+            <div class="flex flex-col lg:w-[47%] w-full">
+              <label for="motherLastname">Apellido Materno</label>
+              <input
+                class="border border-gray-400 rounded-md px-2 w-full"
+                type="text"
+                id="motherLastname"
+                formControlName="motherLastname" />
+            </div>
+          </div>
+          <div class="flex flex-col lg:flex-row w-full justify-between my-1">
+            <div class="flex flex-col lg:w-[47%] w-full">
+              <label for="ci">CI</label>
+              <input
+                class="border border-gray-400 rounded-md px-2 w-full"
+                type="text"
+                id="ci"
+                formControlName="ci" />
+            </div>
+            <div class="flex flex-col lg:w-[47%] w-full">
+              <label for="rude">RUDE</label>
+              <input
+                class="border border-gray-400 rounded-md px-2 w-full"
+                type="text"
+                id="rude"
+                [disabled]="true"
+                formControlName="rude" />
+            </div>
+          </div>
+          <div>
+            <label for="address">Dirección</label>
+            <textarea
+              class="border border-gray-400 rounded-md px-2 w-full"
+              cols="2"
+              id="address"
+              formControlName="address"></textarea>
+          </div>
+          <div class="flex flex-col lg:flex-row w-full justify-between my-1">
+            <div class="flex flex-col lg:w-[47%] w-full">
+              <label for="birthday">Fecha de nacimiento</label>
+              <input
+                class="border border-gray-400 rounded-md px-2 w-full"
+                type="date"
+                id="birthday"
+                formControlName="birthDate" />
+            </div>
+            <div class="flex flex-col lg:w-[47%] w-full">
+              <label for="email">Email</label>
+              <input
+                class="border border-gray-400 rounded-md px-2 w-full"
+                type="email"
+                id="email"
+                formControlName="email" />
+            </div>
+          </div>
+          <div class="w-full flex justify-end my-2">
+            <button
+              (click)="onSubmitPersonalDataFormHandler()"
+              class="disabled:opacity-60 w-28 bg-primary rounded-md text-white py-1">
+              Guardar
+            </button>
+          </div>
+        </form>
+      </details>
+      <details class="w-full flex flex-col border rounded-md p-2 bg-white">
+        <summary
+          class="flex cursor-pointer hover:bg-slate-100 transition-colors p-2 rounded-md">
+          Padre, Madre o Apoderado
+        </summary>
+        <ul>
+          @for (parent of parents; track parent.id) {
+            <li
+              class="p-2 border rounded-sm flex flex-row justify-evenly my-2 bg-white">
+              <span>Nombre: {{ parent.person.name }}</span>
+              <span>Apellido: {{ parent.person.lastname }}</span>
+              <span>Ci: {{ parent.person.ci }}</span>
+              <button (click)="removeParent(parent.id)">
+                <i class="fa-solid fa-trash" style="color: #f50505"></i>
+              </button>
+            </li>
+          } @empty {
+            <li class="p-2 rounded-sm flex flex-row justify-evenly my-2 bg-white">
+              <span>No se encontraron padres registrados!</span>
+            </li>
+          }
+          <div class="w-full flex justify-between">
+            <button
+              (click)="toggleParentSearch()"
+              class="disabled:opacity-60 w-28 bg-active hover:bg-selected transition-colors rounded-md text-white py-1">
+              Buscar Padre
+            </button>
+            <button
+              (click)="onSubmitStudentParentHandler()"
+              class="disabled:opacity-60 w-28 bg-primary hover:bg-active transition-colors rounded-md text-white py-1">
+              Guardar
+            </button>
+          </div>
+
+        </ul>
+      </details>
+      <details class="w-full flex flex-col border rounded-md p-2 bg-white">
+        <summary
+          class="flex cursor-pointer hover:bg-slate-100 transition-colors p-2 rounded-md">
+          Curso
+        </summary>
+        <div class="w-full p-2 flex flex-col justify-between">
+          <div class="w-full flex justify-between">
+            <span class="font-semibold">CURSO ACTUAL:  <span class="font-medium" >{{student.studentClass}}</span></span>
+            <button
+              (click)="toggleClassSelect()"
+              class="disabled:opacity-60 w-28 bg-active hover:bg-selected transition-colors rounded-md text-white py-1">
+              Editar curso
+            </button>
+          </div>
+          @if (showClassSelect){
+            <app-class-select (classEmitter)="onClassSelectHandler($event)"></app-class-select>
+            <div class="w-full flex justify-end">
+              <button
+                (click)="onSubmitStudentClassHandler()"
+                class="disabled:opacity-60 w-28 bg-primary hover:bg-active transition-colors rounded-md text-white py-1">
+                Guardar
+              </button>
+            </div>
+          }
+        </div>
+      </details>
+      <div class="size-24"></div>
+    </div>
+  </div>
+
+</main>
+<ng-template #parentModal> </ng-template>

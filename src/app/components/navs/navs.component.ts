@@ -48,6 +48,9 @@ export class NavsComponent implements OnInit, OnChanges {
     if (this.userDetails.role === 'PARENT') {
       this.routesList = routes.PARENT;
     }
+    if (this.userDetails.role === 'STUDENT') {
+      this.routesList = routes.STUDENT;
+    }
   }
   logout() {
     console.log('logout');

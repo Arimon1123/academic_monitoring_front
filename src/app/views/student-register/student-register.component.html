@@ -1,46 +1,6 @@
 <main class="flex flex-col items-center w-full">
   <section class="grid lg:grid-cols-3A grid-rows-none w-full gap-5">
-    <div
-      class="h-fit max-h-[85vh] border rounded-md bg-bg-color p-2 box-border justify-start items-center overflow-y-hidden"
-    >
-      <h2>Búsqueda de padre</h2>
-      <form [formGroup]="parentForm" (ngSubmit)="searchParents()" class="flex">
-        <input
-          type="text"
-          id="parentCi"
-          formControlName="ci"
-          placeholder="CI del Padre"
-          class="h-8 w-full mr-2 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
-        />
-        <button
-          type="submit"
-          class="bg-selected border rounded-md text-white py-1 px-2 hover:bg-sky-500 transition-colors"
-        >
-          Buscar
-        </button>
-      </form>
-      <ul class="h-fit max-h-[75vh] overflow-y-scroll">
-        @for (parent of parentList; track parent.id) {
-          <li
-            class="border rounded-md p-2 my-1 flex flex-row justify-evenly bg-white"
-          >
-            <div class="flex flex-col w-3/5 h-fit">
-              <span class="truncate hover:text-nowrap h-fit"
-                >{{ parent.person.name }} {{ parent.person.lastname }}</span
-              >
-              <span>Ci: {{ parent.person.ci }}</span>
-            </div>
-            <button
-              (click)="addParent(parent)"
-              class="border rounded-md px-2 py-0 hover:bg-slate-300 transition-colors"
-            >
-              <i class="fa-solid fa-user-plus" style="color: rgb(67, 138, 190)">
-              </i>
-            </button>
-          </li>
-        }
-      </ul>
-    </div>
+    <app-parent-search (parentEventEmitter)="addParent($event)"></app-parent-search>
     <div
       class="h-[85vh] w-full border rounded-md bg-bg-color px-5 py-2 box-border justify-start items-center overflow-auto"
     >
@@ -66,7 +26,7 @@
               studentForm.get("name")?.invalid &&
               studentForm.get("name")?.touched
             ) {
-              <span class="text-red-500">Campo invalido</span>
+              <span class="text-red-500 text-sm">Campo invalido</span>
             }
           </div>
           <div class="flex md:flex-row flex-col w-full justify-between">
@@ -84,7 +44,7 @@
                 studentForm.get("fatherLastname")?.invalid &&
                 studentForm.get("fatherLastname")?.touched
               ) {
-                <span class="text-red-500">Campo invalido</span>
+                <span class="text-red-500 text-sm">Campo invalido</span>
               }
             </div>
             <div class="flex flex-col my-2 md:w-[49%] w-full">
@@ -101,7 +61,7 @@
                 studentForm.get("motherLastname")?.invalid &&
                 studentForm.get("motherLastname")?.touched
               ) {
-                <span class="text-red-500">Campo invalido</span>
+                <span class="text-red-500 text-sm">Campo invalido</span>
               }
             </div>
           </div>
@@ -121,45 +81,50 @@
                 studentForm.get("birthDate")?.invalid &&
                 studentForm.get("birthDate")?.touched
               ) {
-                <span class="text-red-500">Campo invalido</span>
+                <span class="text-red-500 text-sm">Campo invalido</span>
               }
             </div>
             <div class="flex flex-col my-2 md:w-[49%] w-full">
               <!-- phone -->
-              <label for="studentPhone">Teléfono</label>
+              <label for="studentEmail">Email</label>
               <input
                 type="tel"
-                id="studentPhone"
-                placeholder="Teléfono del Estudiante"
-                formControlName="phone"
+                id="studentEmail"
+                placeholder="Email del Estudiante"
+                formControlName="email"
                 class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
-                autocomplete="new-phone"
+                autocomplete="email"
               />
               @if (
-                studentForm.get("phone")?.invalid &&
-                studentForm.get("phone")?.touched
+                studentForm.get("email")?.invalid &&
+                studentForm.get("email")?.touched &&
+                !studentForm.get("email")?.getError("exists")
               ) {
-                <span class="text-red-500">Campo invalido</span>
+                <span class="text-red-500 text-sm text-sm">Email invalido</span>
+              }
+              @if (studentForm.get("email")?.getError("exists")){
+                <span class="text-red-500 text-sm text-sm">Email ya registrado</span>
               }
             </div>
           </div>
           <!-- address -->
           <div class="flex flex-col my-2">
             <label for="studentAddress">Dirección</label>
-            <input
+            <textarea
               type="text"
               id="studentAddress"
               placeholder="Dirección del Estudiante"
               formControlName="address"
-              class="h-8 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+              class="border border-gray-400 rounded-md pl-3 outline-none focus:border-primary resize-none"
               autocomplete="new-address"
               aria-autocomplete="none"
-            />
+              cols="3"
+            ></textarea>
             @if (
               studentForm.get("address")?.invalid &&
               studentForm.get("address")?.touched
             ) {
-              <span class="text-red-500">Campo invalido</span>
+              <span class="text-red-500 text-sm">Campo invalido</span>
             }
           </div>
           <div class="flex md:flex-row flex-col w-full justify-between">
@@ -179,10 +144,10 @@
                 studentForm.get("ci")?.touched &&
                 !studentForm.get("ci")?.getError("exists")
               ) {
-                <span class="text-red-500">Campo invalido</span>
+                <span class="text-red-500 text-sm">Campo invalido</span>
               }
               @if (studentForm.get("ci")?.getError("exists")) {
-                <span class="text-red-500">El Ci ya existe</span>
+                <span class="text-red-500 text-sm">El Ci ya existe</span>
               }
             </div>
             <div class="flex flex-col my-2 md:w-[49%] w-full">
@@ -202,48 +167,16 @@
                 studentForm.get("rude")?.touched &&
                 !studentForm.get("rude")?.getError("exists")
               ) {
-                <span class="text-red-500">Campo invalido</span>
+                <span class="text-red-500 text-sm">Campo invalido</span>
               }
               @if (studentForm.get("rude")?.getError("exists")) {
-                <span class="text-red-500">El Rude ya existe</span>
+                <span class="text-red-500 text-sm">El Rude ya existe</span>
               }
             </div>
           </div>
+          <input formControlName="classId" type="hidden">
           <!-- grade with select -->
-          <div class="flex flex-col my-2">
-            <label for="studentGrade">Grado</label>
-            <select
-              id="studentGrade"
-              (change)="searchClass($event)"
-              formControlName="gradeId"
-              class="h-8 border border-gray-400 rounded-md pl-3 py-0 outline-none focus:border-primary"
-              autocomplete="off"
-            >
-              <option value="-1" disabled selected>Seleccione el grado</option>
-              @for (grade of gradeList; track grade.id) {
-                <option value="{{ grade.id }}">
-                  {{ grade.number }}° {{ grade.section }}
-                </option>
-              }
-            </select>
-          </div>
-          @if (classList.length > 0) {
-            <div class="flex flex-col my-2">
-              <label for="studentClass"> Curso</label>
-              <select
-                id="studentClass"
-                formControlName="classId"
-                class="h-8 border border-gray-400 rounded-md pl-3 py-0 outline-none focus:border-primary"
-                autocomplete="off"
-              >
-                @for (classNro of classList; track classNro.id) {
-                  <option value="{{ classNro.id }}">
-                    {{ classNro.identifier }}
-                  </option>
-                }
-              </select>
-            </div>
-          }
+          <app-class-select (classEmitter)="onSelectClassHandler($event)"></app-class-select>
         </div>
         <div class="my-2">
           <h2 class="font-semibold">Padre, Madre o Apoderado</h2>

@@ -51,8 +51,14 @@
             >
               <div class="px-4 py-3" role="none">
                 <p class="text-sm text-gray-900 dark:text-white" role="none">
-                  {{ userDetails.details.person.name }}
-                  {{ userDetails.details.person.lastname }}
+                 @if(userDetails.role !== 'STUDENT') {
+                   {{ userDetails.details.person.name }}
+                   {{ userDetails.details.person.lastname }}
+                 } @else {
+                    {{ userDetails.studentDetails.name }}
+                    {{ userDetails.studentDetails.fatherLastname }}
+                    {{ userDetails.studentDetails.motherLastname}}
+                 }
                 </p>
                 <p
                   class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
@@ -86,18 +92,34 @@
       <ul class="space-y-2 font-medium">
         <h2 class="text-white font-semibold">Menu</h2>
         @for (route of routesList.uniqueRoutes; track route.id) {
-          <li
-            class="flex items-center justify-center w-full border border-white transition duration-75 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700"
-            data-drawer-target="logo-sidebar"
-            data-drawer-toggle="logo-sidebar"
-          >
-            <a
-              routerLink="{{ route.route }}"
-              class="text-white w-full h-full p-2"
-              role="menuitem"
-              >{{ route.title }}</a
+          @if(userDetails.role !== 'STUDENT'){
+            <li
+              class="flex items-center justify-center w-full border border-white transition duration-75 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700"
+              data-drawer-target="logo-sidebar"
+              data-drawer-toggle="logo-sidebar"
             >
-          </li>
+              <a
+                routerLink="{{ route.route }}" 
+                routerLinkActive="bg-active text-white"
+                class="text-white w-full h-full p-2"
+                role="menuitem"
+              >{{ route.title }}</a
+              >
+            </li>
+          } @else {
+            <li
+              class="flex items-center justify-center w-full border border-white transition duration-75 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700"
+              data-drawer-target="logo-sidebar"
+              data-drawer-toggle="logo-sidebar"
+            >
+              <a
+                [routerLink]=[route.route,userDetails.studentDetails.id]
+                routerLinkActive="bg-active text-white"
+                class="text-white text-center inline w-full h-full p-2 rounded-lg"
+                role="menuitem"
+              >{{ route.title }}</a
+              >
+          }
         }
         <hr />
         @if (userDetails.role === "PARENT") {
@@ -142,7 +164,8 @@
                 >
                   <a
                     [routerLink]="route.route + '/' + student.id"
-                    class="text-white text-center p-2 inline w-full h-full"
+                    routerLinkActive="bg-active text-white"
+                    class="text-white text-center inline w-full h-full p-2 rounded-lg"
                     role="menuitem"
                     >{{ route.title }}</a
                   >
@@ -193,13 +216,14 @@
             >
               @for (route of routesList.childRoutes; track route.id) {
                 <li
-                  class="flex items-center justify-start w-11/12 p-2 border border-white transition duration-75 rounded-lg group hover:bg-active"
+                  class="flex items-center justify-start w-11/12 border border-white transition duration-75 rounded-lg group hover:bg-active"
                   data-drawer-target="logo-sidebar"
                   data-drawer-toggle="logo-sidebar"
                 >
                   <a
                     [routerLink]="route.route + '/' + assignation.id"
-                    class="ml-2 text-white text-center inline w-full h-full"
+                    routerLinkActive="bg-active"
+                    class="text-white text-center inline w-full h-full p-2 rounded-lg"
                     role="menuitem"
                     >{{ route.title }}</a
                   >
@@ -208,7 +232,6 @@
             </ul>
           }
         }
-        @if (userDetails.role === "ADMINISTRATIVE") {}
       </ul>
     </div>
   </aside>

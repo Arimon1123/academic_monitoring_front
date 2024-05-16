@@ -7,6 +7,7 @@ import { AssignationDTO } from './AssignationDTO';
 
 export interface UserDetailsDTO {
   details: ParentDTO | TeacherDTO | AdministrativeDTO;
+  studentDetails: StudentDTO;
   user: UserDTO;
   students: StudentDTO[];
   classAssignations: AssignationDTO[];

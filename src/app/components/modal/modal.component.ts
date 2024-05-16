@@ -6,9 +6,7 @@ import {
   Output,
   TemplateRef,
 } from '@angular/core';
-import { skipUntil } from 'rxjs';
 import { NgTemplateOutlet } from '@angular/common';
-import { compareSegments } from '@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker';
 
 @Component({
   selector: 'app-modal',
@@ -22,7 +20,7 @@ export class ModalComponent {
   @Input() title? = 'Modal title';
   @Input() message? = 'Modal message';
   @Input() isSubmittable? = true;
-  @Input() content: TemplateRef<any> | null;
+  @Input() content: TemplateRef<unknown> | null;
   @Input() data?: any = {};
   @Input() hasContent? = false;
   @Output() closeEvent = new EventEmitter();

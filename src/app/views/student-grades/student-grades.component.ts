@@ -27,14 +27,14 @@ export class StudentGradesComponent implements OnInit {
   constructor(
     private gradesService: GradesService,
     private activeRoute: ActivatedRoute,
-    private studentService: StudentService,
+    private studentService: StudentService
   ) {
     this.grades = {};
     this.studentData = {} as StudentDTO;
   }
   ngOnInit() {
     this.activeRoute.params.subscribe({
-      next: (params) => {
+      next: params => {
         this.getData(params['id'], new Date().getFullYear());
       },
     });
@@ -77,6 +77,15 @@ export class StudentGradesComponent implements OnInit {
           bimester: grade.bimester,
           assignationId: grade.assignation_Id,
         });
+      }
+      if (grades[key].length < 4) {
+        for (let i = grades[key].length; i < 4; i++) {
+          subjectGrades.push({
+            grade: 0,
+            bimester: i + 1,
+            assignationId: 0,
+          });
+        }
       }
       subjectGrades.push({
         grade: notaFinal / grades[key].length,

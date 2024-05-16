@@ -7,6 +7,7 @@ export interface StudentCreateDTO {
   birthDate: Date;
   address: string;
   rude: string;
+  email: string;
   classId: number;
   parentId: number[];
 }

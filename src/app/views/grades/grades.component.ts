@@ -40,7 +40,7 @@ export class GradesComponent implements OnInit {
     private gradesService: GradesService,
     private modalService: ModalService,
     private activeRoute: ActivatedRoute,
-    private assignationService: AssignationService,
+    private assignationService: AssignationService
   ) {
     this.assignation = {} as AssignationDTO;
     this.students = [];
@@ -50,7 +50,7 @@ export class GradesComponent implements OnInit {
   }
   ngOnInit() {
     this.activeRoute.params.subscribe({
-      next: (params) => {
+      next: params => {
         this.getAllData(params['id']);
       },
     });
@@ -60,12 +60,12 @@ export class GradesComponent implements OnInit {
     forkJoin({
       activities: this.activityService.getActivitiesByAssignationId(
         assignationId,
-        this.bimester,
+        this.bimester
       ),
       students: this.studentService.getStudentsByAssignationId(assignationId),
       grades: this.gradesService.getGradesByAssignation(
         assignationId,
-        this.bimester,
+        this.bimester
       ),
       assignation: this.assignationService.getAssignationById(assignationId),
     }).subscribe({
@@ -94,7 +94,7 @@ export class GradesComponent implements OnInit {
       for (const activity of this.activities) {
         const grade = this.grades[student.id]
           ? this.grades[student.id].find(
-              (grade) => grade.activityId === activity.id,
+              grade => grade.activityId === activity.id
             )
           : undefined;
         if (grade) {
@@ -147,7 +147,7 @@ export class GradesComponent implements OnInit {
     if (grade > 100 || grade < 0) {
       this.openModal(
         'La calificación debe ser un número entre 0 y 100',
-        'Error',
+        'Error'
       );
       target.value = String(0);
       return;
@@ -158,7 +158,7 @@ export class GradesComponent implements OnInit {
     for (const grade of tableRow.grades) {
       if (grade.activityId !== 0) {
         const activity = this.activities.find(
-          (activity) => activity.id === grade.activityId,
+          activity => activity.id === grade.activityId
         );
         finalGrade +=
           ((activity!.value / 100) *

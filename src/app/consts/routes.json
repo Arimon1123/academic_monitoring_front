@@ -52,5 +52,11 @@
       { "id": 10, "route": "/studentSchedule", "title": "Horario" },
       { "id": 11, "route": "/studentGrades", "title": "Notas" }
     ]
+  },
+  "STUDENT": {
+    "uniqueRoutes": [
+      { "id": 18, "route": "/studentSchedule", "title": "Horario" },
+      { "id": 19, "route": "/studentGrades", "title": "Notas" }
+    ]
   }
 }

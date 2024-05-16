@@ -1,0 +1,107 @@
+@if (student) {
+  <div
+    class="flex flex-col items-center justify-center rounded-lg border w-full bg-white">
+    <div class="w-full title-grid items-center justify-between my-2 px-2">
+      <div class="flex flex-col justify-center">
+        <span class="text-lg text-center"
+          >{{ student.name }} {{ student.fatherLastname }}
+          {{ student.motherLastname }}</span
+        >
+      </div>
+    </div>
+    <hr class="w-11/12" />
+    <div class="flex flex-col justify-between my-2 space-y-2">
+      <section class="flex xl:flex-row w-full sm:flex-col flex-row space-x-2">
+        <div class="min-w-44 w-full sm:w-fit">
+          <section class="flex items-center my-2">
+            <span title="email" class="inline-block w-full">
+              <img
+                src="assets/email.svg"
+                alt="user icon"
+                class="size-5 mr-2 inline" />{{ student.email }}</span
+            >
+          </section>
+          <section class="flex items-center my-2">
+            <span title="RUDE" class="inline-block w-full">
+              <img
+                src="assets/school.svg"
+                alt="user icon"
+                class="size-5 mr-2 inline" />{{ student.rude }}</span
+            >
+          </section>
+          <section class="flex items-center my-2">
+            <span title="class" class="inline-block w-full">
+              <img src="assets/id.svg" alt="user icon" class="size-5 mr-2 inline" />{{
+                student.studentClass
+              }}</span
+            >
+          </section>
+        </div>
+        <div class="w-full min-w-44">
+          <section class="flex items-center my-2">
+            <span title="CI" class="inline-block w-full">
+              <img src="assets/id.svg" alt="user icon" class="size-5 mr-2 inline" />
+              {{ student.ci }}</span
+            >
+          </section>
+          <section class="flex items-center my-2">
+            <span title="Dirección" class="inline-block w-full">
+              <img
+                src="assets/address.svg"
+                alt="user icon"
+                class="size-5 mr-2 inline" />{{ student.address }}</span
+            >
+          </section>
+          @if (student.user) {
+            <section class="flex items-center my-2">
+              <img
+                src="assets/address.svg"
+                alt="user icon"
+                class="size-5 mr-2" />
+              <span title="{{ student.address }}">{{
+                student.user.username
+              }}</span>
+            </section>
+          }
+        </div>
+      </section>
+      <ul class="flex flex-col w-full">
+        <h2>Padres</h2>
+        @for (parent of student.parents; track parent.id) {
+          <li
+            class="py-3 px-2 border w-full rounded-md flex flex-col justify-center">
+            <span class="inline-block w-full text-center"
+              >{{ parent.person.name }} {{ parent.person.lastname }}</span
+            >
+            <hr class="w-full" />
+            <div class="w-full flex flex-row justify-between my-2">
+              <span class="inline-block min-w-48 text-center">
+                <img
+                  src="./assets/id.svg"
+                  class="size-5 inline"
+                  alt="id-icon" />
+                {{ parent.person.ci }}</span
+              >
+              <span class="inline-block min-w-48 text-center">
+                <img
+                  src="./assets/phone.svg"
+                  class="size-5 inline"
+                  alt="id-icon" />
+                {{ parent.person.phone }}</span
+              >
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+    @if (showEditButton) {
+      <div class="my-2">
+        <a
+          class="my-1 h-fit box-border w-fit py-0.5 px-3 rounded-full border bg-primary text-white hover:bg-active transition-colors"
+          [routerLink]="['/editStudent', student.id]">
+          Editar
+        </a>
+      </div>
+    }
+  </div>
+}

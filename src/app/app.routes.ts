@@ -24,6 +24,8 @@ import { AnnouncementRegisterComponent } from './views/announcement-register/ann
 import { ChatsComponent } from './views/chats/chats.component';
 import { ReportsComponent } from './views/reports/reports.component';
 import { TestComponent } from './views/test/test.component';
+import { StudentListComponent } from './views/student-list/student-list.component';
+import { EditStudentComponent } from './views/edit-student/edit-student.component';
 
 export const routes: Routes = [
   {
@@ -131,5 +133,13 @@ export const routes: Routes = [
   {
     path: 'test',
     component: TestComponent,
+  },
+  {
+    path: 'studentList',
+    component: StudentListComponent,
+  },
+  {
+    path: 'editStudent/:id',
+    component: EditStudentComponent,
   },
 ];

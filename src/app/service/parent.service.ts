@@ -17,4 +17,12 @@ export class ParentService {
       withCredentials: true,
     });
   }
+  getParentsByStudentId(studentId: number) {
+    return this.http.get<ResponseDTO<ParentDTO[]>>(
+      `${this.API_URL}/parent/student/${studentId}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
 }

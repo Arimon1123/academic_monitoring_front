@@ -1,0 +1,33 @@
+<div class="flex flex-col my-2">
+  <label for="studentGrade">Grado</label>
+  <select
+    id="studentGrade"
+    (change)="searchClass($event)"
+    class="h-8 border border-gray-400 rounded-md pl-3 py-0 outline-none focus:border-primary"
+    autocomplete="off"
+  >
+    <option value="-1" disabled selected>Seleccione el grado</option>
+    @for (grade of gradeList; track grade.id) {
+      <option value="{{ grade.id }}">
+        {{ grade.number }}° {{ grade.section }}
+      </option>
+    }
+  </select>
+</div>
+@if (classList.length > 0) {
+  <div class="flex flex-col my-2">
+    <label for="studentClass"> Curso</label>
+    <select
+      id="studentClass"
+      class="h-8 border border-gray-400 rounded-md pl-3 py-0 outline-none focus:border-primary"
+      autocomplete="off"
+      (change)="onUpdateClassSelectHandler($event)"
+    >
+      @for (classNro of classList; track classNro.id) {
+        <option value="{{ classNro.id }}">
+          {{ classNro.identifier }}
+        </option>
+      }
+    </select>
+  </div>
+}

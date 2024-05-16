@@ -1,0 +1,41 @@
+<div
+  class="h-fit max-h-[85vh] border rounded-md bg-white p-2 box-border justify-start items-center overflow-y-hidden"
+>
+  <h2>Búsqueda de padre</h2>
+  <form [formGroup]="parentForm" (ngSubmit)="searchParents()" class="flex">
+    <input
+      type="text"
+      id="parentCi"
+      formControlName="ci"
+      placeholder="CI del Padre"
+      class="h-8 w-full mr-2 border border-gray-400 rounded-md pl-3 outline-none focus:border-primary"
+    />
+    <button
+      type="submit"
+      class="bg-selected border rounded-md text-white py-1 px-2 hover:bg-sky-500 transition-colors"
+    >
+      Buscar
+    </button>
+  </form>
+  <ul class="h-fit max-h-[75vh] overflow-y-scroll">
+    @for (parent of parentList; track parent.id) {
+      <li
+        class="border rounded-md p-2 my-1 flex flex-row justify-evenly bg-white"
+      >
+        <div class="flex flex-col w-3/5 h-fit">
+              <span class="truncate hover:text-nowrap h-fit"
+              >{{ parent.person.name }} {{ parent.person.lastname }}</span
+              >
+          <span>Ci: {{ parent.person.ci }}</span>
+        </div>
+        <button
+          (click)="addParent(parent)"
+          class="border rounded-md px-2 py-0 hover:bg-slate-300 transition-colors"
+        >
+          <i class="fa-solid fa-user-plus" style="color: rgb(67, 138, 190)">
+          </i>
+        </button>
+      </li>
+    }
+  </ul>
+</div>

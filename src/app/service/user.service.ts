@@ -8,6 +8,7 @@ import { UserDataDTO } from '../models/UserDataDTO';
 import { UserCreateDTO } from '../models/UserCreateDTO';
 import { PageDTO } from '../models/PageDTO';
 import { RoleDTO } from '../models/RoleDTO';
+import { StudentCreateDTO } from '../models/StudentCreateDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -111,5 +112,12 @@ export class UserService {
       responseType: 'json',
       withCredentials: true,
     });
+  }
+  saveStudent(student: StudentCreateDTO) {
+    return this.http.post<ResponseDTO<string>>(
+      `${this.API_URL}/user/student`,
+      student,
+      { withCredentials: true }
+    );
   }
 }
