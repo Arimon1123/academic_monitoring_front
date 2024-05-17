@@ -1,7 +1,7 @@
 <h3 class="font-semibold text-lg ml-1">Chats</h3>
 <input placeholder="Busca un chat" [(ngModel)]="search" (ngModelChange)="onSearchInputChangeHandler()"
 class="w-full border rounded-md focus:outline-1 focus:outline-active outline-active px-2">
-<ul class="py-2 space-y-2  w-full">
+<ul class="py-2 space-y-2 w-full h-[70vh] overflow-y-auto">
   @for (message of lastMessageList; track message.id) {
     <li
       tabindex="0"
@@ -43,7 +43,9 @@ class="w-full border rounded-md focus:outline-1 focus:outline-active outline-act
           <div class="flex flex-col">
             <span class="text-xs">{{ message.date | date: "HH:mm" }}</span>
             @if (!message.isSeen && message.sender !== userData.user.username) {
-              <span class="size-5 p-[.5px] bg-green-700 rounded-full">❗</span>
+              <span class="size-6 flex justify-center items-center bg-active rounded-full">
+                <img src="assets/exclamation.svg" alt="ex icon" class="inline-block size-5">
+              </span>
             }
           </div>
         </div>

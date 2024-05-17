@@ -120,4 +120,12 @@ export class UserService {
       { withCredentials: true }
     );
   }
+  getUserByAssignationId(assignationId: number) {
+    return this.http.get<ResponseDTO<UserDTO>>(
+      `${this.API_URL}/user/assignation/${assignationId}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
 }

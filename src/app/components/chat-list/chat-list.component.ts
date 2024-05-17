@@ -34,19 +34,26 @@ export class ChatListComponent implements OnInit {
       .watch('/topic/notification/' + this.userData.user.username)
       .subscribe({
         next: lastNotification => {
+          console.log(lastNotification);
           const lastMessage = JSON.parse(lastNotification.body);
-          this.completeMessageList = this.lastMessageList
-            .map(message => {
-              if (message.chatId === lastMessage.chatId) {
-                message = lastMessage;
-              }
-              return message;
-            })
-            .sort((a, b) => {
-              return new Date(b.date).getTime() - new Date(a.date).getTime();
-            });
-          this.lastMessageList = this.completeMessageList;
-          console.log(this.lastMessageList);
+          const receiverExists = this.lastMessageList.find(value => {
+            return value.chatId === lastMessage.chatId;
+          });
+          console.log(receiverExists);
+          if (receiverExists) {
+            this.lastMessageList = this.lastMessageList
+              .map(message => {
+                if (message.chatId === lastMessage.chatId) {
+                  message = lastMessage;
+                }
+                return message;
+              })
+              .sort((a, b) => {
+                return new Date(b.date).getTime() - new Date(a.date).getTime();
+              });
+          } else {
+            this.lastMessageList.unshift(lastMessage);
+          }
         },
       });
   }

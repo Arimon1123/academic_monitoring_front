@@ -4,7 +4,7 @@
       [userData]="userData"
       (receiverEmitter)="onReceiverSelected($event)"
     ></app-chat-list>
-    @if (receiverId !== 0) {
+    @if (receiverId) {
       <app-chat [receiverId]="receiverId"></app-chat>
     }
   </div>

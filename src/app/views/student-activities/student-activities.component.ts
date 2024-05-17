@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { ActivityService } from '../../service/activity.service';
 import { GradesService } from '../../service/grades.service';
 import { ResponseDTO } from '../../models/ResponseDTO';
@@ -13,11 +13,13 @@ import { NgClass, NgStyle } from '@angular/common';
 import { RoundPipe } from '../../pipes/RoundPipe';
 import { StudentService } from '../../service/student.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UserService } from '../../service/user.service';
+import { UserDTO } from '../../models/UserDTO';
 
 @Component({
   selector: 'app-student-activities',
   standalone: true,
-  imports: [NgStyle, RoundPipe, NgClass],
+  imports: [NgStyle, RoundPipe, NgClass, RouterLink],
   templateUrl: './student-activities.component.html',
   styleUrl: './student-activities.component.css',
 })
@@ -38,12 +40,14 @@ export class StudentActivitiesComponent implements OnInit {
   dimensionValue: { [key: string]: number };
   totalGrade: number;
   assignation: AssignationDTO;
+  user: UserDTO = {} as UserDTO;
   constructor(
     private route: ActivatedRoute,
     private activityService: ActivityService,
     private gradesService: GradesService,
     private assignationService: AssignationService,
     private studentService: StudentService,
+    private userService: UserService
   ) {
     this.assignation = {} as AssignationDTO;
     this.activities = [];
@@ -67,7 +71,7 @@ export class StudentActivitiesComponent implements OnInit {
         this.getData(
           params['studentId'],
           params['assignationId'],
-          params['bimester'],
+          params['bimester']
         );
         this.bimester = params['bimester'];
       },
@@ -77,21 +81,23 @@ export class StudentActivitiesComponent implements OnInit {
     forkJoin({
       activities: this.activityService.getActivitiesByAssignationId(
         assignationId,
-        bimester,
+        bimester
       ),
       grades: this.gradesService.getGradesByStudentIdAndAssignationAndBimester(
         studentId,
         assignationId,
-        bimester,
+        bimester
       ),
       assignation: this.assignationService.getAssignationById(assignationId),
       student: this.studentService.getStudentById(studentId),
+      user: this.userService.getUserByAssignationId(assignationId),
     }).subscribe({
       next: (data: {
         activities: ResponseDTO<ActivityDTO[]>;
         grades: ResponseDTO<ActivityGradeDTO[]>;
         assignation: ResponseDTO<AssignationDTO>;
         student: ResponseDTO<StudentDTO>;
+        user: ResponseDTO<UserDTO>;
       }) => {
         this.activities = data.activities.content;
         this.grades = data.grades.content;
@@ -99,6 +105,7 @@ export class StudentActivitiesComponent implements OnInit {
         this.studentData = data.student.content;
         this.table = this.buildTable();
         console.log(this.table);
+        this.user = data.user.content;
       },
       error: (error: HttpErrorResponse) => {
         console.error(error.message);
@@ -109,9 +116,7 @@ export class StudentActivitiesComponent implements OnInit {
     const table = [];
     for (let i = 0; i < this.activities.length; i++) {
       const activity = this.activities[i];
-      const grade = this.grades.find(
-        (grade) => grade.activityId === activity.id,
-      );
+      const grade = this.grades.find(grade => grade.activityId === activity.id);
       this.totalGrade +=
         (((activity.value * (grade?.grade || 0)) / 100) *
           this.dimensionValue[activity.dimension]) /

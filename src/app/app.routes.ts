@@ -147,4 +147,8 @@ export const routes: Routes = [
     path: 'inscription',
     component: StudentInscriptionComponent,
   },
+  {
+    path: 'chat/:receiverId',
+    component: ChatsComponent,
+  },
 ];

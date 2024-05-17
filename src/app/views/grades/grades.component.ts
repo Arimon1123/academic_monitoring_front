@@ -8,7 +8,7 @@ import { ActivityService } from '../../service/activity.service';
 import { GradesService } from '../../service/grades.service';
 import { ActivityGradeDTO } from '../../models/ActivityGradeDTO';
 import { forkJoin } from 'rxjs';
-import { DecimalPipe, NgClass } from '@angular/common';
+import { DecimalPipe, NgClass, NgStyle } from '@angular/common';
 import { RoundPipe } from '../../pipes/RoundPipe';
 import { ModalService } from '../../service/modal.service';
 import { ActivatedRoute } from '@angular/router';
@@ -16,7 +16,7 @@ import { AssignationService } from '../../service/assignation.service';
 @Component({
   selector: 'app-grades',
   standalone: true,
-  imports: [DecimalPipe, RoundPipe, NgClass],
+  imports: [DecimalPipe, RoundPipe, NgClass, NgStyle],
   templateUrl: './grades.component.html',
   styleUrl: './grades.component.css',
 })
@@ -28,6 +28,10 @@ export class GradesComponent implements OnInit {
   grades: { [key: number]: ActivityGradeDTO[] };
   table: { student: StudentDTO; grades: ActivityGradeDTO[] }[];
   bimester = 1;
+  decidirActivities: ActivityDTO[] = [];
+  serActivities: ActivityDTO[] = [];
+  saberActivities: ActivityDTO[] = [];
+  hacerActivities: ActivityDTO[] = [];
   dimensionValue: { [key: string]: number } = {
     HACER: 30,
     SABER: 30,
@@ -79,6 +83,18 @@ export class GradesComponent implements OnInit {
         this.students = data.students.content;
         this.grades = data.grades.content;
         this.assignation = data.assignation.content;
+        this.serActivities = this.activities.filter(value => {
+          return value.dimension === 'SER';
+        });
+        this.hacerActivities = this.activities.filter(value => {
+          return value.dimension === 'HACER';
+        });
+        this.saberActivities = this.activities.filter(value => {
+          return value.dimension === 'SABER';
+        });
+        this.decidirActivities = this.activities.filter(value => {
+          return value.dimension === 'DECIDIR';
+        });
         this.buildTable();
       },
     });
@@ -91,6 +107,9 @@ export class GradesComponent implements OnInit {
         grades: [],
       };
       let finalGrade = 0;
+      this.activities = this.activities.sort((a, b) => {
+        return ('' + a.dimension).localeCompare(b.dimension);
+      });
       for (const activity of this.activities) {
         const grade = this.grades[student.id]
           ? this.grades[student.id].find(

@@ -3,6 +3,7 @@ import { ChatComponent } from '../../components/chat/chat.component';
 import { ChatListComponent } from '../../components/chat-list/chat-list.component';
 import { UserDataService } from '../../service/user-data.service';
 import { UserDetailsDTO } from '../../models/UserDetailsDTO';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chats',
@@ -14,10 +15,19 @@ import { UserDetailsDTO } from '../../models/UserDetailsDTO';
 export class ChatsComponent implements OnInit {
   receiverId: number = 0;
   userData: UserDetailsDTO = {} as UserDetailsDTO;
-  constructor(private userDataService: UserDataService) {}
+  constructor(
+    private userDataService: UserDataService,
+    private activeRoute: ActivatedRoute
+  ) {}
   ngOnInit() {
+    this.activeRoute.params.subscribe({
+      next: params => {
+        this.receiverId = params['receiverId'];
+      },
+    });
+
     this.userDataService.currentUser.subscribe({
-      next: (response) => {
+      next: response => {
         this.userData = response!;
       },
     });

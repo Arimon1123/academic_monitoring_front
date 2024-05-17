@@ -54,11 +54,12 @@
           <td class="border text-center h-10">{{ rows.subject }}</td>
           @for (grades of rows.grades; track grades.grade; let last = $last) {
             <td
-              class="h-fit border text-center hover:opacity-70 transition-opacity"
+              class="h-fit border text-center transition-colors"
+              [ngClass]="{ 'hover:bg-active hover:text-white' : !last}"
             >
               @if (!last) {
                 <a
-                  class="inline-block w-full h-full"
+                  class="inline-block w-full h-full "
                   [routerLink]="[
                     '/studentActivities',
                     'student',
