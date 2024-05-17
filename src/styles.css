@@ -44,3 +44,10 @@ html {
 * {
   font-size: 18px;
 }
+
+details[open] > summary::after {
+  content: ' 🔽';
+}
+details > summary::after {
+  content: ' ▶️';
+}

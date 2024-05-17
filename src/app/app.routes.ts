@@ -26,6 +26,7 @@ import { ReportsComponent } from './views/reports/reports.component';
 import { TestComponent } from './views/test/test.component';
 import { StudentListComponent } from './views/student-list/student-list.component';
 import { EditStudentComponent } from './views/edit-student/edit-student.component';
+import { StudentInscriptionComponent } from './views/student-inscription/student-inscription.component';
 
 export const routes: Routes = [
   {
@@ -141,5 +142,9 @@ export const routes: Routes = [
   {
     path: 'editStudent/:id',
     component: EditStudentComponent,
+  },
+  {
+    path: 'inscription',
+    component: StudentInscriptionComponent,
   },
 ];

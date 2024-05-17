@@ -56,24 +56,24 @@ export class StudentService {
       { withCredentials: true }
     );
   }
-  searchStudents(
-    name: string,
-    lastname: string,
-    ci: string,
-    rude: string,
-    page: number,
-    size: number
-  ) {
+  searchStudents(searchOptions: {
+    name?: string;
+    lastname?: string;
+    ci?: string;
+    rude?: string;
+    page?: number;
+    size?: number;
+  }) {
     return this.http.get<ResponseDTO<PageDTO<StudentDTO[]>>>(
       `${this.API_URL}/student/search`,
       {
         params: {
-          name: name,
-          lastname: lastname,
-          ci: ci,
-          rude: rude,
-          page: page,
-          size: size,
+          name: searchOptions.name ?? '',
+          lastname: searchOptions.lastname ?? '',
+          ci: searchOptions.ci ?? '',
+          rude: searchOptions.rude ?? '',
+          page: searchOptions.page ?? '',
+          size: searchOptions.size ?? '',
         },
         withCredentials: true,
       }

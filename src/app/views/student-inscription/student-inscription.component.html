@@ -1,0 +1,58 @@
+<main
+  class="h-[87vh] p-2 border rounded-md bg-bg-color flex flex-col items-center overflow-y-auto">
+  <div class="w-4/5 flex">
+    <details
+      #detailsElement
+      class="w-full flex flex-col items-center justify-center">
+      <summary>Búsqueda de estudiantes</summary>
+      <div class="w-full flex flex-col items-center">
+        <form
+          [formGroup]="searchForm"
+          (ngSubmit)="onSubmitSearchStudentHandler()"
+          class="flex flex-col w-3/5 p-2 border rounded-md bg-white">
+          <label for="ci">CI del estudiante</label>
+          <input type="text" id="ci" formControlName="ci" />
+          <button
+            type="submit"
+            class="my-2 p-2 bg-primary rounded-md hover:bg-active text-white transition-colors w-fit">
+            Buscar
+          </button>
+        </form>
+        <ul class="w-3/5 space-y-2">
+          @for (student of students; track student.id) {
+            <li
+              class="w p-2 border rounded-md bg-white flex justify-between items-center">
+              <span class="min-w-48"
+                >{{ student.name }} {{ student.fatherLastname }}
+                {{ student.motherLastname }}</span
+              >
+              <span class="min-w-48 flex items-center">
+                <img
+                  src="./assets/id.svg"
+                  alt="id icon"
+                  class="size-5 inline-block" />
+                {{ student.ci }}</span
+              >
+              <button
+                (click)="onClickSelectStudentHandler(student)"
+                class="my-2 py-1 px-2 bg-primary rounded-md hover:bg-active text-white transition-colors w-fit text-sm">
+                Seleccionar
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  @if (selectedStudent) {
+    <div class="w-4/5 bg-white p-2 border rounded-md">
+      <app-student-card [student]="selectedStudent"></app-student-card>
+      <app-class-select
+        (classEmitter)="onSelectClassHandler($event)"></app-class-select>
+      <button class="my-2 py-1 px-2 bg-primary rounded-md hover:bg-active text-white transition-colors w-fit text-sm" (click)="updateStudentClass()">Guardar</button>
+    </div>
+  }
+</main>
+
+<ng-template #modal></ng-template>

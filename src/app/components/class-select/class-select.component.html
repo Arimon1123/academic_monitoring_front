@@ -16,13 +16,14 @@
 </div>
 @if (classList.length > 0) {
   <div class="flex flex-col my-2">
-    <label for="studentClass"> Curso</label>
+    <label for="studentClass">Paralelo</label>
     <select
       id="studentClass"
       class="h-8 border border-gray-400 rounded-md pl-3 py-0 outline-none focus:border-primary"
       autocomplete="off"
       (change)="onUpdateClassSelectHandler($event)"
     >
+      <option value="0" disabled selected>Seleccione un paralelo</option>
       @for (classNro of classList; track classNro.id) {
         <option value="{{ classNro.id }}">
           {{ classNro.identifier }}

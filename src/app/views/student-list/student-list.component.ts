@@ -49,14 +49,14 @@ export class StudentListComponent {
 
   onSearchSubmitHandler() {
     this.studentService
-      .searchStudents(
-        this.studentSearchForm.value.name,
-        this.studentSearchForm.value.lastname,
-        this.studentSearchForm.value.rude,
-        this.studentSearchForm.value.rude,
-        this.currentPage - 1,
-        10
-      )
+      .searchStudents({
+        name: this.studentSearchForm.value.name,
+        lastname: this.studentSearchForm.value.lastname,
+        rude: this.studentSearchForm.value.rude,
+        ci: this.studentSearchForm.value.rude,
+        page: this.currentPage - 1,
+        size: 10,
+      })
       .subscribe({
         next: (data: ResponseDTO<PageDTO<StudentDTO[]>>) => {
           this.studentList = data.content.content;
