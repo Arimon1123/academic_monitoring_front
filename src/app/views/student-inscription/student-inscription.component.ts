@@ -6,6 +6,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { StudentCardComponent } from '../../components/student-card/student-card.component';
 import { ModalService } from '../../service/modal.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-student-inscription',
@@ -26,11 +27,21 @@ export class StudentInscriptionComponent {
   constructor(
     private studentService: StudentService,
     private modalService: ModalService
-  ) {}
+  ) {
+    this.searchForm
+      .get('ci')
+      ?.valueChanges.pipe(debounceTime(500))
+      .subscribe({
+        next: value => {
+          console.log(value);
+
+          this.onSubmitSearchStudentHandler();
+        },
+      });
+  }
   onSubmitSearchStudentHandler() {
     const ci = this.searchForm.value?.ci;
-    if (!ci) return;
-    this.studentService.searchStudents({ ci: ci }).subscribe({
+    this.studentService.searchStudents({ ci: ci! }).subscribe({
       next: value => {
         this.students = value.content.content;
       },
@@ -50,7 +61,7 @@ export class StudentInscriptionComponent {
       .updateStudentClass(this.selectedStudent?.id, this.selectedClassId)
       .subscribe({
         error: (error: HttpErrorResponse) => {
-          this.openModal('Error en la inscripción', error.message);
+          this.openModal('Error en la inscripción', error.error.message);
         },
         complete: () => {
           this.openModal(

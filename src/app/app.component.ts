@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { UserService } from './service/user.service';
 import { NavsComponent } from './components/navs/navs.component';
@@ -16,6 +16,7 @@ import { LoginComponent } from './views/login/login.component';
 import { LocalStorageService } from './service/local-storage.service';
 import { UserDetailsDTO } from './models/UserDetailsDTO';
 import { UserDataService } from './service/user-data.service';
+import { LoadingComponent } from './components/loading/loading.component';
 registerLocaleData(myLocalEs, 'es-ES');
 
 @Component({
@@ -30,6 +31,7 @@ registerLocaleData(myLocalEs, 'es-ES');
     FormsModule,
     ReactiveFormsModule,
     LoginComponent,
+    LoadingComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
@@ -39,15 +41,17 @@ export class AppComponent implements OnInit {
   title: string = 'Seguimiento académico';
   user: UserDTO | undefined;
   isLogged: boolean = false;
+  isLoading = true;
   currentRole: string = '';
   userDetails: UserDetailsDTO;
+  selectedRole: string = '';
   currentRoles = role_names;
+
   constructor(
     private userService: UserService,
     private userDataService: UserDataService,
     private modalService: ModalService,
-    private localStorage: LocalStorageService,
-    private router: Router
+    private localStorage: LocalStorageService
   ) {
     this.user = {} as UserDTO;
     this.userDetails = {} as UserDetailsDTO;
@@ -55,6 +59,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     initFlowbite();
     this.getUserDetails();
+    this.isLoading = true;
   }
 
   openRoleSelectionModal() {
@@ -71,8 +76,12 @@ export class AppComponent implements OnInit {
       })
       .subscribe({
         next: data => {
-          this.localStorage.setItem('role', data);
-          this.getRoleDetails();
+          if (data === 'submit') {
+            this.localStorage.setItem('role', this.selectedRole);
+            console.log('se selecciono el rol ' + this.selectedRole);
+            this.currentRole = this.selectedRole;
+            this.getRoleDetails();
+          }
         },
       });
   }
@@ -80,9 +89,15 @@ export class AppComponent implements OnInit {
     this.userService.userDetails().subscribe({
       next: (data: ResponseDTO<UserDTO>) => {
         this.user = data.content;
-        if (this.user.role.length > 1) this.openRoleSelectionModal();
-        else this.currentRole = this.user.role[0].name;
-        this.getRoleDetails();
+        if (this.user.role.length > 1) {
+          this.openRoleSelectionModal();
+        } else {
+          this.currentRole = this.user.role[0].name;
+          this.getRoleDetails();
+        }
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 100);
       },
       error: error => {
         if (error.status === 401) {
@@ -108,7 +123,6 @@ export class AppComponent implements OnInit {
   }
   updateLoginState(isLogged: boolean) {
     this.isLogged = isLogged;
-    this.router.navigate(['']).then();
     if (isLogged) this.getUserDetails();
   }
   updateUserData() {

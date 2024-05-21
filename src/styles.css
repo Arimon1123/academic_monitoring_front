@@ -10,6 +10,10 @@
   }
 }
 
+:root{
+  --primary : #0C2348;
+  --bg: #F9F9F9
+}
 html {
   overflow: hidden;
 }
@@ -50,4 +54,17 @@ details[open] > summary::after {
 }
 details > summary::after {
   content: ' ▶️';
+}
+input[type="text"]{
+  font-size: 18px;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  outline: none;
+}
+
+input[type="text"]:focus{
+  outline: none;
+  border: 1px solid var(--primary);
+  box-shadow: none;
 }

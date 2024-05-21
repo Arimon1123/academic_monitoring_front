@@ -1,24 +1,20 @@
 <main
   class="h-[87vh] p-2 border rounded-md bg-bg-color flex flex-col items-center overflow-y-auto">
-  <div class="w-4/5 flex">
+  <div class="w-full lg:w-4/5 flex flex-col my-2">
+    <h1>Inscripción de estudiantes</h1>
     <details
       #detailsElement
-      class="w-full flex flex-col items-center justify-center">
-      <summary>Búsqueda de estudiantes</summary>
-      <div class="w-full flex flex-col items-center">
+      class="w-full flex flex-col items-center justify-center p-2 border bg-white rounded-md">
+      <summary class="flex hover:bg-slate-100 transition-colors p-2 rounded-md cursor-pointer my-2">Búsqueda de estudiantes</summary>
+      <div class="w-full flex flex-col items-center my-2">
         <form
           [formGroup]="searchForm"
           (ngSubmit)="onSubmitSearchStudentHandler()"
-          class="flex flex-col w-3/5 p-2 border rounded-md bg-white">
+          class="flex flex-col w-full p-2 border rounded-md bg-white">
           <label for="ci">CI del estudiante</label>
           <input type="text" id="ci" formControlName="ci" />
-          <button
-            type="submit"
-            class="my-2 p-2 bg-primary rounded-md hover:bg-active text-white transition-colors w-fit">
-            Buscar
-          </button>
         </form>
-        <ul class="w-3/5 space-y-2">
+        <ul class="w-full space-y-2  overflow-y-auto my-2">
           @for (student of students; track student.id) {
             <li
               class="w p-2 border rounded-md bg-white flex justify-between items-center">
@@ -39,6 +35,10 @@
                 Seleccionar
               </button>
             </li>
+          } @empty {
+            <li class="w-full p-2 border rounded-md bg-white text-center">
+              No se encontraron estudiantes
+            </li>
           }
         </ul>
       </div>
@@ -46,7 +46,7 @@
   </div>
 
   @if (selectedStudent) {
-    <div class="w-4/5 bg-white p-2 border rounded-md">
+    <div class="w-full lg:w-4/5 bg-white p-2 border rounded-md">
       <app-student-card [student]="selectedStudent"></app-student-card>
       <app-class-select
         (classEmitter)="onSelectClassHandler($event)"></app-class-select>

@@ -37,7 +37,7 @@ export class ActivityListComponent implements OnInit {
     private activityService: ActivityService,
     private activeRoute: ActivatedRoute,
     private assignationService: AssignationService,
-    private modalService: ModalService,
+    private modalService: ModalService
   ) {
     this.totalPercentage = {};
     this.title = 'Nueva actividad';
@@ -62,7 +62,7 @@ export class ActivityListComponent implements OnInit {
   };
   ngOnInit() {
     this.activeRoute.params.subscribe({
-      next: (params) => {
+      next: params => {
         this.getAllActivities(params['id']);
         this.getAssignationById(params['id']);
       },
@@ -70,7 +70,7 @@ export class ActivityListComponent implements OnInit {
   }
   getAllActivities(assignationId: number) {
     this.activityService
-      .getActivitiesByAssignationId(assignationId, 1)
+      .getActivitiesByAssignationId(assignationId, 3)
       .subscribe({
         next: (response: ResponseDTO<ActivityDTO[]>) => {
           this.filterActivities(response.content);
@@ -167,7 +167,7 @@ export class ActivityListComponent implements OnInit {
   onDeleteActivity(activity: ActivityDTO) {
     this.openDeleteModal(
       'Se eliminará la actividad y todas las  notas asociadas de forma permanente ¿Desea continuar?',
-      'Eliminar actividad',
+      'Eliminar actividad'
     ).subscribe({
       next: () => {
         this.deleteActivity(activity.id);
@@ -206,41 +206,41 @@ export class ActivityListComponent implements OnInit {
   }
   filterActivities(activityDTO: ActivityDTO[]) {
     this.activities['DECIDIR'] = activityDTO.filter(
-      (activity) => activity.dimension === 'DECIDIR',
+      activity => activity.dimension === 'DECIDIR'
     );
     this.activities['HACER'] = activityDTO.filter(
-      (activity) => activity.dimension === 'HACER',
+      activity => activity.dimension === 'HACER'
     );
     this.activities['SABER'] = activityDTO.filter(
-      (activity) => activity.dimension === 'SABER',
+      activity => activity.dimension === 'SABER'
     );
     this.activities['SER'] = activityDTO.filter(
-      (activity) => activity.dimension === 'SER',
+      activity => activity.dimension === 'SER'
     );
     this.totalPercentage['DECIDIR'] = this.activities['DECIDIR'].reduce(
       (acc, activity) =>
         acc + (activity.value * this.dimensionValue[activity.dimension]) / 100,
-      0,
+      0
     );
     this.totalPercentage['HACER'] = this.activities['HACER'].reduce(
       (acc, activity) =>
         acc + (activity.value * this.dimensionValue[activity.dimension]) / 100,
-      0,
+      0
     );
     this.totalPercentage['SABER'] = this.activities['SABER'].reduce(
       (acc, activity) =>
         acc + (activity.value * this.dimensionValue[activity.dimension]) / 100,
-      0,
+      0
     );
     this.totalPercentage['SER'] = this.activities['SER'].reduce(
       (acc, activity) =>
         acc + (activity.value * this.dimensionValue[activity.dimension]) / 100,
-      0,
+      0
     );
     this.totalPercentage['TOTAL'] = activityDTO.reduce(
       (acc, activity) =>
         acc + (activity.value * this.dimensionValue[activity.dimension]) / 100,
-      0,
+      0
     );
   }
 }

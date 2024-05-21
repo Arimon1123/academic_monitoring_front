@@ -10,9 +10,9 @@
       </div>
     </div>
     <hr class="w-11/12" />
-    <div class="flex flex-col justify-between my-2 space-y-2">
-      <section class="flex xl:flex-row w-full sm:flex-col flex-row space-x-2">
-        <div class="min-w-44 w-full sm:w-fit">
+    <div class="flex flex-col w-full justify-between my-2 space-y-2">
+      <section class="flex flex-row w-full space-x-2 justify-evenly">
+        <div class="">
           <section class="flex items-center my-2">
             <span title="email" class="inline-block w-full">
               <img
@@ -31,16 +31,20 @@
           </section>
           <section class="flex items-center my-2">
             <span title="class" class="inline-block w-full">
-              <img src="assets/id.svg" alt="user icon" class="size-5 mr-2 inline" />{{
-                student.studentClass
-              }}</span
+              <img
+                src="assets/id.svg"
+                alt="user icon"
+                class="size-5 mr-2 inline" />{{ student.studentClass }}</span
             >
           </section>
         </div>
-        <div class="w-full min-w-44">
+        <div class="">
           <section class="flex items-center my-2">
             <span title="CI" class="inline-block w-full">
-              <img src="assets/id.svg" alt="user icon" class="size-5 mr-2 inline" />
+              <img
+                src="assets/id.svg"
+                alt="user icon"
+                class="size-5 mr-2 inline" />
               {{ student.ci }}</span
             >
           </section>
@@ -65,24 +69,24 @@
           }
         </div>
       </section>
-      <ul class="flex flex-col w-full">
+      <ul class="flex flex-col px-3">
         <h2>Padres</h2>
         @for (parent of student.parents; track parent.id) {
           <li
-            class="py-3 px-2 border w-full rounded-md flex flex-col justify-center">
+            class="py-3 px-2 border rounded-md flex flex-col justify-center">
             <span class="inline-block w-full text-center"
               >{{ parent.person.name }} {{ parent.person.lastname }}</span
             >
             <hr class="w-full" />
-            <div class="w-full flex flex-row justify-between my-2">
-              <span class="inline-block min-w-48 text-center">
+            <div class="w-full flex flex-row justify-evenly my-2">
+              <span class="inline-block text-center">
                 <img
                   src="./assets/id.svg"
                   class="size-5 inline"
                   alt="id-icon" />
                 {{ parent.person.ci }}</span
               >
-              <span class="inline-block min-w-48 text-center">
+              <span class="inline-block  text-center">
                 <img
                   src="./assets/phone.svg"
                   class="size-5 inline"
@@ -97,7 +101,7 @@
     @if (showEditButton) {
       <div class="my-2">
         <a
-          class="my-1 h-fit box-border w-fit py-0.5 px-3 rounded-full border bg-primary text-white hover:bg-active transition-colors"
+          class="my-1 h-fit box-border w-fit py-0.5 px-3 rounded-full bg-primary text-white hover:bg-active transition-colors"
           [routerLink]="['/editStudent', student.id]">
           Editar
         </a>

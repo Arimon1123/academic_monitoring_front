@@ -1,32 +1,31 @@
-<div class="m-auto overflow-auto">
-  <h2 class="text-2xl font-semibold mx-2">Avisos</h2>
-      <div
-        #announcement
-        id="announcements"
-        class="inline-block border p-2 m-2 rounded-md max-w-[36rem] min-w-[30rem] bg-white"
-      >
-        <div class="flex items-center justify-between">
-          <h3 class="text-lg font-semibold">{{ currentAnnouncement.title }}</h3>
-          <p class="text-sm">{{ currentAnnouncement.publishingDate | date: "dd/MM/yyyy" }}</p>
-        </div>
-        <hr />
-        <div class="flex flex-col w-full items-center">
-          <p class="break-words my-2 text-start max-h-[7rem]">
-            {{ currentAnnouncement.message }}
-          </p>
-          <hr />
-          <div class="w-full justify-center p-5">
-            <app-image-carrousel
-              [imageUrls]="currentAnnouncement.images"
-              [isForSaving]="false">
-            </app-image-carrousel>
-          </div>
-        </div>
-      </div>
-  <button (click)="onChangeAnIndexHandler(index + 1)">
-    siguiente
-  </button>
-  <button (click)="onChangeAnIndexHandler(index - 1)">
-    anterior
-  </button>
+<div class="m-auto overflow-auto w-[40rem]">
+  <h2 class="text-2xl font-semibold m-2 text-center">Avisos</h2>
+ <div class="flex w-full ">
+   <button (click)="onChangeAnIndexHandler(index - 1)">⬅️</button>
+   <div
+     #announcement
+     id="announcements"
+     class="inline-block border p-2 m-2 rounded-md max-w-[36rem] w-[36rem] h-[25rem] bg-white">
+     <div class="flex items-center justify-between">
+       <h3 class="text-lg font-semibold">{{ currentAnnouncement.title }}</h3>
+       <p class="text-sm">
+         {{ currentAnnouncement.publishingDate | date: 'dd/MM/yyyy' }}
+       </p>
+     </div>
+     <hr />
+     <div class="flex flex-col w-full items-center">
+       <p class="break-words my-2 text-start max-h-[7rem]">
+         {{ currentAnnouncement.message }}
+       </p>
+       <hr />
+       <div class="w-full justify-center p-5">
+         <app-image-carrousel
+           [imageUrls]="currentAnnouncement.images"
+           [isForSaving]="false">
+         </app-image-carrousel>
+       </div>
+     </div>
+   </div>
+   <button (click)="onChangeAnIndexHandler(index + 1)">➡️</button>
+ </div>
 </div>

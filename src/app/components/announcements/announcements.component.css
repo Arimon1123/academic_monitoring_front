@@ -1,8 +1,17 @@
 #announcements {
-  opacity:1;
+  opacity: 1;
   transition: opacity 1s;
 }
 
 #announcements.fadeOut {
-  opacity:0;
+  opacity: 0;
+}
+button {
+  background-color: var(--bg);
+  color: white;
+  margin: 8px 0;
+  cursor: pointer;
+  width: fit-content;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
 }

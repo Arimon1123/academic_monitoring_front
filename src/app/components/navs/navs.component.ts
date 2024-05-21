@@ -23,7 +23,7 @@ import { RouteTupleDTO } from '../../models/RouteTupleDTO';
 })
 export class NavsComponent implements OnInit, OnChanges {
   routesList: RouteTupleDTO = {} as RouteTupleDTO;
-  @Input() userDetails: UserDetailsDTO;
+  @Input() userDetails?: UserDetailsDTO;
   @Output() logoutEvent = new EventEmitter<boolean>();
   constructor(private authService: AuthService) {
     this.userDetails = {} as UserDetailsDTO;
@@ -38,17 +38,17 @@ export class NavsComponent implements OnInit, OnChanges {
     }, 500);
   }
   buildRoutes() {
-    console.log(this.userDetails.role);
-    if (this.userDetails.role === 'ADMINISTRATIVE') {
+    console.log(this.userDetails?.role);
+    if (this.userDetails?.role === 'ADMINISTRATIVE') {
       this.routesList = routes.ADMINISTRATIVE;
     }
-    if (this.userDetails.role === 'TEACHER') {
+    if (this.userDetails?.role === 'TEACHER') {
       this.routesList = routes.TEACHER;
     }
-    if (this.userDetails.role === 'PARENT') {
+    if (this.userDetails?.role === 'PARENT') {
       this.routesList = routes.PARENT;
     }
-    if (this.userDetails.role === 'STUDENT') {
+    if (this.userDetails?.role === 'STUDENT') {
       this.routesList = routes.STUDENT;
     }
   }
@@ -56,7 +56,7 @@ export class NavsComponent implements OnInit, OnChanges {
     console.log('logout');
     this.authService.logout().subscribe({
       complete: () => {
-        this.logoutEvent.emit(true);
+        this.logoutEvent.emit(false);
       },
     });
   }

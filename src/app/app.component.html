@@ -1,20 +1,24 @@
-@if (isLogged) {
+@if (isLogged && !isLoading) {
   <app-navs
     [userDetails]="userDetails"
     (logoutEvent)="updateLoginState($event)"
   >
     <router-outlet></router-outlet>
   </app-navs>
-} @else {
+}
+@if (isLoading){
+  <app-loading></app-loading>
+}
+@if(!isLogged && !isLoading){
   <app-login (loginEvent)="updateLoginState($event)"></app-login>
 }
 <ng-template #modal let-data="data">
   <div class="flex flex-col">
     <p>Seleccione el rol con el que iniciara sesión</p>
-    <select class="border rounded-md">
+    <select class="border rounded-md" [(ngModel)]="selectedRole">
       <option selected disabled>Seleccione un rol</option>
       @for (role of data; track role.id) {
-        <option value="{{ role.id }}">{{ currentRoles[toString(role.name)] }}</option>
+        <option value="{{ role.name }}">{{ currentRoles[toString(role.name)] }}</option>
       }
     </select>
   </div>

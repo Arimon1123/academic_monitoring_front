@@ -27,7 +27,7 @@ export class GradesComponent implements OnInit {
   activities: ActivityDTO[];
   grades: { [key: number]: ActivityGradeDTO[] };
   table: { student: StudentDTO; grades: ActivityGradeDTO[] }[];
-  bimester = 1;
+  bimester = 4;
   decidirActivities: ActivityDTO[] = [];
   serActivities: ActivityDTO[] = [];
   saberActivities: ActivityDTO[] = [];
