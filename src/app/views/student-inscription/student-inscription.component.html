@@ -17,22 +17,25 @@
         <ul class="w-full space-y-2  overflow-y-auto my-2">
           @for (student of students; track student.id) {
             <li
-              class="w p-2 border rounded-md bg-white flex justify-between items-center">
-              <span class="min-w-48"
+              class="w p-2 border rounded-md bg-white flex justify-around items-center">
+             <div class="flex lg:flex-row flex-col space-y-1 lg:space-y-0">
+                <span class="lg:min-w-48"
                 >{{ student.name }} {{ student.fatherLastname }}
-                {{ student.motherLastname }}</span
-              >
-              <span class="min-w-48 flex items-center">
+                  {{ student.motherLastname }}</span
+                >
+               <span class="lg:min-w-48 flex items-center">
                 <img
                   src="./assets/id.svg"
                   alt="id icon"
                   class="size-5 inline-block" />
-                {{ student.ci }}</span
-              >
+                 {{ student.ci }}</span
+               >
+             </div>
               <button
                 (click)="onClickSelectStudentHandler(student)"
                 class="my-2 py-1 px-2 bg-primary rounded-md hover:bg-active text-white transition-colors w-fit text-sm">
-                Seleccionar
+                <span class="hidden lg:inline-block">Seleccionar</span>
+                <i class="fa-solid fa-user-check lg:hidden"></i>
               </button>
             </li>
           } @empty {

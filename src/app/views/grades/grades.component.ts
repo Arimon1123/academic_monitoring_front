@@ -13,6 +13,8 @@ import { RoundPipe } from '../../pipes/RoundPipe';
 import { ModalService } from '../../service/modal.service';
 import { ActivatedRoute } from '@angular/router';
 import { AssignationService } from '../../service/assignation.service';
+import { ConfigurationDataService } from '../../service/configuration-data.service';
+import { ConfigurationDTO } from '../../models/ConfigurationDTO';
 @Component({
   selector: 'app-grades',
   standalone: true,
@@ -27,11 +29,12 @@ export class GradesComponent implements OnInit {
   activities: ActivityDTO[];
   grades: { [key: number]: ActivityGradeDTO[] };
   table: { student: StudentDTO; grades: ActivityGradeDTO[] }[];
-  bimester = 4;
+  bimester = 0;
   decidirActivities: ActivityDTO[] = [];
   serActivities: ActivityDTO[] = [];
   saberActivities: ActivityDTO[] = [];
   hacerActivities: ActivityDTO[] = [];
+  configuration: ConfigurationDTO = {} as ConfigurationDTO;
   dimensionValue: { [key: string]: number } = {
     HACER: 30,
     SABER: 30,
@@ -44,7 +47,8 @@ export class GradesComponent implements OnInit {
     private gradesService: GradesService,
     private modalService: ModalService,
     private activeRoute: ActivatedRoute,
-    private assignationService: AssignationService
+    private assignationService: AssignationService,
+    private configDataService: ConfigurationDataService
   ) {
     this.assignation = {} as AssignationDTO;
     this.students = [];
@@ -53,9 +57,18 @@ export class GradesComponent implements OnInit {
     this.table = [];
   }
   ngOnInit() {
-    this.activeRoute.params.subscribe({
-      next: params => {
-        this.getAllData(params['id']);
+    this.getConfiguration();
+  }
+  getConfiguration() {
+    this.configDataService.currentConfig.subscribe({
+      next: (data: ConfigurationDTO | null) => {
+        this.configuration = data!;
+        this.bimester = this.configuration.currentBimester;
+        this.activeRoute.params.subscribe({
+          next: params => {
+            this.getAllData(params['id']);
+          },
+        });
       },
     });
   }

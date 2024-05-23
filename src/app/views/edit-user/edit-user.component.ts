@@ -108,16 +108,19 @@ export class EditUserComponent implements OnInit {
     });
   }
   getUserDetails() {
-    this.userService.getUserDetails('TEACHER', this.user.username).subscribe({
-      next: (data: ResponseDTO<UserDetailsDTO>) => {
-        this.userDetails = data.content;
-        this.teacherData = this.userDetails.details as TeacherDTO;
-        this.subjects = this.teacherData.subjects;
-        this.teacherForm
-          .get('academicEmail')
-          ?.setValue(this.teacherData.academicEmail);
-      },
-    });
+    const year = new Date().getFullYear();
+    this.userService
+      .getUserDetails('TEACHER', this.user.username, year)
+      .subscribe({
+        next: (data: ResponseDTO<UserDetailsDTO>) => {
+          this.userDetails = data.content;
+          this.teacherData = this.userDetails.details as TeacherDTO;
+          this.subjects = this.teacherData.subjects;
+          this.teacherForm
+            .get('academicEmail')
+            ?.setValue(this.teacherData.academicEmail);
+        },
+      });
   }
   userForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),

@@ -27,6 +27,8 @@ import { FormsModule } from '@angular/forms';
 import { ModalService } from '../../service/modal.service';
 import { PeriodDTO } from '../../models/PeriodDTO';
 import { ScheduleSelectionComponent } from '../../components/schedule-selection/schedule-selection.component';
+import { ConfigurationDataService } from '../../service/configuration-data.service';
+import { ConfigurationDTO } from '../../models/ConfigurationDTO';
 
 @Component({
   selector: 'app-assignation',
@@ -56,9 +58,9 @@ export class AssignationComponent implements OnInit {
   selectedTeacher: TeacherDTO = {} as TeacherDTO;
   selectedClass: ClassListDTO = {} as ClassListDTO;
   selectedClassroom: ClassroomDTO = {} as ClassroomDTO;
-  currentYear = new Date().getFullYear();
   hours: PeriodDTO[] = schedule[0].hours;
   teacherSchedule: ScheduleDTO[] = [];
+  configuration: ConfigurationDTO = {} as ConfigurationDTO;
   constructor(
     private gradeService: GradeService,
     private subjectService: SubjectService,
@@ -66,10 +68,19 @@ export class AssignationComponent implements OnInit {
     private classService: ClassService,
     private classroomService: ClassroomService,
     private assignationService: AssignationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private confDataService: ConfigurationDataService
   ) {}
   ngOnInit(): void {
-    this.getGrades();
+    this.getConfiguration();
+  }
+  getConfiguration() {
+    this.confDataService.currentConfig.subscribe({
+      next: value => {
+        this.configuration = value!;
+        this.getGrades();
+      },
+    });
   }
   getGrades() {
     this.gradeService.getAllGrades().subscribe({
@@ -95,7 +106,11 @@ export class AssignationComponent implements OnInit {
 
   getClassByGrade(grade: GradeDTO) {
     this.classService
-      .getClassListByGradeIdAndYearAndShift(grade.id, this.currentYear, 1)
+      .getClassListByGradeIdAndYearAndShift(
+        grade.id,
+        this.configuration.currentYear,
+        1
+      )
       .subscribe({
         next: (data: ResponseDTO<ClassListDTO[]>) => {
           this.classList = data.content;

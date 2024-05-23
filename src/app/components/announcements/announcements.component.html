@@ -1,31 +1,33 @@
-<div class="m-auto overflow-auto w-[40rem]">
+<div class="m-auto overflow-auto lg:w-[40rem] w-fit">
   <h2 class="text-2xl font-semibold m-2 text-center">Avisos</h2>
- <div class="flex w-full ">
-   <button (click)="onChangeAnIndexHandler(index - 1)">⬅️</button>
-   <div
-     #announcement
-     id="announcements"
-     class="inline-block border p-2 m-2 rounded-md max-w-[36rem] w-[36rem] h-[25rem] bg-white">
-     <div class="flex items-center justify-between">
-       <h3 class="text-lg font-semibold">{{ currentAnnouncement.title }}</h3>
-       <p class="text-sm">
-         {{ currentAnnouncement.publishingDate | date: 'dd/MM/yyyy' }}
-       </p>
-     </div>
-     <hr />
-     <div class="flex flex-col w-full items-center">
-       <p class="break-words my-2 text-start max-h-[7rem]">
-         {{ currentAnnouncement.message }}
-       </p>
-       <hr />
-       <div class="w-full justify-center p-5">
-         <app-image-carrousel
-           [imageUrls]="currentAnnouncement.images"
-           [isForSaving]="false">
-         </app-image-carrousel>
-       </div>
-     </div>
-   </div>
-   <button (click)="onChangeAnIndexHandler(index + 1)">➡️</button>
- </div>
+  <div class="flex w-full flex-col">
+    <div
+      #announcement
+      id="announcements"
+      class="inline-block border p-2 m-2 rounded-md max-w-[36rem] lg:w-[36rem] w-fit h-[25rem] bg-white">
+      <div class="flex items-center justify-center truncate">
+        <h3 class="text-lg font-semibold">{{ currentAnnouncement.title }}</h3>
+      </div>
+      <hr />
+      <p class="text-center text-xs text-slate-600">
+        {{ currentAnnouncement.publishingDate | date: 'dd/MM/yyyy' }}
+      </p>
+      <div class="flex flex-col w-full items-center">
+        <p class="break-words my-2 text-start max-h-[7rem]">
+          {{ currentAnnouncement.message }}
+        </p>
+        <hr />
+        <div class="w-full justify-center p-5">
+          <app-image-carrousel
+            [imageUrls]="currentAnnouncement.images"
+            [isForSaving]="false">
+          </app-image-carrousel>
+        </div>
+      </div>
+    </div>
+    <div class="w-full flex justify-around">
+      <button (click)="onChangeAnIndexHandler(index - 1)">⬅️</button>
+      <button (click)="onChangeAnIndexHandler(index + 1)">➡️</button>
+    </div>
+  </div>
 </div>

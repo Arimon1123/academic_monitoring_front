@@ -9,6 +9,7 @@ import { NgClass, NgStyle } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { StudentService } from '../../service/student.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfigurationDataService } from '../../service/configuration-data.service';
 
 @Component({
   selector: 'app-student-grades',
@@ -27,15 +28,23 @@ export class StudentGradesComponent implements OnInit {
   constructor(
     private gradesService: GradesService,
     private activeRoute: ActivatedRoute,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private configDataService: ConfigurationDataService
   ) {
     this.grades = {};
     this.studentData = {} as StudentDTO;
   }
   ngOnInit() {
-    this.activeRoute.params.subscribe({
-      next: params => {
-        this.getData(params['id'], new Date().getFullYear());
+    this.getConfig();
+  }
+  getConfig() {
+    this.configDataService.currentConfig.subscribe({
+      next: value => {
+        this.activeRoute.params.subscribe({
+          next: params => {
+            this.getData(params['id'], value!.currentYear);
+          },
+        });
       },
     });
   }

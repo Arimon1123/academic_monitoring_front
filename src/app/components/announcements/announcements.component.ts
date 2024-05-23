@@ -5,7 +5,6 @@ import { DatePipe } from '@angular/common';
 import { ImageCarrouselComponent } from '../image-carrousel/image-carrousel.component';
 import { UserDataService } from '../../service/user-data.service';
 import { UserDetailsDTO } from '../../models/UserDetailsDTO';
-import { Timer } from 'd3';
 
 @Component({
   selector: 'app-announcements',
@@ -20,24 +19,39 @@ export class AnnouncementsComponent implements OnInit {
   currentAnnouncement: AnnouncementDTO = {} as AnnouncementDTO;
   index: number = 0;
   timeout: number = 0;
+  filters: { grades: number[]; shift: number; receiver: string } = {
+    grades: [],
+    shift: 0,
+    receiver: 'ALL',
+  };
   @ViewChild('announcement') announcementEl: ElementRef | undefined;
   constructor(
     private announcementService: AnnouncementService,
     private userDataService: UserDataService
   ) {
     this.announcements = [];
-    userDataService.currentUser.subscribe({
-      next: value => {
-        this.userDetails = value!;
-      },
-    });
   }
   ngOnInit() {
+    this.userDataService.currentUser.subscribe({
+      next: value => {
+        this.userDetails = value!;
+        this.getGradeIds(this.userDetails);
+      },
+    });
     this.getAnnouncements();
+  }
+  getGradeIds(user: UserDetailsDTO) {
+    if (user.role === 'PARENT') {
+      const gradeIds = [];
+      for (const student of user.students) {
+        gradeIds.push(student.studentClass?.split('°')[0]);
+      }
+      console.log(gradeIds);
+    }
   }
   getAnnouncements() {
     const receiver = this.userDetails.role;
-    this.announcementService.getAnnouncements(2, receiver, 2).subscribe({
+    this.announcementService.getAnnouncements(2, receiver, 1).subscribe({
       next: response => {
         this.announcements = response.content;
         if (this.announcements.length > 0) {

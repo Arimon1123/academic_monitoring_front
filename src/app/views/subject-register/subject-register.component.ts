@@ -120,7 +120,6 @@ export class SubjectRegisterComponent implements OnInit {
         size: 'small',
         title: 'Registro de Materia',
         message: this.message,
-        isSubmittable: true,
       },
     });
   }

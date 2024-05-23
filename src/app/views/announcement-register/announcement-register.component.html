@@ -1,13 +1,13 @@
 <main
   class="flex flex-col items-center h-[85vh] border rounded-md bg-bg-color overflow-y-auto overflow-x-hidden lg:overflow-x-scroll"
 >
-  <h1 class="inline-block w-3/5 font-semibold text-start text-lg my-2">
+  <h1 class="inline-block lg:w-3/5 w-full font-semibold text-start text-lg my-2 px-4">
     Nuevo aviso
   </h1>
   <form
     [formGroup]="announcementForm"
     (ngSubmit)="saveAnnouncement()"
-    class="flex flex-col w-3/5 justify-center"
+    class="flex flex-col lg:w-3/5 w-full justify-center px-4"
   >
     <label for="title">Titulo</label>
     <input
@@ -29,7 +29,7 @@
       id="publishingDate"
       type="date"
       formControlName="publishingDate"
-      class="border rounded-md text-sm border-gray-400"
+      class="border rounded-md text-sm border-gray-400 w-full"
     />
     <label for="receiver">Destinatarios</label>
     <select

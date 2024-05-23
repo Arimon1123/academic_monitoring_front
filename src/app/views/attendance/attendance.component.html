@@ -1,7 +1,7 @@
-<main class="flex flex-col items-center h-[85vh] bg-bg-color rounded-md border">
-  <section class="w-4/5 py-2 px-4 mt-2">
+<main class="flex flex-col items-center h-fit overflow-auto">
+  <section class="lg:w-4/5  w-full py-2 px-4 mt-2">
     <h1 class="font-semibold text-lg">Registro de asistencia</h1>
-    <div class="flex my-2 w-2/5 justify-between">
+    <div class="flex flex-col lg:flex-row my-2 lg:w-2/5 w-full  justify-between">
       <div class="flex flex-col">
         <div class="flex my-1">
           <span class="font-bold">Curso: </span>
@@ -20,16 +20,16 @@
       </div>
     </div>
   </section>
-  <section class="flex flex-col w-full items-center overflow-auto">
-    <div class="flex w-4/5 justify-end my-2">
-      <button
-        (click)="addNewAttendanceDay()"
-        class="border bg-primary rounded-lg px-2 text-white hover:opacity-85 transition-opacity"
-      >
-        Nueva clase
-         <img src="./assets/add.svg" alt="add icon" class="size-4 inline-block" >
-      </button>
-    </div>
+  <div class="flex w-4/5 justify-end my-2">
+    <button
+      (click)="addNewAttendanceDay()"
+      class="border bg-primary rounded-lg px-2 text-white hover:opacity-85 transition-opacity"
+    >
+      Nueva clase
+      <img src="./assets/add.svg" alt="add icon" class="size-4 inline-block" >
+    </button>
+  </div>
+  <section class="flex flex-col lg:items-center items-start w-full overflow-auto">
     @if (table.length > 0) {
       <table
         class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
@@ -48,7 +48,7 @@
           </th>
           @for (day of attendanceDates; track day.id) {
             <th
-              class="w-fit border px-5 last:rounded-tr-lg border-gray font-extralight"
+              class="w-32 border px-5 last:rounded-tr-lg border-gray font-extralight"
             >
               {{ day.date | date: "dd/MM" : "" : "es-ES" }}
             </th>
@@ -85,14 +85,13 @@
         }
       </table>
     }
-    <div class="flex w-4/5 justify-end my-2">
-      <button
-        (click)="submit()"
-        class="border bg-primary rounded-lg py-1 px-3 text-white hover:bg-active transition-colors my"
-      >
-        Guardar
-      </button>
-    </div>
-  </section>
+  </section><div class="flex w-4/5 justify-end my-2">
+  <button
+    (click)="submit()"
+    class="border bg-primary rounded-lg py-1 px-3 text-white hover:bg-active transition-colors my"
+  >
+    Guardar
+  </button>
+</div>
 </main>
 <ng-template #modal></ng-template>

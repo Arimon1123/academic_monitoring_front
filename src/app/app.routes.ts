@@ -27,6 +27,8 @@ import { TestComponent } from './views/test/test.component';
 import { StudentListComponent } from './views/student-list/student-list.component';
 import { EditStudentComponent } from './views/edit-student/edit-student.component';
 import { StudentInscriptionComponent } from './views/student-inscription/student-inscription.component';
+import { ConfigurationsComponent } from './views/configurations/configurations.component';
+import { Component } from '@angular/core';
 
 export const routes: Routes = [
   {
@@ -150,5 +152,13 @@ export const routes: Routes = [
   {
     path: 'chat/:receiverId',
     component: ChatsComponent,
+  },
+  {
+    path: 'configuration',
+    component: ConfigurationsComponent,
+  },
+  {
+    path: '**',
+    component: HomeComponent,
   },
 ];

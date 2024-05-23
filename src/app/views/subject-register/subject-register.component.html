@@ -2,18 +2,18 @@
   class="flex flex-col items-center w-full h-[85vh] border rounded-md bg-bg-color"
 >
   <div
-    class="flex flex-col h-fit rounded-md px-5 py-2 justify-start items-center w-4/5"
+    class="flex flex-col h-fit rounded-md px-5 py-2 justify-start items-center lg:w-4/5 w-full"
   >
     <h1 class="text-xl font-bold my-2">
       Registro de materia
     </h1>
 
     <form
-      class="flex flex-col justify-center items-center w-4/5"
+      class="flex flex-col justify-center items-center lg:w-4/5 w-full"
       [formGroup]="subjectForm"
       (ngSubmit)="onSubmitSubjectFormHandler()"
     >
-      <div class="w-full flex flex-row justify-between">
+      <div class="w-full flex lg:flex-row flex-col justify-between">
         <div class="flex flex-col md:w-[49%] w-full my-2">
           <label for="subjectName">Nombre de la Materia</label>
           <input
@@ -82,15 +82,15 @@
         <ul>
           @for (requirement of selectedRequirement; track requirement.id) {
             <li
-              class="flex flex-row justify-between items-center w-full my-2 pl-2 border rounded-md bg-white p-2"
+              class="flex flex-row justify-around items-center w-full my-2 pl-2 border rounded-md bg-white p-2"
             >
               <span>{{ requirement.requirement }}</span>
               <button
                 type="button"
                 (click)="removeRequirement(requirement.id)"
-                class="border rounded-md bg-red-500 text-white hover:bg-red-600 transition px-5 w-fit"
+                class="w-fit"
               >
-                Eliminar
+                <i class="fa-solid fa-trash" style="color: #f50505"></i>
               </button>
             </li>
           }

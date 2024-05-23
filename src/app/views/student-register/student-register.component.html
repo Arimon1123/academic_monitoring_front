@@ -183,11 +183,12 @@
         </div>
         @for (parent of selectedParentList; track parent.id) {
           <div
-            class="p-2 border rounded-sm flex flex-row justify-evenly my-2 bg-white"
+            class="p-2 border rounded-sm flex justify-evenly   my-2 bg-white"
           >
-            <span>Nombre: {{ parent.person.name }}</span>
-            <span>Apellido: {{ parent.person.lastname }}</span>
-            <span>Ci: {{ parent.person.ci }}</span>
+            <div class="flex w-4/5 lg:flex-row flex-col justify-evenly ">
+              <span class="w-fit">{{ parent.person.name }} {{ parent.person.lastname }}</span>
+              <span class="w-fit">Ci: {{ parent.person.ci }}</span>
+            </div>
             <button (click)="removeParent(parent.id)">
               <i class="fa-solid fa-trash" style="color: #f50505"></i>
             </button>

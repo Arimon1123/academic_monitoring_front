@@ -1,9 +1,8 @@
 <main
-  class="flex flex-col items-center h-[85vh] bg-bg-color rounded-md border overflow-y-auto"
->
-  <section class="w-4/5 py-2 px-4 mt-2">
+  class="flex flex-col items-center h-[85vh] bg-bg-color rounded-md border overflow-y-auto">
+  <section class="lg:w-4/5 w-full py-2 px-4 mt-2">
     <h1 class="font-semibold text-lg">Notas bimestrales</h1>
-    <div class="flex my-2 w-3/5 justify-between">
+    <div class="flex my-2 lg:w-3/5 w-full flex-col lg:flex-row justify-between">
       <div class="flex flex-col">
         <div class="flex my-1">
           <span class="font-bold">Estudiante: </span>
@@ -28,53 +27,54 @@
         </div>
       </div>
     </div>
-    <a  class="border rounded-md w-48 bg-primary text-white hover:bg-blue-700 transition-colors p-1 cursor-pointer"
-    [routerLink]="['/chat',user.id]">Iniciar chat con el profesor</a>
+    <a
+      class="border rounded-md w-48 bg-primary text-white hover:bg-blue-700 transition-colors p-1 cursor-pointer"
+      [routerLink]="['/chat', user.id]"
+      >Iniciar chat con el profesor</a
+    >
   </section>
-  <table
-    class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
-  >
-    <thead class="bg-selected text-white h-10">
-      <tr>
-        <th
-          class="w-48 border text-center first:border-l first:rounded-tl-lg last:rounded-tr-lg border-gray font-extralight"
-        >
-          Actividad
-        </th>
-        <th class="w-48 border text-center border-gray font-extralight">
-          Nota
-        </th>
-        <th class="w-48 border text-center border-gray font-extralight">
-          Valor
-        </th>
-        <th class="w-48 border text-center border-gray font-extralight">
-          Dimension
-        </th>
-        <th
-          class="w-48 border text-center first:border-l last:rounded-tr-lg border-gray font-extralight"
-        >
-          Total
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (row of table; track row.id) {
+  <div class="w-full lg:w-4/5 overflow-auto p-2">
+    <table
+      class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5">
+      <thead class="bg-selected text-white h-10">
         <tr>
-          <td class="border text-center h-10">{{ row.activity }}</td>
-          <td
-            class="border text-center h-10"
-            [ngClass]="{ 'text-red-500': row.grade < 51 }"
-          >
-            {{ row.grade }}
-          </td>
-          <td class="border text-center h-10">{{ row.value }}</td>
-          <td class="border text-center h-10">{{ row.dimension }}</td>
-          <td class="border text-center h-10">{{ row.total | round }}</td>
+          <th
+            class="w-48 border text-center first:border-l first:rounded-tl-lg last:rounded-tr-lg border-gray font-extralight">
+            Actividad
+          </th>
+          <th class="w-48 border text-center border-gray font-extralight">
+            Nota
+          </th>
+          <th class="w-48 border text-center border-gray font-extralight">
+            Valor
+          </th>
+          <th class="w-48 border text-center border-gray font-extralight">
+            Dimension
+          </th>
+          <th
+            class="w-48 border text-center first:border-l last:rounded-tr-lg border-gray font-extralight">
+            Total
+          </th>
         </tr>
-      }
-    </tbody>
-  </table>
-  <div class="flex w-4/5 justify-end my-2">
+      </thead>
+      <tbody>
+        @for (row of table; track row.id) {
+          <tr>
+            <td class="border text-center h-10">{{ row.activity }}</td>
+            <td
+              class="border text-center h-10"
+              [ngClass]="{ 'text-red-500': row.grade < 51 }">
+              {{ row.grade }}
+            </td>
+            <td class="border text-center h-10">{{ row.value }}</td>
+            <td class="border text-center h-10">{{ row.dimension }}</td>
+            <td class="border text-center h-10">{{ row.total | round }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="">
     Total:
     <span
       class="ml-2 mr-20"

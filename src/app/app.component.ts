@@ -17,6 +17,9 @@ import { LocalStorageService } from './service/local-storage.service';
 import { UserDetailsDTO } from './models/UserDetailsDTO';
 import { UserDataService } from './service/user-data.service';
 import { LoadingComponent } from './components/loading/loading.component';
+import { ConfigurationService } from './service/configuration.service';
+import { ConfigurationDataService } from './service/configuration-data.service';
+import { ConfigurationDTO } from './models/ConfigurationDTO';
 registerLocaleData(myLocalEs, 'es-ES');
 
 @Component({
@@ -46,20 +49,22 @@ export class AppComponent implements OnInit {
   userDetails: UserDetailsDTO;
   selectedRole: string = '';
   currentRoles = role_names;
-
+  configuration: ConfigurationDTO = {} as ConfigurationDTO;
   constructor(
     private userService: UserService,
     private userDataService: UserDataService,
     private modalService: ModalService,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private configService: ConfigurationService,
+    private configDataService: ConfigurationDataService
   ) {
     this.user = {} as UserDTO;
     this.userDetails = {} as UserDetailsDTO;
   }
   ngOnInit() {
     initFlowbite();
-    this.getUserDetails();
-    this.isLoading = true;
+    this.getConfiguration();
+    this.isLoading = false;
   }
 
   openRoleSelectionModal() {
@@ -85,6 +90,15 @@ export class AppComponent implements OnInit {
         },
       });
   }
+  getConfiguration() {
+    this.configService.getConfigurations().subscribe({
+      next: value => {
+        this.configDataService.setConfig(value.content);
+        this.configuration = value.content;
+        this.getUserDetails();
+      },
+    });
+  }
   getUserDetails() {
     this.userService.userDetails().subscribe({
       next: (data: ResponseDTO<UserDTO>) => {
@@ -107,19 +121,21 @@ export class AppComponent implements OnInit {
     });
   }
   getRoleDetails() {
-    this.userService.getUserRoleDetails(this.currentRole).subscribe({
-      next: (data: ResponseDTO<UserDetailsDTO>) => {
-        this.userDetails = data.content;
-      },
-      complete: () => {
-        this.localStorage.setItem(
-          'userDetails',
-          JSON.stringify(this.userDetails)
-        );
-        this.updateUserData();
-        this.isLogged = true;
-      },
-    });
+    this.userService
+      .getUserRoleDetails(this.currentRole, this.configuration.currentYear)
+      .subscribe({
+        next: (data: ResponseDTO<UserDetailsDTO>) => {
+          this.userDetails = data.content;
+        },
+        complete: () => {
+          this.localStorage.setItem(
+            'userDetails',
+            JSON.stringify(this.userDetails)
+          );
+          this.updateUserData();
+          this.isLogged = true;
+        },
+      });
   }
   updateLoginState(isLogged: boolean) {
     this.isLogged = isLogged;

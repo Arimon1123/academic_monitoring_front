@@ -2,7 +2,9 @@ import { RxStompConfig } from '@stomp/rx-stomp';
 
 export const myRxStompConfig: RxStompConfig = {
   // Which server?
-  brokerURL: 'ws://172.31.112.1:8080/websocket',
+  brokerURL: 'ws://10.243.41.174:8080/websocket',
+  //TODO: Change this to the correct IP address
+
   // Headers
   // Typical keys: login, passcode, host
   // connectHeaders: {

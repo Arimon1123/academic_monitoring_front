@@ -11,6 +11,8 @@ import { colors } from '../../consts/colors.json';
 import { UserDataService } from '../../service/user-data.service';
 import { UserDetailsDTO } from '../../models/UserDetailsDTO';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfigurationDTO } from '../../models/ConfigurationDTO';
+import { ConfigurationDataService } from '../../service/configuration-data.service';
 
 @Component({
   selector: 'app-teacher-schedule',
@@ -34,11 +36,13 @@ export class TeacherScheduleComponent implements OnInit {
     friday: 4,
     saturday: 5,
   };
+  config: ConfigurationDTO = {} as ConfigurationDTO;
   scheduleFormat = schedule[0];
   constructor(
     private assignationService: AssignationService,
     private userDataService: UserDataService,
     private modalService: ModalService,
+    private confDataService: ConfigurationDataService
   ) {
     this.userDetails = {} as UserDetailsDTO;
     this.selectedClass = {} as ScheduleAssignationDTO;
@@ -46,12 +50,17 @@ export class TeacherScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userDataService.currentUser.subscribe({
-      next: (user) => {
-        this.userDetails = user!;
+    this.confDataService.currentConfig.subscribe({
+      next: value => {
+        this.config = value!;
+        this.userDataService.currentUser.subscribe({
+          next: user => {
+            this.userDetails = user!;
+            this.getSchedule();
+          },
+        });
       },
     });
-    this.getSchedule();
   }
   assignColors() {
     let i = 0;
@@ -64,7 +73,10 @@ export class TeacherScheduleComponent implements OnInit {
   }
   getSchedule() {
     this.assignationService
-      .getAssignationByTeacherId(this.userDetails.details.id)
+      .getAssignationByTeacherId(
+        this.userDetails.details.id,
+        this.config.currentYear
+      )
       .subscribe({
         next: (data: ResponseDTO<AssignationDTO[]>) => {
           this.schedule = data.content;

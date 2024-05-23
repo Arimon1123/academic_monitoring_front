@@ -1,15 +1,15 @@
 <main
   class="flex flex-col items-center h-[85vh] bg-bg-color rounded-md border overflow-y-auto"
 >
-  <div class="flex flex-col items-center w-4/5">
-    <div class="flex w-3/5 my-2">
-      <h1 class="font-semibold text-lg">Licencia</h1>
-    </div>
-    <div class="flex flex-col w-3/5 border rounded-md p-4 bg-white">
+  <div class="flex flex-col items-center lg:w-4/5 w-full p-2">
+
+      <h1 class="font-semibold text-lg my-2">Licencia</h1>
+
+    <div class="flex flex-col w-full border rounded-md p-4 bg-white items-center">
       @if (permissionDTO.id) {
-        <div class="flex flex-col">
-          <div class="flex my-2">
-            <div class="flex flex-row w-[45%]">
+        <div class="flex flex-col  lg:w-3/5 w-full">
+          <div class="flex my-2 lg:flex-row flex-col">
+            <div class="flex flex-row lg:w-[45%] w-full">
               <span class="font-semibold">Nombre:</span>
               <span class="ml-3">
                 {{ permissionDTO.student.name }}
@@ -17,15 +17,15 @@
                 {{ permissionDTO.student.motherLastname }}</span
               >
             </div>
-            <div class="flex flex-row w-[45%]">
+            <div class="flex flex-row lg:w-[45%] w-full">
               <span class="font-semibold">Curso: </span>
               <span class="ml-3">
                 {{ permissionDTO.student.studentClass }}</span
               >
             </div>
           </div>
-          <div class="flex flex-row my-2">
-            <div class="flex flex-row w-[45%]">
+          <div class="flex my-2 lg:flex-row flex-col">
+            <div class="flex flex-row lg:w-[45%] w-full">
               <span class="font-semibold">Fecha: </span>
               <span class="ml-3">
                 {{
@@ -33,13 +33,13 @@
                 }}</span
               >
             </div>
-            <div class="flex flex-row w-[45%]">
+            <div class="flex flex-row lg:w-[45%] w-full">
               <span class="font-semibold">Motivo: </span>
               <span class="ml-3"> {{ permissionDTO.reason }}</span>
             </div>
           </div>
-          <div class="flex flex-row my-2">
-            <div class="flex flex-row w-[45%]">
+          <div class="flex lg:flex-row flex-col my-2">
+            <div class="flex flex-row lg:w-[45%] w-full">
               <span class="font-semibold">Fecha de Inicio: </span>
               <span class="ml-3">
                 {{ permissionDTO.permissionStartDate | date: "longDate" }} a las
@@ -48,7 +48,7 @@
                 }}</span
               >
             </div>
-            <div class="flex flex-row w-[45%]">
+            <div class="flex flex-row lg:w-[45%] w-full my-2">
               <span class="font-semibold">Fecha de Fin: </span>
               <span class="ml-3">
                 {{ permissionDTO.permissionEndDate | date: "longDate" }} a las
@@ -57,28 +57,26 @@
             </div>
           </div>
         </div>
-
-       <div class="w-full flex justify-center flex-col">
-         <h2 class="font-semibold tex">Archivos adicionales</h2>
+       <div class="w-full lg:w-3/5 flex justify-center flex-col ">
+         <h2 class="font-semibold">Archivos adicionales</h2>
          <app-image-carrousel
            [imageUrls]="permissionDTO.images"
            [isForSaving]="false"
          ></app-image-carrousel>
        </div>
       }
-
-      <div class="flex justify-evenly my-5">
+      <div class="flex lg:flex-row-reverse w-full flex-col justify-evenly my-5 space-y-2 lg:space-y-0 ">
         <button
-          class="border rounded-md p-1 bg-accepted text-white"
-          (click)="approvePermission()"
-        >
-          Aprobar licencia
-        </button>
-        <button
-          class="btn rounded-md p-1 bg-rejected text-white"
+          class="btn border rounded-md p-1 text-red-600 hover:bg-red-700 hover:text-white transition-colors"
           (click)="rejectPermissionModal()"
         >
           Rechazar licencia
+        </button>
+        <button
+          class="border rounded-md p-1 bg-accepted text-white hover:bg-green-700 transition-colors"
+          (click)="approvePermission()"
+        >
+          Aprobar licencia
         </button>
       </div>
     </div>

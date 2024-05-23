@@ -4,9 +4,9 @@
   <h1 class="text-xl font-bold my-2">
     Boletas de notas
   </h1>
-  <div class="flex flex-row w-full my-2 justify-center">
+  <div class="flex lg:flex-row flex-col w-full my-2 justify-center p-1 lg:space-x-2 lg:space-y-0 space-x-0 space-y-2">
     <div
-      class="flex flex-col border rounded-md bg-white h-fit w-1/5 pb-2 justify-start items-center xl:h-[75vh] mx-2 box-border"
+      class="flex flex-col border rounded-md bg-white h-fit lg:w-1/5 min-w-44 w-full pb-2 justify-start items-center xl:h-[75vh]"
     >
       <h2 class="my-2 font-semibold">Grado</h2>
       <ul class="overflow-auto w-full">
@@ -24,8 +24,8 @@
       </ul>
     </div>
     @if (classList.length > 0) {
-      <div
-        class="flex flex-col border rounded-md bg-white h-fit w-1/5 pb-2 justify-start items-center xl:h-[75vh] mx-2 box-border"
+      <div #classes
+        class="flex flex-col border rounded-md bg-white h-fit lg:w-1/5 min-w-44 w-full pb-2 justify-start items-center xl:h-[75vh]"
       >
         <h2 class="my-2 font-semibold">Cursos</h2>
         <ul class="overflow-auto">
@@ -47,8 +47,8 @@
     }
 
     @if (selectedClass.length > 0) {
-      <section
-        class="flex flex-col border rounded-md bg-white h-fit w-full max-w-[45rem] py-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll mx-2 box-border"
+      <section #bimester
+        class="flex flex-col border rounded-md bg-white h-fit w-full max-w-[45rem] py-2 justify-start items-center xl:h-[75vh] xl:overflow-y-scroll"
       >
         <h2 class="my-2 font-semibold">Bimestre</h2>
         <form  [formGroup]="bimesterForm">
@@ -112,9 +112,9 @@
             id="isFinal"
           />
          </label>
-        <div class="flex w-full justify-end px-2">
+        <div class="flex w-full lg:justify-end justify-center  px-2">
           <button
-            class="bg-primary text-white border rounded-md py-1 px-3"
+            class="bg-primary text-white border rounded-md my-2 py-1 px-3"
             (click)="onDownloadReportCardsHandler()"
           >
             Generar boletas

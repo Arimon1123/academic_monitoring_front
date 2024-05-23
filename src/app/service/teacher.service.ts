@@ -54,4 +54,10 @@ export class TeacherService {
       { withCredentials: true }
     );
   }
+  getTeacherByAssignationId(assignationId: number) {
+    return this.http.get<ResponseDTO<TeacherDTO>>(
+      `${this.API_URL}/teacher/assignation/${assignationId}`,
+      { withCredentials: true }
+    );
+  }
 }

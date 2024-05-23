@@ -1,5 +1,5 @@
-<main class="flex w-full h-[85vh] bg-bg-color p-2 border rounded-md">
-  <div class="grid grid-cols-2C gap-2 lg:w-4/5 w-full">
+<main class="flex w-full h-[85vh] bg-bg-color p-2 border rounded-md overflow-auto">
+  <div class=" lg:grid lg:grid-cols-2C lg:gap-2 lg:w-4/5 flex flex-col  w-full">
     <app-chat-list
       [userData]="userData"
       (receiverEmitter)="onReceiverSelected($event)"

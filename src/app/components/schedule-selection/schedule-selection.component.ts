@@ -12,6 +12,8 @@ import { SubjectDTO } from '../../models/SubjectDTO';
 import { NgClass } from '@angular/common';
 import { ClassListDTO } from '../../models/ClassListDTO';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfigurationDataService } from '../../service/configuration-data.service';
+import { ConfigurationDTO } from '../../models/ConfigurationDTO';
 
 @Component({
   selector: 'app-schedule-selection',
@@ -22,42 +24,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ScheduleSelectionComponent implements OnInit {
   @Output() scheduleEventEmitter = new EventEmitter<ScheduleDTO[]>();
-  @Input() teacherData?: TeacherDTO = {
-    id: 1,
-    person: {
-      id: 3,
-      name: 'Teacher',
-      lastname: 'Teacher',
-      ci: '12345678',
-      address: 'Calle 1',
-      email: 'q1231231@gmail.com',
-      phone: '1831092831',
-    },
-    academicEmail: '',
-    subjects: [
-      {
-        id: 1,
-        name: 'Matemática',
-        hours: 2,
-        status: 1,
-        gradeName: 'Primero',
-        section: 'Primaria',
-        gradeId: 1,
-        requirements: [
-          {
-            id: 1,
-            requirement: 'Pizarrón Interactivo',
-            description: 'Superficie táctil para proyecciones digitales.',
-          },
-          {
-            id: 4,
-            requirement: 'Escritorios o mesas individuales',
-            description: 'Superficies de trabajo individuales.',
-          },
-        ],
-      },
-    ],
-  };
+  @Input() teacherData?: TeacherDTO = {} as TeacherDTO;
+
   selectedSchedules: ScheduleDTO[] = [];
   @Input() classData?: ClassListDTO;
   @Input() classRoomData?: ClassroomDTO;
@@ -70,21 +38,39 @@ export class ScheduleSelectionComponent implements OnInit {
   schedule: { [key: string]: ScheduleCreateDTO[] } = {};
   hours: PeriodDTO[] = schedule[0].hours;
   days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+  configuration: ConfigurationDTO = {} as ConfigurationDTO;
   ngOnInit() {
-    if (this.isForAssignation) this.getAllSchedules();
-    else this.getTeacherSchedules();
+    this.getConfiguration();
   }
-  constructor(private scheduleService: ScheduleService) {}
+  constructor(
+    private scheduleService: ScheduleService,
+    private configDataService: ConfigurationDataService
+  ) {}
+  getConfiguration() {
+    this.configDataService.currentConfig.subscribe({
+      next: value => {
+        this.configuration = value!;
+      },
+    });
+    setTimeout(() => {
+      if (this.isForAssignation) {
+        this.getAllSchedules();
+        console.log('assignation');
+      } else this.getTeacherSchedules();
+    }, 1000);
+  }
   getAllSchedules() {
     forkJoin({
       schedule: this.scheduleService.getScheduleByTeacher(
-        <number>this.teacherData?.id
+        <number>this.teacherData?.id,
+        this.configuration.currentYear
       ),
       classSchedule: this.scheduleService.getScheduleByClass(
         <number>this.classData?.id
       ),
       classroomSchedule: this.scheduleService.getScheduleByClassroom(
-        <number>this.classRoomData?.id
+        <number>this.classRoomData?.id,
+        this.configuration.currentYear
       ),
       selectedSchedules:
         this.classData?.id && this.selectedSubject?.id
@@ -104,7 +90,6 @@ export class ScheduleSelectionComponent implements OnInit {
         this.classSchedules = data.classSchedule.content;
         this.classroomSchedules = data.classroomSchedule.content;
         this.selectedSchedules = data.selectedSchedules.content;
-        this.composeSchedule();
         console.log(
           this.teacherSchedules,
           this.classSchedules,
@@ -114,6 +99,9 @@ export class ScheduleSelectionComponent implements OnInit {
       },
       error: (error: Error) => {
         console.log(error);
+      },
+      complete: () => {
+        this.composeSchedule();
       },
     });
   }
@@ -125,17 +113,21 @@ export class ScheduleSelectionComponent implements OnInit {
       thursday: structuredClone(this.hours),
       friday: structuredClone(this.hours),
     };
+
     for (const schedule of this.teacherSchedules) {
       this.schedule[schedule.weekday][schedule.period - 1].isAvailable = false;
       this.schedule[schedule.weekday][schedule.period - 1].reason = 'teacher';
+      console.log('teacher');
     }
     for (const schedule of this.classSchedules) {
       this.schedule[schedule.weekday][schedule.period - 1].isAvailable = false;
       this.schedule[schedule.weekday][schedule.period - 1].reason = 'class';
+      console.log('class');
     }
     for (const schedule of this.classroomSchedules) {
       this.schedule[schedule.weekday][schedule.period - 1].isAvailable = false;
       this.schedule[schedule.weekday][schedule.period - 1].reason = 'classroom';
+      console.log('classroom');
     }
     for (const schedule of this.selectedSchedules!) {
       this.schedule[schedule.weekday][schedule.period - 1].isAvailable = false;
@@ -143,6 +135,7 @@ export class ScheduleSelectionComponent implements OnInit {
     }
 
     this.showedSchedule = this.transformSchedule();
+    console.log(this.schedule);
     //this.showSchedule = true;
   }
   transformSchedule() {
@@ -193,7 +186,8 @@ export class ScheduleSelectionComponent implements OnInit {
   getTeacherSchedules() {
     forkJoin({
       teacherSchedule: this.scheduleService.getScheduleByTeacher(
-        <number>this.teacherData?.id
+        <number>this.teacherData?.id,
+        this.configuration.currentYear
       ),
       teacherConsultHours: this.scheduleService.getTeacherConsultHours(
         <number>this.teacherData?.id

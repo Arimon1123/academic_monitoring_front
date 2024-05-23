@@ -65,29 +65,7 @@ export class AttendanceComponent implements OnInit {
       thursday: 4,
       friday: 5,
     };
-    this.assignationDTO = {
-      id: 18,
-      className: '1°Primaria A',
-      teacherName: 'Teacher Teacher',
-      subjectName: 'Matemática',
-      classroomName: 'Aula A-1',
-      schedule: [
-        {
-          id: 1,
-          weekday: 'monday',
-          startTime: '08:00:00',
-          endTime: '08:45:00',
-          period: 1,
-        },
-        {
-          id: 2,
-          weekday: 'wednesday',
-          startTime: '08:45:00',
-          endTime: '09:30:00',
-          period: 1,
-        },
-      ],
-    };
+    this.assignationDTO = {} as AssignationDTO;
   }
   ngOnInit() {
     this.activeRoute.params.subscribe({

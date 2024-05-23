@@ -1,12 +1,6 @@
 <main id="main"
-  class="w-full h-[87vh] flex flex-col p-2 border rounded-md bg-bg-color">
-  <div class="p-2">
-    @if (showParentSearch) {
-      <app-parent-search
-        (parentEventEmitter)="addParent($event)"></app-parent-search>
-    }
-  </div>
-  <div>
+  class="w-full h-[87vh] flex flex-col p-2 border rounded-md bg-bg-color items-center overflow-auto">
+  <div class="lg:w-4/5 w-full">
     <h1 class="text-xl font-semibold my-2">Edición de Estudiante</h1>
     <div class="w-full flex flex-col overflow-y-auto space-y-2">
       <app-student-card [student]="student" class="w-full"></app-student-card>
@@ -104,10 +98,11 @@
         <ul>
           @for (parent of parents; track parent.id) {
             <li
-              class="p-2 border rounded-sm flex flex-row justify-evenly my-2 bg-white">
-              <span>Nombre: {{ parent.person.name }}</span>
-              <span>Apellido: {{ parent.person.lastname }}</span>
-              <span>Ci: {{ parent.person.ci }}</span>
+              class="p-2 border rounded-sm flex flex-row justify-around my-2 bg-white">
+              <div class="w-fit flex lg:flex-row flex-col">
+                <span>{{ parent.person.name }} {{ parent.person.lastname }}</span>
+                <span>Ci: {{ parent.person.ci }}</span>
+              </div>
               <button (click)="removeParent(parent.id)">
                 <i class="fa-solid fa-trash" style="color: #f50505"></i>
               </button>
@@ -129,7 +124,12 @@
               Guardar
             </button>
           </div>
-
+          <div class="p-2">
+            @if (showParentSearch) {
+              <app-parent-search
+                (parentEventEmitter)="addParent($event)"></app-parent-search>
+            }
+          </div>
         </ul>
       </details>
       <details class="w-full flex flex-col border rounded-md p-2 bg-white">

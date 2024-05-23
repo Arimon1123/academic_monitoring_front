@@ -36,7 +36,7 @@
         formControlName="reason"
       ></textarea>
     </div>
-    <div class="flex flex-row w-full justify-between">
+    <div class="flex lg:flex-row flex-col  w-full justify-between">
       <div class="flex flex-col w-full my-2">
         <label for="startDate">Fecha de Inicio</label>
         <input
@@ -45,7 +45,7 @@
           min="{{ todayDate }}"
           id="startDate"
           value="{{ todayDate }}"
-          class="border rounded-md w-[95%] my-1"
+          class="border rounded-md lg:w-[95%] w-full my-1"
           formControlName="startDate"
         />
       </div>
@@ -57,12 +57,12 @@
           min="08:00"
           id="startHour"
           value="08:00"
-          class="border rounded-md my-1"
+          class="border rounded-md w-full my-1"
           formControlName="startHour"
         />
       </div>
     </div>
-    <div class="flex flex-row w-full justify-between">
+    <div class="flex lg:flex-row flex-col w-full justify-between">
       <div class="flex flex-col w-full my-2">
         <label for="endDate">Fecha de Fin</label>
         <input
@@ -72,7 +72,7 @@
           id="endDate"
           value="{{ todayDate }}"
           formControlName="endDate"
-          class="border rounded-md w-[95%] my-1"
+          class="border rounded-md lg:w-[95%] w-full my-1"
         />
       </div>
       <div class="flex flex-col w-full my-2">
@@ -85,12 +85,12 @@
           value="09:00:00"
           id="endHour"
           formControlName="endHour"
-          class="border rounded-md my-1"
+          class="border rounded-md my-1 w-full"
         />
       </div>
     </div>
     <span>Adjuntar archivos</span>
-    <div class="flex flex-col my-2">
+    <div class="flex flex-col my-2 w-full">
       <app-image-input
         [images]="images"
         [maxFile]="5"
@@ -105,7 +105,7 @@
 
     <div class="flex w-full justify-end">
       <button
-        class="border rounded-md w-48 bg-primary text-white hover:bg-blue-700 transition-colors p-1"
+        class="border rounded-md w-fit bg-primary text-white hover:bg-blue-700 transition-colors p-1"
       >
         Enviar solicitud
       </button>

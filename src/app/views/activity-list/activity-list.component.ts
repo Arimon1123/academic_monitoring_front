@@ -14,6 +14,7 @@ import { ModalComponent } from '../../components/modal/modal.component';
 import { ModalService } from '../../service/modal.service';
 import { ActivatedRoute } from '@angular/router';
 import { AssignationService } from '../../service/assignation.service';
+import { ConfigurationDataService } from '../../service/configuration-data.service';
 @Component({
   selector: 'app-activity-list',
   standalone: true,
@@ -31,13 +32,15 @@ export class ActivityListComponent implements OnInit {
   deleteActivityId: number;
   title: string;
   showForm: boolean;
+  bimester: number;
   @ViewChild('modal') content: TemplateRef<unknown> | undefined;
 
   constructor(
     private activityService: ActivityService,
     private activeRoute: ActivatedRoute,
     private assignationService: AssignationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private configDatService: ConfigurationDataService
   ) {
     this.totalPercentage = {};
     this.title = 'Nueva actividad';
@@ -47,7 +50,7 @@ export class ActivityListComponent implements OnInit {
     this.activities = {};
     this.assignation = {} as AssignationDTO;
     this.isUpdate = false;
-
+    this.bimester = 1;
     this.activityForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       value: new FormControl('', [Validators.required]),
@@ -67,10 +70,18 @@ export class ActivityListComponent implements OnInit {
         this.getAssignationById(params['id']);
       },
     });
+    this.getConfiguration();
+  }
+  getConfiguration() {
+    this.configDatService.currentConfig.subscribe({
+      next: value => {
+        this.bimester = value!.currentBimester;
+      },
+    });
   }
   getAllActivities(assignationId: number) {
     this.activityService
-      .getActivitiesByAssignationId(assignationId, 3)
+      .getActivitiesByAssignationId(assignationId, this.bimester)
       .subscribe({
         next: (response: ResponseDTO<ActivityDTO[]>) => {
           this.filterActivities(response.content);

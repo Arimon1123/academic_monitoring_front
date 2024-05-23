@@ -10,16 +10,16 @@ import { ScheduleDTO } from '../models/ScheduleDTO';
 export class ScheduleService {
   private API_URL = environment.API_URL;
   constructor(private http: HttpClient) {}
-  getScheduleByClassroom(id: number) {
+  getScheduleByClassroom(id: number, year: number) {
     return this.http.get<ResponseDTO<ScheduleDTO[]>>(
       `${this.API_URL}/schedule/classroom/${id}`,
-      { withCredentials: true }
+      { params: { year: year }, withCredentials: true }
     );
   }
-  getScheduleByTeacher(id: number) {
+  getScheduleByTeacher(id: number, year: number) {
     return this.http.get<ResponseDTO<ScheduleDTO[]>>(
       `${this.API_URL}/schedule/teacher/${id}`,
-      { withCredentials: true }
+      { params: { year: year }, withCredentials: true }
     );
   }
   getScheduleByClass(id: number) {

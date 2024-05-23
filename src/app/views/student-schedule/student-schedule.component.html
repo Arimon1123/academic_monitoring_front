@@ -1,11 +1,11 @@
 <main class="flex flex-col items-center h-[85vh] bg-bg-color rounded-md border">
   <section class="w-4/5 py-2 px-4 mt-2">
     <h1 class="font-semibold text-lg">Horarios</h1>
-    <div class="flex my-2 w-2/5 justify-between">
+    <div class="flex my-2 lg:w-2/5 w-full justify-between">
       <div class="flex flex-col">
-        <div class="flex my-1">
+        <div class="flex my-1 space-x-2 w-full">
           <span class="font-bold">Estudiante: </span>
-          <span class="ml-2"
+          <span class=""
             >{{ studentData.name }} {{ studentData.fatherLastname }}
             {{ studentData.motherLastname }}</span
           >
@@ -17,10 +17,11 @@
       </div>
     </div>
   </section>
-  <table
-    class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
-  >
-    <thead class="bg-selected text-white h-10">
+  <div class="w-full lg:w-4/5 overflow-auto p-2">
+    <table
+      class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
+    >
+      <thead class="bg-selected text-white h-10">
       <th
         class="w-48 border text-center first:border-l first:rounded-tl-lg last:rounded-tr-lg border-gray font-extralight"
       >
@@ -41,33 +42,34 @@
       >
         Viernes
       </th>
-    </thead>
-    <tbody>
-      @for (row of table; track row; let idx = $index) {
-        <tr>
-          <td class="border text-center h-10">
-            {{ scheduleFormat.hours[idx].start | hour }} -
-            {{ scheduleFormat.hours[idx].end | hour }}
-          </td>
-          @for (cell of row; track cell.id) {
-            <td
-              class="h-fit border text-center text-white hover:opacity-70 transition-opacity"
-              (click)="selectClass(cell)"
-              [ngStyle]="{
+      </thead>
+      <tbody>
+        @for (row of table; track row; let idx = $index) {
+          <tr>
+            <td class="border text-center h-10">
+              {{ scheduleFormat.hours[idx].start | hour }} -
+              {{ scheduleFormat.hours[idx].end | hour }}
+            </td>
+            @for (cell of row; track cell.id) {
+              <td
+                class="h-fit border text-center text-white hover:opacity-70 transition-opacity"
+                (click)="selectClass(cell)"
+                [ngStyle]="{
                 'background-color':
                   cell.id !== 0 ? assignedColors[cell.subjectName] : '#fff',
                 cursor: cell.id === 0 ? 'default' : 'pointer'
               }"
-            >
-              @if (cell.id !== 0) {
-                {{ cell.subjectName }}
-              }
-            </td>
-          }
-        </tr>
-      }
-    </tbody>
-  </table>
+              >
+                @if (cell.id !== 0) {
+                  {{ cell.subjectName }}
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </main>
 <ng-template #modal let-data="data">
   <div class="flex flex-row w-full justify-evenly">

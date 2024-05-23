@@ -16,7 +16,7 @@ export class AssignationService {
     return this.http.post<ResponseDTO<string>>(
       `${this.API_URL}/classAssignation`,
       assignation,
-      { withCredentials: true },
+      { withCredentials: true }
     );
   }
 
@@ -26,27 +26,27 @@ export class AssignationService {
       {
         params: { subjectId: subjectId, classId: classId },
         withCredentials: true,
-      },
+      }
     );
   }
 
-  getAssignationByTeacherId(id: number) {
+  getAssignationByTeacherId(id: number, year: number) {
     return this.http.get<ResponseDTO<AssignationDTO[]>>(
       `${this.API_URL}/classAssignation/teacher/${id}`,
-      { withCredentials: true },
+      { params: { year: year }, withCredentials: true }
     );
   }
 
   getAssignationByStudentIdAndYear(studentId: number, year: number) {
     return this.http.get<ResponseDTO<AssignationDTO[]>>(
       `${this.API_URL}/classAssignation/student`,
-      { params: { studentId: studentId, year: year }, withCredentials: true },
+      { params: { studentId: studentId, year: year }, withCredentials: true }
     );
   }
   getAssignationById(id: number) {
     return this.http.get<ResponseDTO<AssignationDTO>>(
       `${this.API_URL}/classAssignation/${id}`,
-      { withCredentials: true },
+      { withCredentials: true }
     );
   }
 }

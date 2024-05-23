@@ -1,7 +1,7 @@
-<main class="flex flex-col items-center h-[85vh] bg-bg-color rounded-md border">
+<main class="flex flex-col items-center h-[87vh] overflow-auto">
   <section class="w-4/5 py-2 px-4 mt-2">
     <h1 class="font-semibold text-lg">Registro de Notas</h1>
-    <div class="flex my-2 w-2/5 justify-between">
+    <div class="flex my-2 lg:w-2/5 flex-col lg:flex-row justify-between w-full">
       <div class="flex flex-col">
         <div class="flex my-1">
           <span class="font-bold">Curso: </span>
@@ -17,115 +17,121 @@
           <span class="font-bold">Materia: </span>
           <span class="ml-2">{{ assignation.subjectName }}</span>
         </div>
+        <div class="flex my-1">
+          <span class="font-bold">Bimestre: </span>
+          <span class="ml-2">{{ configuration.currentBimester }}</span>
+        </div>
       </div>
     </div>
   </section>
-  <section class="flex flex-col w-4/5 items-start h-[50rem] overflow-auto">
-    <table
-      class="table-fixed table overflow-x-scroll border-separate h-full border-spacing-0 w-4/5">
-      <tr class="bg-selected overflow-hidden text-white sticky top-0 h-7 z-20">
-        <th
-          rowspan="2"
-          class="w-10 border text-center first:border-l first:rounded-tl-lg border-gray sticky left-0 font-extralight h-fit bg-active z-10">
-          Nro
-        </th>
-        <th rowspan="2" class="w-64 border text-center h-fit bg-active">
-          Estudiante
-        </th>
-        <th
-          [colSpan]="decidirActivities.length"
-          class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
-          [ngStyle]="{ width: decidirActivities.length * 13 + 'rem' }">
-          DECIDIR
-        </th>
-        <th
-          [colSpan]="hacerActivities.length"
-          class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
-          [ngStyle]="{ width: hacerActivities.length * 13 + 'rem' }">
-          HACER
-        </th>
-        <th
-          [colSpan]="saberActivities.length"
-          class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
-          [ngStyle]="{ width: saberActivities.length * 13 + 'rem' }">
-          SABER
-        </th>
-        <th
-          [colSpan]="serActivities.length"
-          class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
-          [ngStyle]="{ width: serActivities.length * 13 + 'rem' }">
-          SER
-        </th>
-        <th
-          rowspan="2"
-          class="w-32 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center overflow-hidden">
-          Nota Final
-        </th>
-      </tr>
-      <tr class="bg-selected text-white sticky top-7 z-10">
-        @for (activity of decidirActivities; track activity.id) {
+  @if(grades){
+    <section class="flex flex-col lg:w-4/5 w-full items-start h-[50rem] overflow-auto">
+      <table
+        class="table-fixed table overflow-x-scroll border-separate h-full border-spacing-0 w-4/5">
+        <tr class="bg-selected overflow-hidden text-white sticky top-0 h-7 z-20">
           <th
-            class="w-56 border px-5 font-extralight truncate hover:text-clip cursor-default text-center"
-            title="{{ activity.dimension }}: {{ activity.value }}% ">
-            {{ activity.name }}
-            <span class="text-sm">({{ activity.value }}%)</span>
+            rowspan="2"
+            class="w-10 border text-center first:border-l first:rounded-tl-lg border-gray sticky left-0 font-extralight h-fit bg-active z-10">
+            Nro
           </th>
-        }
-        @for (activity of hacerActivities; track activity.id) {
+          <th rowspan="2" class="w-64 border text-center h-fit bg-active">
+            Estudiante
+          </th>
           <th
-            class="w-56 border px-5 font-extralight truncate hover:text-clip cursor-default text-center"
-            title="{{ activity.dimension }}: {{ activity.value }}% ">
-            {{ activity.name }}
-            <span class="text-sm">({{ activity.value }}%)</span>
+            [colSpan]="decidirActivities.length"
+            class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
+            [ngStyle]="{ width: decidirActivities.length * 13 + 'rem' }">
+            DECIDIR
           </th>
-        }
-        @for (activity of saberActivities; track activity.id) {
           <th
-            class="w-56 border px-5 font-extralight truncate hover:text-clip cursor-default text-center"
-            title="{{ activity.dimension }}: {{ activity.value }}% ">
-            {{ activity.name }}
-            <span class="text-sm">({{ activity.value }}%)</span>
+            [colSpan]="hacerActivities.length"
+            class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
+            [ngStyle]="{ width: hacerActivities.length * 13 + 'rem' }">
+            HACER
           </th>
-        }
-        @for (activity of serActivities; track activity.id) {
           <th
-            class="w-56 border px-5 font-extralight truncate hover:text-clip cursor-default text-center"
-            title="{{ activity.dimension }}: {{ activity.value }}% ">
-            {{ activity.name }}
-            <span class="text-sm">({{ activity.value }}%)</span>
+            [colSpan]="saberActivities.length"
+            class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
+            [ngStyle]="{ width: saberActivities.length * 13 + 'rem' }">
+            SABER
           </th>
-        }
-      </tr>
-      @for (student of table; track student.student.id; let idx = $index) {
-        <tr>
-          <td class="border text-center sticky left-0 bg-white truncate">
-            {{ idx + 1 }}
-          </td>
-          <td class="border text-start pl-5 bg-white truncate">
-            {{ student.student.fatherLastname }}
-            {{ student.student.motherLastname }} {{ student.student.name }}
-          </td>
-          @for (grade of student.grades; track grade.id; let last = $last) {
-            @if (!last) {
-              <td class="border text-center bg-white">
-                <input
-                  class="h-5 w-full border-0 text-center focus:outline-none"
-                  value="{{ grade.grade }}"
-                  (change)="updateGrade($event, grade, idx)"
-                  type="number" />
-              </td>
-            } @else {
-              <td
-                class="border text-center bg-white"
-                [ngClass]="{ 'text-red': grade.grade < 51 }">
-                {{ grade.grade | round }}
-              </td>
-            }
+          <th
+            [colSpan]="serActivities.length"
+            class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
+            [ngStyle]="{ width: serActivities.length * 13 + 'rem' }">
+            SER
+          </th>
+          <th
+            rowspan="2"
+            class="w-32 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center overflow-hidden">
+            Nota Final
+          </th>
+        </tr>
+        <tr class="bg-selected text-white sticky top-7 z-10">
+          @for (activity of decidirActivities; track activity.id) {
+            <th
+              class="w-56 border px-5 font-extralight truncate hover:text-clip cursor-default text-center"
+              title="{{ activity.dimension }}: {{ activity.value }}% ">
+              {{ activity.name }}
+              <span class="text-sm">({{ activity.value }}%)</span>
+            </th>
+          }
+          @for (activity of hacerActivities; track activity.id) {
+            <th
+              class="w-56 border px-5 font-extralight truncate hover:text-clip cursor-default text-center"
+              title="{{ activity.dimension }}: {{ activity.value }}% ">
+              {{ activity.name }}
+              <span class="text-sm">({{ activity.value }}%)</span>
+            </th>
+          }
+          @for (activity of saberActivities; track activity.id) {
+            <th
+              class="w-56 border px-5 font-extralight truncate hover:text-clip cursor-default text-center"
+              title="{{ activity.dimension }}: {{ activity.value }}% ">
+              {{ activity.name }}
+              <span class="text-sm">({{ activity.value }}%)</span>
+            </th>
+          }
+          @for (activity of serActivities; track activity.id) {
+            <th
+              class="w-56 border px-5 font-extralight truncate hover:text-clip cursor-default text-center"
+              title="{{ activity.dimension }}: {{ activity.value }}% ">
+              {{ activity.name }}
+              <span class="text-sm">({{ activity.value }}%)</span>
+            </th>
           }
         </tr>
-      }
-    </table>
-  </section>
+        @for (student of table; track student.student.id; let idx = $index) {
+          <tr>
+            <td class="border text-center sticky left-0 bg-white truncate">
+              {{ idx + 1 }}
+            </td>
+            <td class="border text-start pl-5 bg-white truncate">
+              {{ student.student.fatherLastname }}
+              {{ student.student.motherLastname }} {{ student.student.name }}
+            </td>
+            @for (grade of student.grades; track grade.id; let last = $last) {
+              @if (!last) {
+                <td class="border text-center bg-white">
+                  <input
+                    class="h-5 w-full border-0 text-center focus:outline-none"
+                    value="{{ grade.grade }}"
+                    (change)="updateGrade($event, grade, idx)"
+                    type="number" />
+                </td>
+              } @else {
+                <td
+                  class="border text-center bg-white"
+                  [ngStyle]="{ 'color': grade.grade < 51 ? 'red' : '#000' }">
+                  {{ grade.grade | round }}
+                </td>
+              }
+            }
+          </tr>
+        }
+      </table>
+    </section>
+  }
   <div class="flex w-4/5 justify-end my-2">
     <button
       class="border bg-primary rounded-lg py-1 px-3 text-white hover:bg-active transition-colors my"

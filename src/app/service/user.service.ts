@@ -7,7 +7,6 @@ import { UserDetailsDTO } from '../models/UserDetailsDTO';
 import { UserDataDTO } from '../models/UserDataDTO';
 import { UserCreateDTO } from '../models/UserCreateDTO';
 import { PageDTO } from '../models/PageDTO';
-import { RoleDTO } from '../models/RoleDTO';
 import { StudentCreateDTO } from '../models/StudentCreateDTO';
 
 @Injectable({
@@ -81,19 +80,23 @@ export class UserService {
       { responseType: 'json', withCredentials: true }
     );
   }
-  getUserRoleDetails(role: string) {
+  getUserRoleDetails(role: string, year: number) {
     return this.http.get<ResponseDTO<UserDetailsDTO>>(
       `${this.API_URL}/auth/role`,
-      { responseType: 'json', withCredentials: true, params: { role: role } }
+      {
+        responseType: 'json',
+        withCredentials: true,
+        params: { role: role, year: year },
+      }
     );
   }
-  getUserDetails(role: string, username: string) {
+  getUserDetails(role: string, username: string, year: number) {
     return this.http.get<ResponseDTO<UserDetailsDTO>>(
       `${this.API_URL}/user/details`,
       {
         responseType: 'json',
         withCredentials: true,
-        params: { role: role, username: username },
+        params: { role: role, username: username, year: year },
       }
     );
   }

@@ -1,34 +1,78 @@
 {
   "ADMINISTRATIVE": {
     "uniqueRoutes": [
-      { "id": 1, "route": "/userRegister", "title": "Registro de Usuario" },
-      { "id": 2, "route": "/userList", "title": "Búsqueda de usuarios" },
-      { "id": 3, "route": "/assignation", "title": "Asignación de Materias" },
-      { "id": 4, "route": "/permissionList", "title": "Licencias pendientes" },
-      {
-        "id": 5,
-        "route": "/studentRegister",
-        "title": "Registro de Estudiante"
-      },
-      {
-        "id": 6,
-        "route": "/subjectRegister",
-        "title": "Registro de Materias"
-      },
-      {
-        "id": 14,
-        "route": "/reportCards",
-        "title": "Boleta de notas"
-      },
       {
         "id": 15,
         "route": "/announcementRegister",
-        "title" : "Registro de Anuncios"
+        "title": "Registro de Anuncios"
       },
       {
         "id": 16,
         "route": "/reports",
-        "title" : "Reportes"
+        "title": "Reportes"
+      },
+
+      {
+        "id": 22,
+        "route": "/configuration",
+        "title": "Configuración"
+      }
+    ],
+    "parentRoutes": [
+      {
+        "id": 22,
+        "title": "Registros",
+        "children": [
+          { "id": 0, "route": "/userRegister", "title": "Registro de Usuario" },
+          {
+            "id": 5,
+            "route": "/studentRegister",
+            "title": "Registro de Estudiante"
+          },
+          {
+            "id": 6,
+            "route": "/subjectRegister",
+            "title": "Registro de Materias"
+          }
+        ]
+      },
+      {
+        "id": 23,
+        "title": "Listados",
+        "children": [
+          { "id": 1, "route": "/userList", "title": "Búsqueda de usuarios" },
+          {
+            "id": 20,
+            "route": "/studentList",
+            "title": "Búsqueda de estudiantes"
+          }
+        ]
+      },
+      {
+        "id": 24,
+        "title": "Gestión de cursos",
+        "children": [
+          {
+            "id": 3,
+            "route": "/assignation",
+            "title": "Asignación de Materias"
+          },
+          {
+            "id": 4,
+            "route": "/permissionList",
+            "title": "Licencias pendientes"
+          },
+          {
+            "id": 14,
+            "route": "/reportCards",
+            "title": "Boleta de notas"
+          },
+          {
+            "id": 21,
+            "route": "/inscription",
+            "title": "Inscripción de estudiantes"
+          }
+        ]
       }
     ]
   },

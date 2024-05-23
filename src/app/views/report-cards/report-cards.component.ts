@@ -1,4 +1,10 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { GradeDTO } from '../../models/GradeDTO';
 import { ClassListDTO } from '../../models/ClassListDTO';
 import { GradeService } from '../../service/grade.service';
@@ -24,6 +30,8 @@ import { ModalService } from '../../service/modal.service';
 })
 export class ReportCardsComponent implements OnInit {
   @ViewChild('modal') modal: TemplateRef<unknown> | undefined;
+  @ViewChild('bimester') bimesterEl: ElementRef | undefined;
+  @ViewChild('classes') classesEl: ElementRef | undefined;
   gradeList: GradeDTO[];
   classList: ClassListDTO[];
   selectedClass: number[];
@@ -70,6 +78,13 @@ export class ReportCardsComponent implements OnInit {
         next: (value: ResponseDTO<ClassListDTO[]>) => {
           this.classList = value.content;
         },
+        complete: () => {
+          setTimeout(() => {
+            this.classesEl?.nativeElement.scrollIntoView({
+              behavior: 'smooth',
+            });
+          }, 250);
+        },
       });
   }
   addSelectedClass(event: Event) {
@@ -83,6 +98,11 @@ export class ReportCardsComponent implements OnInit {
       });
     }
     console.log(this.selectedClass);
+    setTimeout(() => {
+      this.classesEl?.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }, 250);
   }
   onDownloadReportCardsHandler() {
     if (this.isFinalReport) this.bimester = 4;

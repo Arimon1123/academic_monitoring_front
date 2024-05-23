@@ -14,9 +14,6 @@
   --primary : #0C2348;
   --bg: #F9F9F9
 }
-html {
-  overflow: hidden;
-}
 /* Estilos para el scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
