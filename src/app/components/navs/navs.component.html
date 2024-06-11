@@ -28,6 +28,9 @@
             </svg>
           </button>
         </div>
+        <ul>
+          <span class="text-white">{{title}}</span>
+        </ul>
         <div class="flex items-center">
           <div class="flex items-center ms-3">
             <div>
@@ -73,7 +76,7 @@
                     (keydown)="logout()"
                     class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem"
-                    >Sign out</a
+                    >Cerrar sesión</a
                   >
                 </li>
               </ul>
@@ -95,13 +98,13 @@
           @for (route of routesList.uniqueRoutes; track route.id) {
             @if(userDetails.role !== 'STUDENT'){
               <li
-                class="flex items-center justify-center w-full text-white  border border-white transition duration-75 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700"
+                class="flex items-center justify-center w-full border border-white transition duration-75 rounded-lg group hover:bg-active "
                 data-drawer-target="logo-sidebar"
                 data-drawer-toggle="logo-sidebar"
               >
                 <a
                   routerLink="{{ route.route }}"
-                  routerLinkActive="bg-active text-white"
+                  routerLinkActive="bg-active"
                   class="text-white w-full h-full p-2 rounded-lg"
                   role="menuitem"
                 >{{ route.title }}</a
@@ -109,13 +112,13 @@
               </li>
             } @else {
               <li
-                class="flex items-center justify-center w-full border border-white transition duration-75 rounded-lg group hover:bg-active dark:text-white dark:hover:bg-gray-700"
+                class="flex items-center justify-center w-full border border-white transition duration-75 rounded-lg group hover:bg-active"
                 data-drawer-target="logo-sidebar"
                 data-drawer-toggle="logo-sidebar"
               >
                 <a
                   [routerLink]=[route.route,userDetails.studentDetails.id]
-                  routerLinkActive="bg-active text-white"
+                  routerLinkActive="bg-active"
                   class="text-white text-center inline w-full h-full p-2 rounded-lg"
                   role="menuitem"
                 >{{ route.title }}</a
@@ -165,7 +168,7 @@
                   >
                     <a
                       [routerLink]="route.route + '/' + student.id"
-                      routerLinkActive="bg-active text-white"
+                      routerLinkActive="bg-active"
                       class="text-white text-center inline w-full h-full p-2 rounded-lg"
                       role="menuitem"
                     >{{ route.title }}</a
@@ -283,8 +286,6 @@
                   </li>
                 }
               </ul>
-            } @empty {
-              <span>AAAA</span>
             }
           }
         </ul>

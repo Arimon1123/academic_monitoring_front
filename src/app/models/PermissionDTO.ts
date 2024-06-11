@@ -9,4 +9,5 @@ export interface PermissionDTO {
   permissionStatus: number;
   images: string[];
   student: StudentDTO;
+  rejection: { id: number; reason: string; permissionId: number }[];
 }

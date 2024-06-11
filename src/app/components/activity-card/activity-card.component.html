@@ -1,0 +1,23 @@
+<div class="flex justify-around xl:flex-row flex-col w-full">
+  <div class="flex flex-col xl:w-5/12 w-full">
+    <h1 class="xl:text-start block w-full text-center font-semibold">{{ activity?.name }}</h1>
+    <span>Dimensión: {{ activity?.dimension }}</span>
+    <span>Valor: {{ activity?.value }} %</span>
+  </div>
+  <div
+    class="flex flex-row md:flex-col lg:flex-row justify-evenly items-center"
+  >
+    <button
+      (click)="onUpdateEventHandler(activity!)"
+      class="border rounded-md bg-accepted h-fit p-1 w-24 text-white hover:bg-green-700 transition-colors"
+    >
+      Editar
+    </button>
+    <button
+      (click)="onDeleteEventHandler(activity!)"
+      class="border rounded-md bg-rejected h-fit p-1 w-24 text-white hover:bg-red-700 transition-colors"
+    >
+      Eliminar
+    </button>
+  </div>
+</div>

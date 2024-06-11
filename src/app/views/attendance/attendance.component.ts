@@ -153,7 +153,7 @@ export class AttendanceComponent implements OnInit {
       schedule => this.weekdays[schedule.weekday] === this.todayDate.getDay()
     );
     if (!weekdayControl) {
-      alert('No hay clases hoy');
+      this.openModal('No hay clases', 'El día de hoy no hay clases');
       return;
     }
     if (
@@ -186,7 +186,7 @@ export class AttendanceComponent implements OnInit {
         return { student: row.student, attendance: attendance };
       });
     } else {
-      alert('ya se agrego la asistencia para hoy');
+      this.openModal('Error', 'Ya se ha registrado la asistencia de hoy');
       return;
     }
   }

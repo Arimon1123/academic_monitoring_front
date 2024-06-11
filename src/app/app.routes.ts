@@ -28,7 +28,7 @@ import { StudentListComponent } from './views/student-list/student-list.componen
 import { EditStudentComponent } from './views/edit-student/edit-student.component';
 import { StudentInscriptionComponent } from './views/student-inscription/student-inscription.component';
 import { ConfigurationsComponent } from './views/configurations/configurations.component';
-import { Component } from '@angular/core';
+import { ParentLicenseComponent } from './views/parent-license/parent-license.component';
 
 export const routes: Routes = [
   {
@@ -44,6 +44,8 @@ export const routes: Routes = [
   {
     path: 'userList',
     component: UserListComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'unauthorized',
@@ -52,6 +54,8 @@ export const routes: Routes = [
   {
     path: 'editUser/:id',
     component: EditUserComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'subjectRegister',
@@ -74,14 +78,20 @@ export const routes: Routes = [
   {
     path: 'requirePermission',
     component: RequireLicenseComponent,
+    canActivate: [authGuard],
+    data: { roles: ['PARENT'] },
   },
   {
     path: 'permissionList',
     component: PermissionListComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'permissionDetails/:id',
     component: PermissionDetailsComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE', 'PARENT'] },
   },
   {
     path: 'attendance/:id',
@@ -92,34 +102,50 @@ export const routes: Routes = [
   {
     path: 'activity/:id',
     component: ActivityListComponent,
+    canActivate: [authGuard],
+    data: { roles: ['TEACHER'] },
   },
   {
     path: 'grades/:id',
     component: GradesComponent,
+    canActivate: [authGuard],
+    data: { roles: ['TEACHER'] },
   },
   {
     path: 'teacherSchedule',
     component: TeacherScheduleComponent,
+    canActivate: [authGuard],
+    data: { roles: ['TEACHER'] },
   },
   {
     path: 'studentSchedule/:id',
     component: StudentScheduleComponent,
+    canActivate: [authGuard],
+    data: { roles: ['PARENT', 'STUDENT'] },
   },
   {
     path: 'studentGrades/:id',
     component: StudentGradesComponent,
+    canActivate: [authGuard],
+    data: { roles: ['PARENT', 'STUDENT'] },
   },
   {
     path: 'studentActivities/student/:studentId/assignation/:assignationId/bimester/:bimester',
     component: StudentActivitiesComponent,
+    canActivate: [authGuard],
+    data: { roles: ['PARENT', 'STUDENT'] },
   },
   {
     path: 'reportCards',
     component: ReportCardsComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'announcementRegister',
     component: AnnouncementRegisterComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'home',
@@ -128,10 +154,14 @@ export const routes: Routes = [
   {
     path: 'chat',
     component: ChatsComponent,
+    canActivate: [authGuard],
+    data: { roles: ['PARENT', 'TEACHER'] },
   },
   {
     path: 'reports',
     component: ReportsComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'test',
@@ -140,22 +170,36 @@ export const routes: Routes = [
   {
     path: 'studentList',
     component: StudentListComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'editStudent/:id',
     component: EditStudentComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'inscription',
     component: StudentInscriptionComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
   },
   {
     path: 'chat/:receiverId',
     component: ChatsComponent,
+    canActivate: [authGuard],
+    data: { roles: ['PARENT', 'TEACHER'] },
   },
   {
     path: 'configuration',
     component: ConfigurationsComponent,
+    canActivate: [authGuard],
+    data: { roles: ['ADMINISTRATIVE'] },
+  },
+  {
+    path: 'permissionParent',
+    component: ParentLicenseComponent,
   },
   {
     path: '**',

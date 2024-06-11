@@ -34,33 +34,41 @@
             class="w-10 border text-center first:border-l first:rounded-tl-lg border-gray sticky left-0 font-extralight h-fit bg-active z-10">
             Nro
           </th>
-          <th rowspan="2" class="w-64 border text-center h-fit bg-active">
+          <th rowspan="2" class="w-64 border text-center h-fit bg-active sticky left-0 font-extralight z-10">
             Estudiante
           </th>
-          <th
-            [colSpan]="decidirActivities.length"
-            class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
-            [ngStyle]="{ width: decidirActivities.length * 13 + 'rem' }">
-            DECIDIR
-          </th>
-          <th
-            [colSpan]="hacerActivities.length"
-            class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
-            [ngStyle]="{ width: hacerActivities.length * 13 + 'rem' }">
-            HACER
-          </th>
-          <th
-            [colSpan]="saberActivities.length"
-            class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
-            [ngStyle]="{ width: saberActivities.length * 13 + 'rem' }">
-            SABER
-          </th>
-          <th
-            [colSpan]="serActivities.length"
-            class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
-            [ngStyle]="{ width: serActivities.length * 13 + 'rem' }">
-            SER
-          </th>
+          @if(decidirActivities.length > 0){
+            <th
+              [colSpan]="decidirActivities.length"
+              class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
+              [ngStyle]="{ width: decidirActivities.length * 13 + 'rem' }">
+              DECIDIR
+            </th>
+          }
+          @if (hacerActivities.length > 0){
+            <th
+              [colSpan]="hacerActivities.length"
+              class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
+              [ngStyle]="{ width: hacerActivities.length * 13 + 'rem' }">
+              HACER
+            </th>
+          }
+          @if(saberActivities.length > 0){
+            <th
+              [colSpan]="saberActivities.length"
+              class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
+              [ngStyle]="{ width: saberActivities.length * 13 + 'rem' }">
+              SABER
+            </th>
+          }
+         @if(serActivities.length>0){
+           <th
+             [colSpan]="serActivities.length"
+             class="w-56 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center"
+             [ngStyle]="{ width: serActivities.length * 13 + 'rem' }">
+             SER
+           </th>
+         }
           <th
             rowspan="2"
             class="w-32 border px-5 last:rounded-tr-lg border-gray font-extralight truncate hover:text-clip cursor-default text-center overflow-hidden">
@@ -106,7 +114,7 @@
             <td class="border text-center sticky left-0 bg-white truncate">
               {{ idx + 1 }}
             </td>
-            <td class="border text-start pl-5 bg-white truncate">
+            <td class="border text-start pl-5  sticky left-0 bg-white truncate">
               {{ student.student.fatherLastname }}
               {{ student.student.motherLastname }} {{ student.student.name }}
             </td>

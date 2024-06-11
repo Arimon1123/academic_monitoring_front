@@ -5,12 +5,15 @@ import {
   OnChanges,
   OnInit,
   Output,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { SubjectDTO } from '../../models/SubjectDTO';
 import { SubjectService } from '../../service/subject.service';
 import { FormsModule } from '@angular/forms';
 import { GradeDTO } from '../../models/GradeDTO';
 import { GradeService } from '../../service/grade.service';
+import { ModalService } from '../../service/modal.service';
 
 @Component({
   selector: 'app-subject-selection',
@@ -20,6 +23,7 @@ import { GradeService } from '../../service/grade.service';
   styleUrl: './subject-selection.component.css',
 })
 export class SubjectSelectionComponent implements OnInit, OnChanges {
+  @ViewChild('modal') content: TemplateRef<unknown> | undefined;
   @Output() subjectEventEmitter = new EventEmitter<SubjectDTO[]>();
   subjectList: SubjectDTO[] = [];
   selectedGradeId = 1;
@@ -27,7 +31,8 @@ export class SubjectSelectionComponent implements OnInit, OnChanges {
   gradeList: GradeDTO[] = [];
   constructor(
     private subjectService: SubjectService,
-    private gradeService: GradeService
+    private gradeService: GradeService,
+    private modalService: ModalService
   ) {}
   ngOnInit() {
     this.getGrades();
@@ -64,12 +69,13 @@ export class SubjectSelectionComponent implements OnInit, OnChanges {
     if (selectedSubject) {
       this.addSubject(selectedSubject);
       target.value = '0';
-    } else alert('Subject not found');
+    } else this.openModal('Error', 'No se encontró la materia seleccionada');
   }
   addSubject(subject: SubjectDTO) {
     const isSubjectAlreadyAdded =
       this.selectedSubjects!.indexOf(subject) !== -1;
-    if (isSubjectAlreadyAdded) alert('Subject already added');
+    if (isSubjectAlreadyAdded)
+      this.openModal('Error', 'La materia ya fue agregada');
     else {
       this.selectedSubjects!.push(subject);
       this.subjectEventEmitter.emit(this.selectedSubjects);
@@ -80,5 +86,18 @@ export class SubjectSelectionComponent implements OnInit, OnChanges {
       subjectS => subjectS.id !== subject.id
     );
     this.subjectEventEmitter.emit(this.selectedSubjects);
+  }
+  openModal(title: string, message: string) {
+    this.modalService.open({
+      content: this.content!,
+      options: {
+        size: 'small',
+        hasContent: false,
+        isSubmittable: false,
+        title: title,
+        message: message,
+        isClosable: true,
+      },
+    });
   }
 }

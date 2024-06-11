@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ChatComponent } from '../../components/chat/chat.component';
 import { ChatListComponent } from '../../components/chat-list/chat-list.component';
 import { UserDataService } from '../../service/user-data.service';
@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ChatsComponent implements OnInit {
   receiverId: number = 0;
   userData: UserDetailsDTO = {} as UserDetailsDTO;
+  showChat = false;
   constructor(
     private userDataService: UserDataService,
     private activeRoute: ActivatedRoute
@@ -32,9 +33,16 @@ export class ChatsComponent implements OnInit {
       },
     });
   }
-
   onReceiverSelected(receiverId: number) {
     console.log('receiver id: ' + receiverId);
     this.receiverId = receiverId;
+    if (screen.width <= 768) this.showChat = true;
   }
+  onBackHandler(result: boolean) {
+    console.log(result);
+    if (result) this.showChat = false;
+  }
+
+  protected readonly screen = screen;
+  protected readonly window = window;
 }

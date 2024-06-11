@@ -5,9 +5,12 @@ import {
   numberAttribute,
   OnInit,
   Output,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 import { ImageDTO } from '../../models/ImageDTO';
+import { ModalService } from '../../service/modal.service';
 
 @Component({
   selector: 'app-image-input',
@@ -21,7 +24,9 @@ export class ImageInputComponent implements OnInit {
   @Input() multiple: boolean | undefined;
   @Output() uploadImageEvent = new EventEmitter<ImageDTO[]>();
   @Input() images: ImageDTO[] = [];
+  @ViewChild('content') content: TemplateRef<unknown> | undefined;
 
+  constructor(private modalService: ModalService) {}
   ngOnInit() {
     console.log(this.maxFile, this.multiple);
   }
@@ -34,7 +39,10 @@ export class ImageInputComponent implements OnInit {
         target.files.length > this.maxFile! ||
         this.images.length + target.files.length > this.maxFile!
       ) {
-        alert(`No puedes subir mas de ${this.maxFile} imágenes`);
+        this.openModal(
+          'Error',
+          'Solo puedes subir  ' + this.maxFile! + ' imágenes'
+        );
         return;
       }
       for (let i = 0; i < target.files.length; i++) {
@@ -50,5 +58,19 @@ export class ImageInputComponent implements OnInit {
   }
   getImageUrl(image: File) {
     return URL.createObjectURL(image);
+  }
+
+  openModal(title: string, message: string) {
+    this.modalService.open({
+      content: this.content!,
+      options: {
+        size: 'small',
+        hasContent: false,
+        isSubmittable: false,
+        title: title,
+        message: message,
+        isClosable: true,
+      },
+    });
   }
 }

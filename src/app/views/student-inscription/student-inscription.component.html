@@ -18,16 +18,21 @@
           @for (student of students; track student.id) {
             <li
               class="w p-2 border rounded-md bg-white flex justify-around items-center">
-             <div class="flex lg:flex-row flex-col space-y-1 lg:space-y-0">
-                <span class="lg:min-w-48"
-                >{{ student.name }} {{ student.fatherLastname }}
+             <div class="flex lg:flex-row flex-col lg:w-fit w-48 space-y-1 lg:space-y-0">
+                <span class="lg:w-56 inline-block items-center mx-2 truncate"
+                ><img
+                    src="./assets/user_a.svg"
+                    alt="id icon"
+                    class="size-5 inline-block mx-2" />
+
+                  {{ student.name }} {{ student.fatherLastname }}
                   {{ student.motherLastname }}</span
                 >
-               <span class="lg:min-w-48 flex items-center">
+               <span class="lg:w-56 flex items-center mx-2">
                 <img
                   src="./assets/id.svg"
                   alt="id icon"
-                  class="size-5 inline-block" />
+                  class="size-5 inline-block mx-2" />
                  {{ student.ci }}</span
                >
              </div>

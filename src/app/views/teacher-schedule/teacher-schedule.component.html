@@ -75,22 +75,22 @@
 </main>
 <ng-template #modal let-data="data">
   <div class="flex lg:flex-row flex-col w-full justify-evenly lg:space-x-4">
-    <div class="flex flex-col">
-      <span class="my-2 font-semibold"
+    <div class="flex lg:flex-col flex-row justify-between">
+      <span class="lg:my-2 font-semibold flex flex-col lg:inline"
         >Materia: <span class="font-medium">{{ data.subjectName }}</span>
       </span>
-      <span class="font-semibold"
+      <span class="font-semibold flex flex-col lg:inline"
         >Horas:
         <span class="font-medium"
           >{{ data.startHour | hour }} - {{ data.endHour | hour }}</span
         ></span
       >
     </div>
-    <div class="flex flex-col">
-      <span class="my-2 font-semibold"
+    <div class="flex lg:flex-col flex-row justify-between">
+      <span class="lg:my-2 font-semibold flex flex-col lg:inline"
         >Aula: <span class="font-medium">{{ data.classroomName }}</span></span
       >
-      <span class="font-semibold"
+      <span class="font-semibold flex flex-col lg:inline"
         >Curso: <span class="font-medium">{{ data.className }}</span></span
       >
     </div>

@@ -13,55 +13,60 @@
           >
         </div>
         <div class="flex my-1">
-          <span class="font-bold">Curso: </span>
-          <span class="ml-2">{{ studentData.studentClass }}</span>
+        @if(currentClass){
+            <span class="font-bold">Curso: </span>
+            <span class="ml-2">{{ studentData.studentClass }}</span>
+        } @else{
+            <span>Nota: El estudiante no esta inscrito en la gestión actual </span>
+        }
         </div>
       </div>
     </div>
   </section>
-  <div class="w-full lg:w-4/5 overflow-auto p-2">
-    <table
-      class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
-    >
-      <thead class="bg-selected text-white h-10">
-      <tr>
-        <th
-          class="w-48 border text-center first:border-l first:rounded-tl-lg last:rounded-tr-lg border-gray font-extralight"
-        >
-          Materias
-        </th>
-        <th class="w-48 border text-center border-gray font-extralight">
-          Primer Bimestre
-        </th>
-        <th class="w-48 border text-center border-gray font-extralight">
-          Segundo Bimestre
-        </th>
-        <th class="w-48 border text-center border-gray font-extralight">
-          Tercer Bimestre
-        </th>
-        <th class="w-48 border text-center border-gray font-extralight">
-          Cuarto Bimestre
-        </th>
-        <th
-          class="w-48 border text-center first:border-l last:rounded-tr-lg border-gray font-extralight"
-        >
-          Nota Total
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-        @for (rows of table; track rows.subject) {
-          <tr>
-            <td class="border text-center h-10">{{ rows.subject }}</td>
-            @for (grades of rows.grades; track grades.grade; let last = $last) {
-              <td
-                class="h-fit border text-center transition-colors"
-                [ngClass]="{ 'hover:bg-active hover:text-white' : !last}"
-              >
-                @if (!last) {
-                  <a
-                    class="inline-block w-full h-full "
-                    [routerLink]="[
+  @if(this.currentClass){
+    <div class="w-full lg:w-4/5 overflow-auto p-2">
+      <table
+        class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
+      >
+        <thead class="bg-selected text-white h-10">
+        <tr>
+          <th
+            class="w-48 border text-center first:border-l first:rounded-tl-lg last:rounded-tr-lg border-gray font-extralight"
+          >
+            Materias
+          </th>
+          <th class="w-48 border text-center border-gray font-extralight">
+            Primer Bimestre
+          </th>
+          <th class="w-48 border text-center border-gray font-extralight">
+            Segundo Bimestre
+          </th>
+          <th class="w-48 border text-center border-gray font-extralight">
+            Tercer Bimestre
+          </th>
+          <th class="w-48 border text-center border-gray font-extralight">
+            Cuarto Bimestre
+          </th>
+          <th
+            class="w-48 border text-center first:border-l last:rounded-tr-lg border-gray font-extralight"
+          >
+            Nota Total
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (rows of table; track rows.subject) {
+            <tr>
+              <td class="border text-center h-10">{{ rows.subject }}</td>
+              @for (grades of rows.grades; track grades.grade; let last = $last) {
+                <td
+                  class="h-fit border text-center transition-colors"
+                  [ngClass]="{ 'hover:bg-active hover:text-white' : !last}"
+                >
+                  @if (!last) {
+                    <a
+                      class="inline-block w-full h-full "
+                      [routerLink]="[
                     '/studentActivities',
                     'student',
                     studentData.id,
@@ -70,20 +75,21 @@
                     'bimester',
                     grades.bimester
                   ]"
-                    [ngClass]="{ 'text-red-500': grades.grade < 51 }"
-                  >
-                    {{ grades.grade }}
-                  </a>
-                } @else {
-                  <a class="inline-block w-full h-full">
-                    {{ grades.grade }}
-                  </a>
-                }
-              </td>
-            }
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+                      [ngClass]="{ 'text-red-500': grades.grade < 51 }"
+                    >
+                      {{ grades.grade }}
+                    </a>
+                  } @else {
+                    <a class="inline-block w-full h-full">
+                      {{ grades.grade }}
+                    </a>
+                  }
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
 </main>

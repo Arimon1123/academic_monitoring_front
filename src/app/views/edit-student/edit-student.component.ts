@@ -86,14 +86,14 @@ export class EditStudentComponent implements OnInit {
   }
   addParent(parent: ParentDTO) {
     if (this.parents.length >= 5) {
-      alert('No se puede agregar más padres');
+      this.openModal('Error', 'No se puede agregar más padres');
       return;
     }
     const father = this.parents.findIndex(value => {
       return value.id === parent.id;
     });
     if (!father) {
-      alert('El padre ya fue seleccionado');
+      this.openModal('Error', 'El padre ya fue seleccionado');
       return;
     }
     this.parents.push(parent);

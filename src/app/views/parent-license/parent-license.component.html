@@ -1,0 +1,74 @@
+<main
+  class="flex flex-col items-center rounded-md border h-[87vh] bg-bg-color overflow-auto w-full">
+  <h1 class="my-2 text-lg font-semibold">Licencias</h1>
+  <div class="w-full lg:w-3/5 p-2">
+    <ul class="flex flex-col w-full">
+      @for (permission of permissionList; track permission.id) {
+        <li
+          class="flex border rounded-md p-2 bg-white items-center w-full my-2 h-fit justify-start">
+          <img
+            src="assets/user.svg"
+            class="lg:size-16 size-8 hidden lg:block mx-2"
+            alt="user image" />
+          <div class="flex flex-col w-full justify-between p-2">
+            <div class="flex flex-row justify-between items-center">
+              <span class="font-bold flex w-fit truncate justify-between"
+                >{{ permission.student.name }}
+                {{ permission.student.fatherLastname }}
+                {{ permission.student.motherLastname }}
+              </span>
+              <div class="flex lg:flex-row flex-col">
+                <span
+                  class="inline-block text-xs font-light mx-2 px-2 rounded-full text-white "
+                  [ngStyle]="{
+                    background:
+                      permission.permissionStatus === 0
+                        ? '#fdd444'
+                        : permission.permissionStatus === 1
+                          ? '#4CAF50'
+                          : '#ff3b30',
+                    color: permission.permissionStatus === 0 ? '#000' : '#fff'
+                  }">
+                  {{ permissionStatusDict[permission.permissionStatus] }}
+                </span>
+                <span class="inline-block text-xs font-light text-slate-600 text-center"
+                  >{{ permission.date | date: 'dd/MM/yyyy' }}
+                </span>
+              </div>
+            </div>
+            <div class="flex flex-row justify-between">
+              <div
+                class="flex lg:flex-row flex-col lg:items-center lg:w-4/5 w-full">
+                <div class="flex flex-col lg:w-3/5 w-full">
+                  <span> {{ permission.student.studentClass }}</span>
+                  <span class="flex items-center text-sm lg:text-lg">
+                    <img src="assets/calendar.svg" alt="calendar icon" />
+                    {{
+                      permission.permissionStartDate | date: ' HH:mm dd/MM/yy'
+                    }}
+                    a
+                    {{
+                      permission.permissionEndDate | date: 'HH:mm dd/MM/yy '
+                    }}</span
+                  >
+                </div>
+                <div class="flex flex-col lg:w-3/5 w-full">
+                  <span class="truncate max-w-52 hidden lg:inline-block"
+                    >Motivo: {{ permission.reason }}</span
+                  >
+                </div>
+              </div>
+              <div class="flex w-1/5 justify-center flex-col">
+                <a
+                  class="text-center"
+                  routerLink="/permissionDetails/{{ permission.id }}">
+                  <i class="fa-solid fa-circle-info [color:blue]"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</main>

@@ -76,7 +76,7 @@
         class="flex flex-col w-full h-fit xl:h-[75vh] border rounded-md bg-white p-4 overflow-auto m-2 md:m-0"
         #schedule
       >
-        <h2 class="text-md font-semibold text-start mb-2">Asignación</h2>
+        <h2 class="text-md font-semibold text-center mb-2">Asignación</h2>
         <h3 class="text-md font-normal text-start mb-2">Profesor</h3>
         <div class="flex w-full justify-between my-2">
           <select
@@ -123,21 +123,23 @@
           </div>
         }
         @if (showSchedule) {
-          <app-schedule-selection
-            class="overflow-auto" [teacherData]="selectedTeacher"
-                                  [classRoomData]="selectedClassroom"
-                                  [selectedSubject]="selectedSubject"
-                                  [classData]="selectedClass"
-                                  [isForAssignation]="true"
-                                  (scheduleEventEmitter)="onUpdateScheduleHandler($event)"
-          ></app-schedule-selection>
-          <div class="w-full flex justify-end my-2">
-            <button
-              (click)="onSubmitHandler()"
-              class="bg-primary text-white border rounded-md py-1 px-3"
-            >
-              Asignar
-            </button>
+          <div class="w-full h-fit">
+            <app-schedule-selection
+              [teacherData]="selectedTeacher"
+              [classRoomData]="selectedClassroom"
+              [selectedSubject]="selectedSubject"
+              [classData]="selectedClass"
+              [isForAssignation]="true"
+              (scheduleEventEmitter)="onUpdateScheduleHandler($event)"
+            ></app-schedule-selection>
+            <div class="w-full flex justify-end my-2">
+              <button
+                (click)="onSubmitHandler()"
+                class="bg-primary text-white border rounded-md py-1 px-3"
+              >
+                Asignar
+              </button>
+            </div>
           </div>
         }
       </div>

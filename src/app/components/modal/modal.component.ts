@@ -23,6 +23,7 @@ export class ModalComponent {
   @Input() content: TemplateRef<unknown> | null;
   @Input() data?: any = {};
   @Input() hasContent? = false;
+  @Input() isClosable? = true;
   @Output() closeEvent = new EventEmitter();
   @Output() submitEvent = new EventEmitter();
   constructor(private elementRef: ElementRef) {
@@ -30,8 +31,11 @@ export class ModalComponent {
     console.log(this.data);
   }
   close() {
-    this.elementRef.nativeElement.remove();
-    this.closeEvent.emit();
+    console.log(this.isClosable);
+    if (this.isClosable !== false) {
+      this.elementRef.nativeElement.remove();
+      this.closeEvent.emit();
+    }
   }
   submit() {
     this.elementRef.nativeElement.remove();

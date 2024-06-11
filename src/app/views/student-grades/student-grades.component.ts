@@ -10,6 +10,8 @@ import { forkJoin } from 'rxjs';
 import { StudentService } from '../../service/student.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ConfigurationDataService } from '../../service/configuration-data.service';
+import { ClassService } from '../../service/class.service';
+import { ClassListDTO } from '../../models/ClassListDTO';
 
 @Component({
   selector: 'app-student-grades',
@@ -25,11 +27,13 @@ export class StudentGradesComponent implements OnInit {
     grades: { grade: number; assignationId: number; bimester: number }[];
   }[] = [];
   studentData: StudentDTO;
+  currentClass: ClassListDTO | undefined;
   constructor(
     private gradesService: GradesService,
     private activeRoute: ActivatedRoute,
     private studentService: StudentService,
-    private configDataService: ConfigurationDataService
+    private configDataService: ConfigurationDataService,
+    private classService: ClassService
   ) {
     this.grades = {};
     this.studentData = {} as StudentDTO;
@@ -52,12 +56,15 @@ export class StudentGradesComponent implements OnInit {
     forkJoin({
       grades: this.gradesService.getGradesByStudentIdAndYear(studentId, year),
       student: this.studentService.getStudentById(studentId),
+      currentClass: this.classService.getClassByStudentId(studentId, year),
     }).subscribe({
       next: (data: {
         grades: ResponseDTO<{ [key: number]: GradesDTO[] }>;
         student: ResponseDTO<StudentDTO>;
+        currentClass: ResponseDTO<ClassListDTO>;
       }) => {
         this.grades = data.grades.content;
+        this.currentClass = data.currentClass.content;
         this.table = this.buildTable(this.grades);
         this.studentData = data.student.content;
       },

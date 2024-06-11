@@ -23,7 +23,7 @@ module.exports = {
         '4A': '1fr 1fr 1fr 4fr',
         '5A': '1fr 1fr 1fr 6fr',
         assignation: '3fr 4fr',
-        '2C': '1fr 2fr',
+        '2C': '1fr 4fr',
       },
       gridTemplateRows: {
         '5A': '1fr 1fr 1fr 1fr 6fr',

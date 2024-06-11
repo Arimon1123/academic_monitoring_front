@@ -3,16 +3,24 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PermissionDTO } from '../../models/PermissionDTO';
 import { PermissionService } from '../../service/permission.service';
 import { ResponseDTO } from '../../models/ResponseDTO';
-import { DatePipe, NgOptimizedImage } from '@angular/common';
+import { DatePipe, NgOptimizedImage, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from '../../service/modal.service';
 import { ImageCarrouselComponent } from '../../components/image-carrousel/image-carrousel.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UserDetailsDTO } from '../../models/UserDetailsDTO';
+import { UserDataService } from '../../service/user-data.service';
 
 @Component({
   selector: 'app-permission-details',
   standalone: true,
-  imports: [DatePipe, NgOptimizedImage, FormsModule, ImageCarrouselComponent],
+  imports: [
+    DatePipe,
+    NgOptimizedImage,
+    FormsModule,
+    ImageCarrouselComponent,
+    NgStyle,
+  ],
   templateUrl: './permission-details.component.html',
   styleUrl: './permission-details.component.css',
 })
@@ -20,13 +28,20 @@ export class PermissionDetailsComponent implements OnInit {
   permissionId: number;
   permissionDTO: PermissionDTO;
   reason: string;
+  userDetails: UserDetailsDTO | undefined;
   @ViewChild('acceptModal') content: TemplateRef<unknown> | undefined;
   @ViewChild('rejectModal') rejectContent: TemplateRef<unknown> | undefined;
+  permissionStatusDict: { [key: number]: string } = {
+    0: 'Pendiente',
+    1: 'Aprobada',
+    2: 'Rechazada',
+  };
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private permissionService: PermissionService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private userDataService: UserDataService
   ) {
     this.reason = '';
     this.permissionDTO = {} as PermissionDTO;
@@ -37,6 +52,11 @@ export class PermissionDetailsComponent implements OnInit {
   }
   ngOnInit() {
     this.getPermission();
+    this.userDataService.currentUser.subscribe({
+      next: data => {
+        this.userDetails = data!;
+      },
+    });
   }
   getPermission() {
     this.permissionService.getPermissionById(this.permissionId).subscribe({

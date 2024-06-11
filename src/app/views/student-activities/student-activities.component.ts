@@ -15,6 +15,8 @@ import { StudentService } from '../../service/student.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../service/user.service';
 import { UserDTO } from '../../models/UserDTO';
+import { UserDataService } from '../../service/user-data.service';
+import { UserDetailsDTO } from '../../models/UserDetailsDTO';
 
 @Component({
   selector: 'app-student-activities',
@@ -40,6 +42,7 @@ export class StudentActivitiesComponent implements OnInit {
   dimensionValue: { [key: string]: number };
   totalGrade: number;
   assignation: AssignationDTO;
+  userData: UserDetailsDTO | undefined;
   user: UserDTO = {} as UserDTO;
   constructor(
     private route: ActivatedRoute,
@@ -47,7 +50,8 @@ export class StudentActivitiesComponent implements OnInit {
     private gradesService: GradesService,
     private assignationService: AssignationService,
     private studentService: StudentService,
-    private userService: UserService
+    private userService: UserService,
+    private userDataService: UserDataService
   ) {
     this.assignation = {} as AssignationDTO;
     this.activities = [];
@@ -64,6 +68,9 @@ export class StudentActivitiesComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getRouteParams();
+    this.userDataService.currentUser.subscribe(value => {
+      this.userData = value!;
+    });
   }
   getRouteParams() {
     this.route.params.subscribe({

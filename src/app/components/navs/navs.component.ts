@@ -7,7 +7,12 @@ import {
   Output,
 } from '@angular/core';
 import { AuthService } from '../../service/auth-service.service';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import routes from '../../consts/routes.json';
 import { initFlowbite } from 'flowbite';
 
@@ -25,12 +30,27 @@ export class NavsComponent implements OnInit, OnChanges {
   routesList: RouteTupleDTO = {} as RouteTupleDTO;
   @Input() userDetails?: UserDetailsDTO;
   @Output() logoutEvent = new EventEmitter<boolean>();
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.userDetails = {} as UserDetailsDTO;
+    this.router.events.subscribe({
+      next: event => {
+        if (event instanceof NavigationEnd) {
+          this.title = this.findRouteName(this.router.url);
+        }
+      },
+    });
   }
+  title: string = '';
   ngOnChanges() {
     console.log(this.userDetails);
     this.buildRoutes();
+    this.title = this.findRouteName(this.router.url);
+    setTimeout(() => {
+      initFlowbite();
+    }, 500);
   }
   ngOnInit() {
     setTimeout(() => {
@@ -69,5 +89,36 @@ export class NavsComponent implements OnInit, OnChanges {
     if (display === 'flex') {
       element!.style.display = '';
     }
+  }
+  findRouteName(routerUrl: string) {
+    const url = '/' + routerUrl.split('/')[1].split('?')[0];
+    console.log(url);
+    if (this.routesList.parentRoutes) {
+      for (const parent of this.routesList.parentRoutes) {
+        for (const children of parent.children) {
+          if (url === children.route) {
+            console.log(parent.title + ' > ' + children.title);
+            return parent.title + ' > ' + children.title;
+          }
+        }
+      }
+    }
+    if (this.routesList.childRoutes) {
+      for (const child of this.routesList.childRoutes) {
+        if (url === child.route) {
+          console.log(child.title);
+          return child.title;
+        }
+      }
+    }
+    if (this.routesList.uniqueRoutes) {
+      for (const child of this.routesList.uniqueRoutes) {
+        if (url === child.route) {
+          console.log(child.title);
+          return child.title;
+        }
+      }
+    }
+    return '';
   }
 }

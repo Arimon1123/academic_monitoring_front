@@ -1,84 +1,110 @@
 <main
-  class="flex flex-col items-center h-[85vh] bg-bg-color rounded-md border overflow-y-auto"
->
+  class="flex flex-col items-center h-[85vh] bg-bg-color rounded-md border overflow-y-auto">
   <div class="flex flex-col items-center lg:w-4/5 w-full p-2">
-
-      <h1 class="font-semibold text-lg my-2">Licencia</h1>
-
-    <div class="flex flex-col w-full border rounded-md p-4 bg-white items-center">
+    <h1 class="font-semibold text-lg my-2">Licencia</h1>
+    <div class="flex flex-col w-full p-4 items-center">
       @if (permissionDTO.id) {
-        <div class="flex flex-col  lg:w-3/5 w-full">
-          <div class="flex my-2 lg:flex-row flex-col">
-            <div class="flex flex-row lg:w-[45%] w-full">
-              <span class="font-semibold">Nombre:</span>
-              <span class="ml-3">
+        <div class=" flex flex-col justify-between space-y-2">
+           <span
+             class="inline-block font-light mx-2 px-2 rounded-full text-white my-2"
+             [ngStyle]="{
+              background:
+                permissionDTO.permissionStatus === 0
+                  ? '#fdd444'
+                  : permissionDTO.permissionStatus === 1
+                    ? '#4CAF50'
+                    : '#ff3b30',
+              color: permissionDTO.permissionStatus === 0 ? '#000' : '#fff'
+            }">
+            {{ permissionStatusDict[permissionDTO.permissionStatus] }}
+          </span>
+          <span class="text-xs">
+            {{
+              permissionDTO.date | date: 'longDate' : 'GMT-4' : 'es-ES'
+            }}</span
+          >
+
+        </div>
+        <div class="w-full lg:w-3/5 xl:w-2/5 flex flex-col justify-between">
+          <div class="flex lg:flex-row flex-col justify-center my-2 items-center">
+            <div class="flex flex-row items-center justify-between lg:mr-7 my-2">
+              <img
+                src="assets/user_a.svg"
+                alt="user icon"
+                title="Estudiante"
+                class="inline-block size-5" />
+              <span class="">
                 {{ permissionDTO.student.name }}
                 {{ permissionDTO.student.fatherLastname }}
                 {{ permissionDTO.student.motherLastname }}</span
               >
             </div>
-            <div class="flex flex-row lg:w-[45%] w-full">
-              <span class="font-semibold">Curso: </span>
-              <span class="ml-3">
-                {{ permissionDTO.student.studentClass }}</span
-              >
+            <div class=" my-2">
+              <img
+                src="assets/school.svg"
+                alt="class icon"
+                title="Curso"
+                class="inline-block size-5" />
+              <span class=""> {{ permissionDTO.student.studentClass }}</span>
             </div>
           </div>
-          <div class="flex my-2 lg:flex-row flex-col">
-            <div class="flex flex-row lg:w-[45%] w-full">
-              <span class="font-semibold">Fecha: </span>
-              <span class="ml-3">
-                {{
-                  permissionDTO.date | date: "longDate" : "GMT-4" : "es-ES"
-                }}</span
-              >
-            </div>
-            <div class="flex flex-row lg:w-[45%] w-full">
-              <span class="font-semibold">Motivo: </span>
-              <span class="ml-3"> {{ permissionDTO.reason }}</span>
+          <div class="m-auto">
+            <img
+              src="assets/calendar.svg"
+              alt="calendar"
+              title="fechas"
+              class="inline-block size-5" />
+            <span class="">
+              {{ permissionDTO.permissionStartDate | date: 'shortDate' }} a las
+              {{ permissionDTO.permissionStartDate | date: 'shortTime' }}</span
+            >
+            a
+            <span class="">
+              {{ permissionDTO.permissionEndDate | date: 'shortDate' }} a las
+              {{ permissionDTO.permissionEndDate | date: 'shortTime' }}</span
+            >
+          </div>
+          <div class="flex lg:flex-row flex-col justify-around items-center my-2">
+            <div class="">
+              <img
+                src="assets/info_blue.svg"
+                alt="info icon"
+                title="Motivo"
+                class="inline-block size-5" />
+              <span class=""> {{ permissionDTO.reason }}</span>
             </div>
           </div>
-          <div class="flex lg:flex-row flex-col my-2">
-            <div class="flex flex-row lg:w-[45%] w-full">
-              <span class="font-semibold">Fecha de Inicio: </span>
-              <span class="ml-3">
-                {{ permissionDTO.permissionStartDate | date: "longDate" }} a las
-                {{
-                  permissionDTO.permissionStartDate | date: "shortTime"
-                }}</span
-              >
-            </div>
-            <div class="flex flex-row lg:w-[45%] w-full my-2">
-              <span class="font-semibold">Fecha de Fin: </span>
-              <span class="ml-3">
-                {{ permissionDTO.permissionEndDate | date: "longDate" }} a las
-                {{ permissionDTO.permissionEndDate | date: "shortTime" }}</span
-              >
-            </div>
-          </div>
+
         </div>
-       <div class="w-full lg:w-3/5 flex justify-center flex-col ">
-         <h2 class="font-semibold">Archivos adicionales</h2>
-         <app-image-carrousel
-           [imageUrls]="permissionDTO.images"
-           [isForSaving]="false"
-         ></app-image-carrousel>
-       </div>
+        <div class="w-full lg:w-3/5 flex justify-center flex-col my-2">
+          <h2 class="font-semibold text-center">Archivos adicionales</h2>
+          <app-image-carrousel
+            [imageUrls]="permissionDTO.images"
+            [isForSaving]="false"></app-image-carrousel>
+        </div>
+        @if (permissionDTO.rejection[0]) {
+          <div CLASS="my-2">
+            <h2 class="font-semibold text-lg">Motivo del rechazo</h2>
+            <p class="p-2">{{ permissionDTO.rejection[0].reason }}</p>
+          </div>
+        }
       }
-      <div class="flex lg:flex-row-reverse w-full flex-col justify-evenly my-5 space-y-2 lg:space-y-0 ">
-        <button
-          class="btn border rounded-md p-1 text-red-600 hover:bg-red-700 hover:text-white transition-colors"
-          (click)="rejectPermissionModal()"
-        >
-          Rechazar licencia
-        </button>
-        <button
-          class="border rounded-md p-1 bg-accepted text-white hover:bg-green-700 transition-colors"
-          (click)="approvePermission()"
-        >
-          Aprobar licencia
-        </button>
-      </div>
+
+      @if (userDetails?.role === 'ADMINISTRATIVE') {
+        <div
+          class="flex lg:flex-row-reverse w-full flex-col justify-evenly my-5 space-y-2 lg:space-y-0">
+          <button
+            class="btn border rounded-md p-1 text-red-600 hover:bg-red-700 hover:text-white transition-colors"
+            (click)="rejectPermissionModal()">
+            Rechazar licencia
+          </button>
+          <button
+            class="border rounded-md p-1 bg-accepted text-white hover:bg-green-700 transition-colors"
+            (click)="approvePermission()">
+            Aprobar licencia
+          </button>
+        </div>
+      }
     </div>
   </div>
 </main>
@@ -89,8 +115,7 @@
     <textarea
       id="reason"
       [(ngModel)]="reason"
-      class="rounded-md border resize-none"
-    >
+      class="rounded-md border resize-none">
     </textarea>
   </div>
 </ng-template>

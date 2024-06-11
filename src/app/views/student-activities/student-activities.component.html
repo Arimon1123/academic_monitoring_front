@@ -27,11 +27,13 @@
         </div>
       </div>
     </div>
-    <a
-      class="border rounded-md w-48 bg-primary text-white hover:bg-blue-700 transition-colors p-1 cursor-pointer"
-      [routerLink]="['/chat', user.id]"
+    @if (userData?.role !== 'STUDENT'){
+      <a
+        class="border rounded-md w-48 bg-primary text-white hover:bg-blue-700 transition-colors p-1 cursor-pointer"
+        [routerLink]="['/chat', user.id]"
       >Iniciar chat con el profesor</a
-    >
+      >
+    }
   </section>
   <div class="w-full lg:w-4/5 overflow-auto p-2">
     <table

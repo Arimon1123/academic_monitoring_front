@@ -138,14 +138,14 @@ export class UsersComponent {
           console.log(data);
           this.modalMessage = 'Usuario creado exitosamente';
           this.modalTitle = 'Usuario creado ';
-          this.openModal();
+          this.openModal(this.modalTitle, this.modalMessage);
           this.userForm.reset();
           this.userImage = '../../assets/user.svg';
         },
         error: (error: HttpErrorResponse) => {
           this.modalMessage = error.error.message;
           this.modalTitle = 'Error al crear el usuario';
-          this.openModal();
+          this.openModal(this.modalTitle, this.modalMessage);
           this.requestSend = false;
         },
         complete: () => {
@@ -153,7 +153,7 @@ export class UsersComponent {
         },
       });
     } else {
-      alert('Formulario invalido');
+      this.openModal('Error', 'Formulario invalido');
     }
   }
   onFileSelectedHandler(event: Event) {
@@ -246,15 +246,15 @@ export class UsersComponent {
       this.userForm.get('workEmail')?.updateValueAndValidity();
     }
   }
-  openModal() {
+  openModal(title: string, message: string) {
     const content = this.modal!;
     console.log(content);
     this.modalService.open({
       content: content,
       options: {
         size: 'small',
-        title: this.modalTitle,
-        message: this.modalMessage,
+        title: title,
+        message: message,
         isSubmittable: false,
       },
     });

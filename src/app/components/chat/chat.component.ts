@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { RxStompService } from '../../service/rx-stomp.service';
 import { UserDataService } from '../../service/user-data.service';
 import { UserDetailsDTO } from '../../models/UserDetailsDTO';
@@ -48,7 +54,7 @@ export class ChatComponent implements OnChanges {
   subscribingDestination: string = '';
   message: string = '';
   topicSubscription: Subscription = new Subscription();
-
+  @Output() backEventEmitter = new EventEmitter<boolean>();
   ngOnChanges() {
     this.getReceiverUser(this.receiverId);
   }
@@ -160,5 +166,8 @@ export class ChatComponent implements OnChanges {
       message.seen = true;
       this.chatService.seenMessage(message).subscribe({});
     }
+  }
+  onBackButtonHandler() {
+    this.backEventEmitter.emit(true);
   }
 }

@@ -19,23 +19,23 @@ export class ReportsService {
       {
         params: { startDate: startDate, endDate: endDate, gradeId: gradeId },
         withCredentials: true,
-      },
+      }
     );
   }
 
-  getPerformanceReport(gradeId: number) {
+  getPerformanceReport(gradeId: number, year: number) {
     return this.http.get<ResponseDTO<PerformanceReportDTO[]>>(
       `${this.API_URL}/report/performance`,
-      { params: { gradeId: gradeId }, withCredentials: true },
+      { params: { gradeId: gradeId, year: year }, withCredentials: true }
     );
   }
-  getGradeRangeReport(bimester: number, gradeId: number) {
+  getGradeRangeReport(bimester: number, gradeId: number, year: number) {
     return this.http.get<ResponseDTO<GradeRangeReportDTO[]>>(
       `${this.API_URL}/report/gradeRange`,
       {
-        params: { bimester: bimester, gradeId: gradeId },
+        params: { bimester: bimester, gradeId: gradeId, year: year },
         withCredentials: true,
-      },
+      }
     );
   }
 }

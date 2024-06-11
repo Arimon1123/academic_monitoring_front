@@ -18,7 +18,7 @@ export class ModalService {
   constructor(
     private resolver: ComponentFactoryResolver,
     private injector: Injector,
-    @Inject(DOCUMENT) private document: Document,
+    @Inject(DOCUMENT) private document: Document
   ) {}
   open({
     content,
@@ -32,6 +32,7 @@ export class ModalService {
       message?: string;
       isSubmittable?: boolean;
       hasContent?: boolean;
+      isClosable?: boolean;
     };
   }) {
     const modalComponentFactory =
@@ -47,6 +48,7 @@ export class ModalService {
     modalComponent.instance.data = options?.data;
     modalComponent.instance.isSubmittable = options?.isSubmittable;
     modalComponent.instance.hasContent = options?.hasContent;
+    modalComponent.instance.isClosable = options?.isClosable;
     modalComponent.instance.closeEvent.subscribe(() => {
       this.closeModal();
     });

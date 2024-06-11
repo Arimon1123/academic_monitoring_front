@@ -11,6 +11,10 @@ import { NgStyle } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { StudentService } from '../../service/student.service';
+import { ConfigurationDataService } from '../../service/configuration-data.service';
+import { ConfigurationDTO } from '../../models/ConfigurationDTO';
+import { ClassService } from '../../service/class.service';
+import { ClassListDTO } from '../../models/ClassListDTO';
 @Component({
   selector: 'app-student-teacher-schedule',
   standalone: true,
@@ -27,11 +31,15 @@ export class StudentScheduleComponent implements OnInit {
   selectedClass: ScheduleAssignationDTO;
   assignedColors: { [key: string]: string };
   scheduleFormat = schedule[0];
+  configuration: ConfigurationDTO | undefined;
+  currentClass: ClassListDTO | undefined;
   constructor(
     private assignationService: AssignationService,
     private modalService: ModalService,
     private activeRoute: ActivatedRoute,
     private studentService: StudentService,
+    private confDataService: ConfigurationDataService,
+    private classService: ClassService
   ) {
     this.schedule = [];
     this.studentData = {} as StudentDTO;
@@ -47,9 +55,14 @@ export class StudentScheduleComponent implements OnInit {
     this.assignedColors = {};
   }
   ngOnInit() {
-    this.activeRoute.params.subscribe({
-      next: (params) => {
-        this.getData(params['id']);
+    this.confDataService.currentConfig.subscribe({
+      next: value => {
+        this.configuration = value!;
+        this.activeRoute.params.subscribe({
+          next: params => {
+            this.getData(params['id']);
+          },
+        });
       },
     });
   }
@@ -58,12 +71,17 @@ export class StudentScheduleComponent implements OnInit {
       student: this.studentService.getStudentById(studentId),
       assignation: this.assignationService.getAssignationByStudentIdAndYear(
         studentId,
-        new Date().getFullYear(),
+        this.configuration!.currentYear
+      ),
+      class: this.classService.getClassByStudentId(
+        studentId,
+        this.configuration!.currentYear
       ),
     }).subscribe({
-      next: (data) => {
+      next: data => {
         this.studentData = data.student.content;
         this.schedule = data.assignation.content;
+        this.currentClass = data.class.content;
         this.table = this.buildSchedule();
         this.assignColors();
       },

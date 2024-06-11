@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ScheduleDTO } from '../../models/ScheduleDTO';
 import { TeacherDTO } from '../../models/TeacherDTO';
 import { ClassroomDTO } from '../../models/ClassroomDTO';
@@ -14,6 +22,7 @@ import { ClassListDTO } from '../../models/ClassListDTO';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ConfigurationDataService } from '../../service/configuration-data.service';
 import { ConfigurationDTO } from '../../models/ConfigurationDTO';
+import { ModalService } from '../../service/modal.service';
 
 @Component({
   selector: 'app-schedule-selection',
@@ -25,7 +34,7 @@ import { ConfigurationDTO } from '../../models/ConfigurationDTO';
 export class ScheduleSelectionComponent implements OnInit {
   @Output() scheduleEventEmitter = new EventEmitter<ScheduleDTO[]>();
   @Input() teacherData?: TeacherDTO = {} as TeacherDTO;
-
+  @ViewChild('content') content: TemplateRef<unknown> | undefined;
   selectedSchedules: ScheduleDTO[] = [];
   @Input() classData?: ClassListDTO;
   @Input() classRoomData?: ClassroomDTO;
@@ -44,7 +53,8 @@ export class ScheduleSelectionComponent implements OnInit {
   }
   constructor(
     private scheduleService: ScheduleService,
-    private configDataService: ConfigurationDataService
+    private configDataService: ConfigurationDataService,
+    private modalService: ModalService
   ) {}
   getConfiguration() {
     this.configDataService.currentConfig.subscribe({
@@ -153,7 +163,7 @@ export class ScheduleSelectionComponent implements OnInit {
 
   selectSchedule(schedule: ScheduleCreateDTO, dayIndex: number) {
     if (!schedule.isAvailable && schedule.reason !== 'selected') {
-      alert('Horario No disponible');
+      this.openModal('Error', 'No puede seleccionar este horario');
       return;
     }
     const newSchedule = {
@@ -172,7 +182,11 @@ export class ScheduleSelectionComponent implements OnInit {
     } else {
       if (this.isForAssignation) {
         if (this.selectedSubject!.hours <= this.selectedSchedules!.length) {
-          alert('No puede seleccionar más horas de las permitidas');
+          this.openModal(
+            'Error',
+            'No puede seleccionar más horas de las permitidas'
+          );
+
           return;
         }
       }
@@ -213,5 +227,18 @@ export class ScheduleSelectionComponent implements OnInit {
       'bg-green-500': period.isAvailable,
       'bg-blue-500': !period.isAvailable && period.reason === 'selected',
     };
+  }
+  openModal(title: string, message: string) {
+    this.modalService.open({
+      content: this.content!,
+      options: {
+        size: 'small',
+        hasContent: false,
+        isSubmittable: false,
+        title: title,
+        message: message,
+        isClosable: true,
+      },
+    });
   }
 }

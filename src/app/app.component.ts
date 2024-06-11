@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
   isLoading = true;
   currentRole: string = '';
   userDetails: UserDetailsDTO;
-  selectedRole: string = '';
+  selectedRole: string = '0';
   currentRoles = role_names;
   configuration: ConfigurationDTO = {} as ConfigurationDTO;
   constructor(
@@ -63,11 +63,11 @@ export class AppComponent implements OnInit {
   }
   ngOnInit() {
     initFlowbite();
-    this.getConfiguration();
+    this.getUserDetails();
     this.isLoading = false;
   }
-
   openRoleSelectionModal() {
+    console.log('iniciando');
     this.modalService
       .open({
         content: this.content!,
@@ -77,15 +77,20 @@ export class AppComponent implements OnInit {
           data: this.user?.role,
           isSubmittable: true,
           title: 'Selecciona un rol',
+          isClosable: false,
         },
       })
       .subscribe({
         next: data => {
+          console.log(data);
           if (data === 'submit') {
-            this.localStorage.setItem('role', this.selectedRole);
-            console.log('se selecciono el rol ' + this.selectedRole);
-            this.currentRole = this.selectedRole;
-            this.getRoleDetails();
+            console.log(this.selectedRole);
+            if (this.selectedRole !== '0') {
+              this.localStorage.setItem('role', this.selectedRole);
+              console.log('se selecciono el rol ' + this.selectedRole);
+              this.currentRole = this.selectedRole;
+              this.getRoleDetails();
+            }
           }
         },
       });
@@ -95,7 +100,17 @@ export class AppComponent implements OnInit {
       next: value => {
         this.configDataService.setConfig(value.content);
         this.configuration = value.content;
-        this.getUserDetails();
+        if (this.user!.role.length > 1) {
+          this.currentRole = <string>this.localStorage.getItem('role');
+          if (!this.currentRole) {
+            this.openRoleSelectionModal();
+          } else {
+            this.getRoleDetails();
+          }
+        } else {
+          this.currentRole = this.user!.role[0].name;
+          this.getRoleDetails();
+        }
       },
     });
   }
@@ -103,12 +118,7 @@ export class AppComponent implements OnInit {
     this.userService.userDetails().subscribe({
       next: (data: ResponseDTO<UserDTO>) => {
         this.user = data.content;
-        if (this.user.role.length > 1) {
-          this.openRoleSelectionModal();
-        } else {
-          this.currentRole = this.user.role[0].name;
-          this.getRoleDetails();
-        }
+        this.getConfiguration();
         setTimeout(() => {
           this.isLoading = false;
         }, 100);
@@ -121,6 +131,7 @@ export class AppComponent implements OnInit {
     });
   }
   getRoleDetails() {
+    console.log(this.configuration);
     this.userService
       .getUserRoleDetails(this.currentRole, this.configuration.currentYear)
       .subscribe({

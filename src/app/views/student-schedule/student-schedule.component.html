@@ -11,84 +11,90 @@
           >
         </div>
         <div class="flex my-1">
-          <span class="font-bold">Curso: </span>
-          <span class="ml-2">{{ studentData.studentClass }}</span>
+        @if (currentClass){
+            <span class="font-bold">Curso: </span>
+            <span class="ml-2">{{ studentData.studentClass }}</span>
+        } @else {
+          <span>El estudiante no esta inscrito en la gestión actual</span>
+        }
         </div>
       </div>
     </div>
   </section>
-  <div class="w-full lg:w-4/5 overflow-auto p-2">
-    <table
-      class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
-    >
-      <thead class="bg-selected text-white h-10">
-      <th
-        class="w-48 border text-center first:border-l first:rounded-tl-lg last:rounded-tr-lg border-gray font-extralight"
-      >
-        Hora
-      </th>
-      <th class="w-48 border text-center border-gray font-extralight">Lunes</th>
-      <th class="w-48 border text-center border-gray font-extralight">
-        Martes
-      </th>
-      <th class="w-48 border text-center border-gray font-extralight">
-        Miércoles
-      </th>
-      <th class="w-48 border text-center border-gray font-extralight">
-        Jueves
-      </th>
-      <th
-        class="w-48 border text-center first:border-l last:rounded-tr-lg border-gray font-extralight"
-      >
-        Viernes
-      </th>
-      </thead>
-      <tbody>
-        @for (row of table; track row; let idx = $index) {
-          <tr>
-            <td class="border text-center h-10">
-              {{ scheduleFormat.hours[idx].start | hour }} -
-              {{ scheduleFormat.hours[idx].end | hour }}
-            </td>
-            @for (cell of row; track cell.id) {
-              <td
-                class="h-fit border text-center text-white hover:opacity-70 transition-opacity"
-                (click)="selectClass(cell)"
-                [ngStyle]="{
+ @if(currentClass){
+   <div class="w-full lg:w-4/5 overflow-auto p-2">
+     <table
+       class="table-fixed table overflow-x-scroll border-separate border-spacing-0 w-4/5"
+     >
+       <thead class="bg-selected text-white h-10">
+       <th
+         class="w-48 border text-center first:border-l first:rounded-tl-lg last:rounded-tr-lg border-gray font-extralight"
+       >
+         Hora
+       </th>
+       <th class="w-48 border text-center border-gray font-extralight">Lunes</th>
+       <th class="w-48 border text-center border-gray font-extralight">
+         Martes
+       </th>
+       <th class="w-48 border text-center border-gray font-extralight">
+         Miércoles
+       </th>
+       <th class="w-48 border text-center border-gray font-extralight">
+         Jueves
+       </th>
+       <th
+         class="w-48 border text-center first:border-l last:rounded-tr-lg border-gray font-extralight"
+       >
+         Viernes
+       </th>
+       </thead>
+       <tbody>
+         @for (row of table; track row; let idx = $index) {
+           <tr>
+             <td class="border text-center h-10">
+               {{ scheduleFormat.hours[idx].start | hour }} -
+               {{ scheduleFormat.hours[idx].end | hour }}
+             </td>
+             @for (cell of row; track cell.id) {
+               <td
+                 class="h-fit border text-center text-white hover:opacity-70 transition-opacity"
+                 (click)="selectClass(cell)"
+                 [ngStyle]="{
                 'background-color':
                   cell.id !== 0 ? assignedColors[cell.subjectName] : '#fff',
                 cursor: cell.id === 0 ? 'default' : 'pointer'
               }"
-              >
-                @if (cell.id !== 0) {
-                  {{ cell.subjectName }}
-                }
-              </td>
-            }
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+               >
+                 @if (cell.id !== 0) {
+                   {{ cell.subjectName }}
+                 }
+               </td>
+             }
+           </tr>
+         }
+       </tbody>
+     </table>
+   </div>
+ }
 </main>
 <ng-template #modal let-data="data">
-  <div class="flex flex-row w-full justify-evenly">
-    <div class="flex flex-col">
-      <span class="my-2 font-semibold"
+  <div class="flex lg:flex-row flex-col w-full justify-evenly">
+    <div class="flex lg:flex-col flex-row justify-between">
+      <span class="lg:my-2 font-semibold flex flex-col lg:inline"
         >Materia: <span class="font-medium">{{ data.subjectName }}</span>
       </span>
-      <span class="font-semibold"
+      <span class="font-semibold flex flex-col lg:inline"
         >Horas:
         <span class="font-medium"
           >{{ data.startHour | hour }} - {{ data.endHour | hour }}</span
         ></span
       >
     </div>
-    <div class="flex flex-col">
-      <span class="my-2 font-semibold"
+    <div class="flex lg:flex-col flex-row justify-between">
+      <span class="lg:my-2 font-semibold flex flex-col lg:inline"
         >Aula: <span class="font-medium">{{ data.classroomName }}</span></span
       >
-      <span class="font-semibold"
+      <span class="font-semibold flex flex-col lg:inline"
         >Profesor: <span class="font-medium">{{ data.teacherName }}</span></span
       >
     </div>

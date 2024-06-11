@@ -15,10 +15,16 @@ import { ModalService } from '../../service/modal.service';
 import { ActivatedRoute } from '@angular/router';
 import { AssignationService } from '../../service/assignation.service';
 import { ConfigurationDataService } from '../../service/configuration-data.service';
+import { ActivityCardComponent } from '../../components/activity-card/activity-card.component';
 @Component({
   selector: 'app-activity-list',
   standalone: true,
-  imports: [NgClass, ReactiveFormsModule, ModalComponent],
+  imports: [
+    NgClass,
+    ReactiveFormsModule,
+    ModalComponent,
+    ActivityCardComponent,
+  ],
   templateUrl: './activity-list.component.html',
   styleUrl: './activity-list.component.css',
 })
@@ -64,18 +70,18 @@ export class ActivityListComponent implements OnInit {
     DECIDIR: 20,
   };
   ngOnInit() {
-    this.activeRoute.params.subscribe({
-      next: params => {
-        this.getAllActivities(params['id']);
-        this.getAssignationById(params['id']);
-      },
-    });
     this.getConfiguration();
   }
   getConfiguration() {
     this.configDatService.currentConfig.subscribe({
       next: value => {
         this.bimester = value!.currentBimester;
+        this.activeRoute.params.subscribe({
+          next: params => {
+            this.getAllActivities(params['id']);
+            this.getAssignationById(params['id']);
+          },
+        });
       },
     });
   }
@@ -98,10 +104,10 @@ export class ActivityListComponent implements OnInit {
   saveActivity(newActivity: ActivityDTO) {
     this.activityService.saveActivity(newActivity).subscribe({
       next: (data: ResponseDTO<string>) => {
-        alert(data.message);
+        this.openModal('Actividad guardada', data.message);
       },
       error: (error: ResponseDTO<string>) => {
-        alert(error.message);
+        this.openModal('Error', error.message);
       },
       complete: () => {
         this.getAllActivities(this.assignation.id);
@@ -123,7 +129,7 @@ export class ActivityListComponent implements OnInit {
         this.updatedActivity.value +
         parseInt(this.activityForm.controls['value'].value);
     if (newTotal > 100) {
-      alert('El total no puede ser mayor a 100');
+      this.openModal('Error', 'El total no puede ser mayor a 100');
       return;
     }
     if (!this.isUpdate) {
@@ -131,7 +137,7 @@ export class ActivityListComponent implements OnInit {
         ...this.activityForm.value,
         id: null,
         status: 1,
-        bimester: 1,
+        bimester: this.bimester,
         assignationId: this.assignation.id,
       };
       this.saveActivity(newActivity);
@@ -140,7 +146,7 @@ export class ActivityListComponent implements OnInit {
         ...this.activityForm.value,
         id: this.updatedActivity.id,
         status: 1,
-        bimester: 1,
+        bimester: this.bimester,
         assignationId: this.assignation.id,
       };
       this.updateActivity(newActivity);
@@ -168,7 +174,7 @@ export class ActivityListComponent implements OnInit {
   updateActivity(activity: ActivityDTO) {
     this.activityService.updateActivity(activity).subscribe({
       next: (data: ResponseDTO<string>) => {
-        alert(data.message);
+        this.openModal('Actividad actualizada', data.message);
       },
       complete: () => {
         this.getAllActivities(this.assignation.id);

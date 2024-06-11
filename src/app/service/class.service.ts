@@ -14,11 +14,17 @@ export class ClassService {
   getClassListByGradeIdAndYearAndShift(
     gradeId: number,
     year: number,
-    shift: number,
+    shift: number
   ) {
     return this.http.get<ResponseDTO<ClassListDTO[]>>(`${this.API_URL}/class`, {
       params: { gradeId: gradeId, year: year, shift: shift },
       withCredentials: true,
     });
+  }
+  getClassByStudentId(studentId: number, year: number) {
+    return this.http.get<ResponseDTO<ClassListDTO>>(
+      `${this.API_URL}/class/student/${studentId}`,
+      { params: { year: year }, withCredentials: true }
+    );
   }
 }

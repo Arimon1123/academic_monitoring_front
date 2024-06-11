@@ -28,7 +28,7 @@
 
 .small {
   min-height: 25vh;
-  min-width: 30vh;
+  min-width: 30vw;
 }
 .medium {
   min-height: 35vh;
@@ -38,6 +38,12 @@
 .large {
   min-height: 75vh;
   min-width: 50vw  ;
+}
+
+@media (max-width: 768px) {
+  .small {
+    min-width: 80vw;
+  }
 }
 
 

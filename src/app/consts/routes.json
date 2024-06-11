@@ -20,7 +20,7 @@
     ],
     "parentRoutes": [
       {
-        "id": 22,
+        "id": 23,
         "title": "Registros",
         "children": [
           { "id": 0, "route": "/userRegister", "title": "Registro de Usuario" },
@@ -37,7 +37,7 @@
         ]
       },
       {
-        "id": 23,
+        "id": 25,
         "title": "Listados",
         "children": [
           { "id": 1, "route": "/userList", "title": "Búsqueda de usuarios" },
@@ -89,8 +89,14 @@
   },
   "PARENT": {
     "uniqueRoutes": [
-      { "id": 12, "route": "/requirePermission", "title": "Licencias" },
+      { "id": 12, "route": "/requirePermission", "title": "Pedir licencias" },
       { "id": 13, "route": "/chat", "title": "Chats" }
+      ,
+      {
+        "id": 26,
+        "route": "/permissionParent",
+        "title": "Licencias"
+      }
     ],
     "childRoutes": [
       { "id": 10, "route": "/studentSchedule", "title": "Horario" },

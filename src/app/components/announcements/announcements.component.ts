@@ -42,28 +42,37 @@ export class AnnouncementsComponent implements OnInit {
   }
   getGradeIds(user: UserDetailsDTO) {
     if (user.role === 'PARENT') {
-      const gradeIds = [];
+      const gradeIds: number[] = [];
       for (const student of user.students) {
-        gradeIds.push(student.studentClass?.split('°')[0]);
+        console.log(student.studentClass);
+        const gradeId = student.studentClass.includes('Primaria') ? 1 : 6;
+        if (!gradeIds.includes(gradeId)) gradeIds.push(gradeId);
       }
-      console.log(gradeIds);
+      return gradeIds;
     }
+    return [1, 6];
   }
   getAnnouncements() {
     const receiver = this.userDetails.role;
-    this.announcementService.getAnnouncements(2, receiver, 1).subscribe({
-      next: response => {
-        this.announcements = response.content;
-        if (this.announcements.length > 0) {
-          this.changeAnnouncement(0);
-          this.announcementTimeout();
-        }
-        console.log(this.announcements, this.index);
-      },
-      error: error => {
-        console.error(error);
-      },
-    });
+
+    this.announcementService
+      .getAnnouncements(
+        this.getGradeIds(this.userDetails),
+        receiver === 'ADMINISTRATIVE' ? 'ALL' : receiver,
+        1
+      )
+      .subscribe({
+        next: response => {
+          this.announcements = response.content;
+          if (this.announcements.length > 0) {
+            this.changeAnnouncement(0);
+            this.announcementTimeout();
+          }
+        },
+        error: error => {
+          console.error(error);
+        },
+      });
   }
   changeAnnouncement(index: number) {
     this.currentAnnouncement = this.announcements[index];
@@ -74,7 +83,6 @@ export class AnnouncementsComponent implements OnInit {
     if (this.index > length - 1) this.index = 0;
     if (this.index < 0) this.index = length - 1;
     this.changeAnnouncement(this.index);
-    console.log(this.timeout);
   }
   announcementTimeout() {
     const classes = this.announcementEl!.nativeElement.className;

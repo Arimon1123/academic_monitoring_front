@@ -13,10 +13,10 @@
   <app-login (loginEvent)="updateLoginState($event)"></app-login>
 }
 <ng-template #modal let-data="data">
-  <div class="flex flex-col">
+  <div class="flex flex-col w-4/5 h-32">
     <p>Seleccione el rol con el que iniciara sesión</p>
     <select class="border rounded-md" [(ngModel)]="selectedRole">
-      <option selected disabled>Seleccione un rol</option>
+      <option selected disabled value="0">Seleccione un rol</option>
       @for (role of data; track role.id) {
         <option value="{{ role.name }}">{{ currentRoles[toString(role.name)] }}</option>
       }

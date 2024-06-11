@@ -209,6 +209,14 @@ export class AssignationComponent implements OnInit {
     }
   }
   onSubmitHandler() {
+    if (
+      this.selectedTeacher.id === 0 ||
+      this.selectedClassroom.id === 0 ||
+      this.selectedSchedules.length === 0
+    ) {
+      this.openModal('Error', 'Por favor, complete todos los campos');
+      return;
+    }
     const assignationDTO: AssignationCreateDTO = {
       teacherId: this.selectedTeacher.id,
       classId: this.selectedClass.id,
@@ -216,6 +224,7 @@ export class AssignationComponent implements OnInit {
       classroomId: this.selectedClassroom.id,
       schedule: this.selectedSchedules,
     };
+
     this.assignationService.saveAssignation(assignationDTO).subscribe({
       next: (data: ResponseDTO<string>) => {
         this.openModal('Asignación creada', data.message);

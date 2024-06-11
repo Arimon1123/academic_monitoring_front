@@ -2,7 +2,7 @@
   class="flex flex-col items-center rounded-md border h-[87vh] bg-bg-color overflow-auto w-full"
 >
   <h1 class="mt-2 text-lg font-semibold">Actividades</h1>
-  <div class="flex lg:flex-row flex-col mb-2 w-full lg:justify-evenly items-center">
+  <div class="flex sm:flex-row flex-col mb-2 w-full sm:justify-evenly items-center">
     <div class="flex  flex-col ">
       <div class="flex my-1 min-w-56">
         <span class="font-bold">Curso: </span>
@@ -24,146 +24,74 @@
       </div>
     </div>
   </div>
-  <div class="flex md:flex-row flex-col lg:w-4/5 w-full p-2 justify-between lg:space-y-0 space-y-2">
+  <div class="flex lg:flex-row flex-col lg:w-4/5 w-full p-2 justify-between lg:space-y-0 space-y-2">
     <section
-      class="flex flex-col md:w-5/12 w-full bg-white p-2 items-center border rounded-md lg:h-[65vh] h-fit"
+      class="flex flex-col lg:w-5/12 w-full bg-white p-2 items-center border rounded-md lg:h-[65vh] h-fit"
     >
       <h2 class="font-semibold w-full text-start">Lista de actividades</h2>
       <div class="w-full lg:h-4/5  h-fit overflow-y-auto flex flex-col">
         <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
-          <summary class="cursor-pointer">
+          <summary class="cursor-pointer flex">
             Saber : {{ totalPercentage["SABER"] }} %
           </summary>
           @for (activity of activities["SABER"]; track activity.id) {
             <ul class="flex flex-col w-full overflow-y-scroll items-center">
               <li class="border rounded-md bg-white p-3 my-1 w-full">
-                <div class="flex justify-around xl:flex-row flex-col w-full">
-                  <div class="flex flex-col xl:w-5/12 w-full">
-                    <h1 class="block w-full">{{ activity.name }}</h1>
-                    <span>Dimension: {{ activity.dimension }}</span>
-                    <span>Valor: {{ activity.value }} %</span>
-                  </div>
-                  <div
-                    class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full"
-                  >
-                    <button
-                      (click)="onUpdate(activity)"
-                      class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      (click)="onDeleteActivity(activity)"
-                      class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors"
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
+                <app-activity-card [activity]="activity"
+                                   (deleteEventEmitter)="onDeleteActivity($event)"
+                                   (updateEventEmitter)="onUpdate($event)"></app-activity-card>
               </li>
             </ul>
+          } @empty {
+            <span class="text-center p-2 inline-block w-full border bg-white rounded-md">No se registraron actividades en esta dimensión</span>
           }
         </details>
         <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
-          <summary class="cursor-pointer">
+          <summary class="cursor-pointer flex">
             Decidir : {{ totalPercentage["DECIDIR"] }}%
           </summary>
           @for (activity of activities["DECIDIR"]; track activity.id) {
             <ul class="flex flex-col w-full overflow-y-scroll items-center">
               <li class="border rounded-md bg-white p-3 my-1 w-full">
-                <div class="flex justify-around xl:flex-row flex-col w-full">
-                  <div class="flex flex-col xl:w-5/12 w-full">
-                    <h1 class="block w-full">{{ activity.name }}</h1>
-                    <span>Dimension: {{ activity.dimension }}</span>
-                    <span>Valor: {{ activity.value }} %</span>
-                  </div>
-                  <div
-                    class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full"
-                  >
-                    <button
-                      (click)="onUpdate(activity)"
-                      class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      (click)="onDeleteActivity(activity)"
-                      class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors"
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
+               <app-activity-card [activity]="activity"
+               (deleteEventEmitter)="onDeleteActivity($event)"
+               (updateEventEmitter)="onUpdate($event)"></app-activity-card>
               </li>
             </ul>
+          }@empty {
+            <span class="text-center p-2 inline-block w-full border bg-white rounded-md">No se registraron actividades en esta dimensión</span>
           }
         </details>
         <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
-          <summary class="cursor-pointer">
+          <summary class="cursor-pointer flex">
             Ser : {{ totalPercentage["SER"] }}%
           </summary>
           @for (activity of activities["SER"]; track activity.id) {
             <ul class="flex flex-col w-full overflow-y-scroll items-center">
               <li class="border rounded-md bg-white p-3 my-1 w-full">
-                <div class="flex justify-around xl:flex-row flex-col w-full">
-                  <div class="flex flex-col xl:w-5/12 w-full">
-                    <h1 class="block w-full">{{ activity.name }}</h1>
-                    <span>Dimension: {{ activity.dimension }}</span>
-                    <span>Valor: {{ activity.value }} %</span>
-                  </div>
-                  <div
-                    class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full"
-                  >
-                    <button
-                      (click)="onUpdate(activity)"
-                      class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      (click)="onDeleteActivity(activity)"
-                      class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors"
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
+                <app-activity-card [activity]="activity"
+                                   (deleteEventEmitter)="onDeleteActivity($event)"
+                                   (updateEventEmitter)="onUpdate($event)"></app-activity-card>
               </li>
             </ul>
+          }@empty {
+            <span class="text-center p-2 inline-block w-full border bg-white rounded-md">No se registraron actividades en esta dimensión</span>
           }
         </details>
         <details class="w-full p-2 border rounded-lg mb-2 bg-bg-color">
-          <summary class="cursor-pointer">
+          <summary class="cursor-pointer flex">
             Hacer : {{ totalPercentage["HACER"] }}%
           </summary>
           @for (activity of activities["HACER"]; track activity.id) {
             <ul class="flex flex-col w-full overflow-y-scroll items-center">
               <li class="border rounded-md bg-white p-3 my-1 w-full">
-                <div class="flex justify-around xl:flex-row flex-col w-full">
-                  <div class="flex flex-col xl:w-5/12 w-full">
-                    <h1 class="block w-full">{{ activity.name }}</h1>
-                    <span>Dimension: {{ activity.dimension }}</span>
-                    <span>Valor: {{ activity.value }} %</span>
-                  </div>
-                  <div
-                    class="flex lg:flex-row md:flex-col flex-row lg:justify-between justify-center items-center lg:w-6/12 w-full"
-                  >
-                    <button
-                      (click)="onUpdate(activity)"
-                      class="border rounded-md bg-accepted h-fit w-fit px-3 py-1 text-white hover:bg-green-700 transition-colors"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      (click)="onDeleteActivity(activity)"
-                      class="border rounded-md bg-rejected h-fit w-fit px-3 py-1 text-white hover:bg-red-700 transition-colors"
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
+                <app-activity-card [activity]="activity"
+                                   (deleteEventEmitter)="onDeleteActivity($event)"
+                                   (updateEventEmitter)="onUpdate($event)"></app-activity-card>
               </li>
             </ul>
+          }@empty {
+            <span class="text-center p-2 inline-block w-full border bg-white rounded-md">No se registraron actividades en esta dimensión</span>
           }
         </details>
       </div>
@@ -189,7 +117,7 @@
     </section>
     @if (showForm) {
       <section
-        class="flex flex-col md:w-[55%] w-full bg-white p-2 items-center border rounded-md md:h-[65vh] h-fit"
+        class="flex flex-col lg:w-[55%] w-full bg-white p-2 items-center border rounded-md lg:h-[65vh] h-fit"
       >
         <h2 class="font-semibold w-full text-start">{{ title }}</h2>
         <form
@@ -210,7 +138,7 @@
           <div class="flex flex-col w-full my-2">
             <label for="value">Valor: </label>
             <input
-              type="text"
+              type="number"
               id="value"
               class="border rounded-md text-sm border-gray-400"
               placeholder="Valor de actividad"
@@ -235,7 +163,8 @@
           </div>
           <div class="flex flex-row justify-end items-end w-full h-full my-2">
             <button
-              class="border rounded-md bg-primary h-fit w-fit px-3 py-1 text-white hover:bg-blue-600 transition-colors"
+              class="border rounded-md bg-primary h-fit w-fit px-3 py-1 text-white hover:bg-blue-600 disabled:opacity-65 disabled:hover:bg-primary transition-colors"
+              [disabled]="activityForm.invalid"
             >
               Guardar
             </button>

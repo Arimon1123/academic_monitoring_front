@@ -96,11 +96,11 @@ export class StudentRegisterComponent {
   }
   addParent(parent: ParentDTO) {
     if (this.selectedParentList.length >= 2) {
-      alert('No se puede agregar más padres');
+      this.openModal('Error', 'No se puede agregar más padres');
       return;
     }
     if (this.selectedParentList.indexOf(parent) !== -1) {
-      alert('El padre ya fue seleccionado');
+      this.openModal('Error', 'El padre ya fue seleccionado');
       return;
     }
     this.selectedParentList.push(parent);
@@ -165,11 +165,12 @@ export class StudentRegisterComponent {
     };
     this.userService.saveStudent(student).subscribe({
       next: (data: ResponseDTO<string>) => {
-        this.openModal(data.message);
+        this.openModal('Registro de estudiante', data.message);
         this.formReset();
       },
       error: (error: HttpErrorResponse) => {
         this.openModal(
+          'Registro de estudiante',
           'Error al registrar el estudiante ' + error.error.message
         );
       },
@@ -182,12 +183,12 @@ export class StudentRegisterComponent {
     this.studentForm.updateValueAndValidity();
     this.parentList = [];
   }
-  openModal(message: string) {
+  openModal(title: string, message: string) {
     this.modalService.open({
       content: this.content!,
       options: {
         size: 'small',
-        title: 'Registro de Estudiante',
+        title: title,
         message: message,
         isSubmittable: false,
       },

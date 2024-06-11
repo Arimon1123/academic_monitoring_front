@@ -11,19 +11,19 @@ export class AnnouncementService {
   private API_URL = environment.API_URL;
   constructor(private http: HttpClient) {}
   saveAnnouncement(announcement: FormData) {
-    return this.http.post<ResponseDTO<any>>(
+    return this.http.post<ResponseDTO<string>>(
       `${this.API_URL}/announcement`,
       announcement,
-      { withCredentials: true },
+      { withCredentials: true }
     );
   }
-  getAnnouncements(gradeId: number, receiver: string, shift: number) {
+  getAnnouncements(gradeId: number[], receiver: string, shift: number) {
     return this.http.get<ResponseDTO<AnnouncementDTO[]>>(
       `${this.API_URL}/announcement/search`,
       {
         params: { gradeId: gradeId, receiver: receiver, shift: shift },
         withCredentials: true,
-      },
+      }
     );
   }
 }
