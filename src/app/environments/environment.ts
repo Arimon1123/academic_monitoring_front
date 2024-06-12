@@ -1,9 +1,5 @@
 export const environment = {
-  API_URL: 'http://localhost:8080',
+  //@ts-expect-error // Ignore this line
+  API_URL: window['env']['apiUrl'] || 'http://localhost:8080',
   storageSecret: 'superSecretoProduction',
-  currentRoles: {
-    ADMINISTRATIVE: 'Administrativo',
-    TEACHER: 'Profesor',
-    FATHER: 'Padre',
-  },
 };
