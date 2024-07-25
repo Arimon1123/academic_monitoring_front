@@ -36,10 +36,10 @@ export class GradesComponent implements OnInit {
   hacerActivities: ActivityDTO[] = [];
   configuration: ConfigurationDTO = {} as ConfigurationDTO;
   dimensionValue: { [key: string]: number } = {
-    HACER: 30,
-    SABER: 30,
-    SER: 20,
-    DECIDIR: 20,
+    HACER: 35,
+    SABER: 35,
+    SER: 15,
+    DECIDIR: 15,
   };
   constructor(
     private studentService: StudentService,
@@ -147,6 +147,13 @@ export class GradesComponent implements OnInit {
             activity.value *
             (newGrade!.grade / 100) *
             (this.dimensionValue[activity.dimension] / 100);
+          if (student.name === 'Luis') {
+            console.log(
+              activity.value *
+                (newGrade!.grade / 100) *
+                (this.dimensionValue[activity.dimension] / 100)
+            );
+          }
         }
       }
       grades.grades.push({
@@ -176,7 +183,7 @@ export class GradesComponent implements OnInit {
   updateGrade(event: Event, activity: ActivityGradeDTO, index: number) {
     const target = event.target as HTMLInputElement;
     const grade = parseInt(target.value);
-    if (grade > 100 || grade < 0) {
+    if (grade > 100 || grade < 0 || isNaN(grade)) {
       this.openModal(
         'La calificación debe ser un número entre 0 y 100',
         'Error'
@@ -184,7 +191,10 @@ export class GradesComponent implements OnInit {
       target.value = String(0);
       return;
     }
-    activity.grade = parseInt(target.value);
+    activity.grade = grade;
+    this.updateFinalGrade(index);
+  }
+  updateFinalGrade(index: number) {
     const tableRow = this.table[index];
     let finalGrade = 0;
     for (const grade of tableRow.grades) {

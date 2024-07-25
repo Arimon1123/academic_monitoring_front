@@ -38,6 +38,7 @@ export class ReportsComponent implements OnInit {
       '#8A2BE2',
       '#00FF7F',
       '#FFD700',
+      '#FF4500',
     ],
   };
   attendanceRawData: AttendanceReportDTO[] = [];

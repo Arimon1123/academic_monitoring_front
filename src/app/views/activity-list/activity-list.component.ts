@@ -64,10 +64,10 @@ export class ActivityListComponent implements OnInit {
     });
   }
   dimensionValue: { [key: string]: number } = {
-    HACER: 30,
-    SABER: 30,
-    SER: 20,
-    DECIDIR: 20,
+    HACER: 35,
+    SABER: 35,
+    SER: 15,
+    DECIDIR: 15,
   };
   ngOnInit() {
     this.getConfiguration();
@@ -116,18 +116,59 @@ export class ActivityListComponent implements OnInit {
   }
   onSubmit() {
     let newTotal = 0;
-    if (!this.isUpdate)
-      newTotal =
-        this.totalPercentage[4] +
+    let dimensionTotal = 0;
+    if (!this.isUpdate) {
+      dimensionTotal =
+        this.totalPercentage[this.activityForm.controls['dimension'].value] +
         parseInt(this.activityForm.controls['value'].value) *
-          this.dimensionValue[
-            this.activityForm.controls['dimension'].value / 100
-          ];
-    else
+          (this.dimensionValue[this.activityForm.controls['dimension'].value] /
+            100);
       newTotal =
-        this.totalPercentage[4] -
-        this.updatedActivity.value +
-        parseInt(this.activityForm.controls['value'].value);
+        this.totalPercentage['TOTAL'] +
+        (parseInt(this.activityForm.controls['value'].value) *
+          this.dimensionValue[this.activityForm.controls['dimension'].value]) /
+          100;
+      console.log(this.activityForm.controls['dimension'].value);
+    } else {
+      newTotal =
+        this.totalPercentage['TOTAL'] -
+        (this.updatedActivity.value *
+          this.dimensionValue[this.activityForm.controls['dimension'].value]) /
+          100 +
+        (parseInt(this.activityForm.controls['value'].value) *
+          this.dimensionValue[this.activityForm.controls['dimension'].value]) /
+          100;
+      dimensionTotal =
+        (this.totalPercentage[this.activityForm.controls['dimension'].value] -
+          this.updatedActivity.value *
+            (this.dimensionValue[
+              this.activityForm.controls['dimension'].value
+            ] /
+              100) +
+          parseInt(this.activityForm.controls['value'].value)) *
+        (this.dimensionValue[this.activityForm.controls['dimension'].value] /
+          100);
+    }
+    console.log(
+      this.totalPercentage[this.activityForm.controls['dimension'].value] +
+        parseInt(this.activityForm.controls['value'].value)
+    );
+    console.log(
+      this.dimensionValue[this.activityForm.controls['dimension'].value]
+    );
+    console.log(newTotal);
+    console.log(this.totalPercentage);
+    if (
+      dimensionTotal >
+      this.dimensionValue[this.activityForm.controls['dimension'].value]
+    ) {
+      this.openModal(
+        'Error',
+        'El total de la dimensión no puede ser mayor a ' +
+          this.dimensionValue[this.activityForm.controls['dimension'].value]
+      );
+      return;
+    }
     if (newTotal > 100) {
       this.openModal('Error', 'El total no puede ser mayor a 100');
       return;

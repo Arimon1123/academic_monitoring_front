@@ -48,7 +48,7 @@ export class RequireLicenseComponent implements OnInit {
       endDate: new FormControl(this.todayDate, [Validators.required]),
       reason: new FormControl('', [
         Validators.required,
-        Validators.minLength(200),
+        Validators.maxLength(200),
       ]),
       startHour: new FormControl('08:00', [Validators.required]),
       endHour: new FormControl('09:00', [Validators.required]),

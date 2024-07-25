@@ -21,7 +21,7 @@ export class ParentLicenseComponent implements OnInit {
   permissionList: PermissionDTO[] = [];
   permissionStatusDict: { [key: number]: string } = {
     0: 'Pendiente',
-    1: 'Aprovada',
+    1: 'Aprobada',
     2: 'Rechazada',
   };
   constructor(

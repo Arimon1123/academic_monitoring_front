@@ -60,10 +60,10 @@ export class StudentActivitiesComponent implements OnInit {
     this.totalGrade = 0;
     this.studentData = {} as StudentDTO;
     this.dimensionValue = {
-      HACER: 30,
-      SABER: 30,
-      SER: 20,
-      DECIDIR: 20,
+      HACER: 35,
+      SABER: 35,
+      SER: 15,
+      DECIDIR: 15,
     };
   }
   ngOnInit(): void {

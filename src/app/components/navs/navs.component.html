@@ -88,10 +88,10 @@
   </nav>
   <aside
     id="logo-sidebar"
-    class="fixed top-0 left-0 z-40 w-64 h-screen pt-[5rem] transition-transform -translate-x-full bg-primary dark:bg-gray-800 dark:border-gray-700 box-content"
+    class="fixed top-0 left-0 z-40 w-64 h-screen pt-[4rem] transition-transform -translate-x-full bg-primary dark:bg-gray-800 dark:border-gray-700 box-content"
     aria-label="Sidebar"
   >
-    <div class="h-[87vh] px-3 pb-4 overflow-y-auto bg-primary dark:bg-gray-800">
+    <div class="h-[89.5vh] px-3 pb-4 pt-2 overflow-y-auto bg-primary dark:bg-gray-800 gutter">
       @if(userDetails){
         <ul class="space-y-2 font-medium">
           <h2 class="text-white font-semibold">Menu</h2>
@@ -158,7 +158,7 @@
               </button>
               <ul
                 id="dropdown-{{ student.id }}"
-                class="hidden flex-col py-2 space-y-2 items-end border border-gray-500 rounded-lg p-2 box-border"
+                class="hidden flex-col py-2 space-y-2 items-center border border-gray-500 rounded-lg p-2 box-border"
               >
                 @for (route of routesList.childRoutes; track route.id) {
                   <li
@@ -216,7 +216,7 @@
               </button>
               <ul
                 id="dropdown-{{ assignation.id }}"
-                class="hidden flex-col py-2 space-y-2 items-end border border-gray-500 rounded-lg p-2 box-border"
+                class="hidden flex-col py-2 space-y-2 items-center border border-gray-500 rounded-lg p-2 box-border"
               >
                 @for (route of routesList.childRoutes; track route.id) {
                   <li
@@ -237,7 +237,6 @@
             }
           }
           @if(userDetails.role === 'ADMINISTRATIVE'){
-            <h2 class="text-white font-semibold">Menu</h2>
             @for (parentRoute of routesList.parentRoutes; track parentRoute.id){
               <button
                 type="button"
@@ -268,7 +267,7 @@
               </button>
               <ul
                 id="dropdown-{{ parentRoute.id }}"
-                class="hidden flex-col py-2 space-y-2 items-end border border-gray-500 rounded-lg p-2 box-border"
+                class="hidden flex-col py-2 space-y-2 items-center border border-gray-500 rounded-lg p-2 box-border"
               >
                 @for (route of parentRoute.children; track route.id) {
                   <li

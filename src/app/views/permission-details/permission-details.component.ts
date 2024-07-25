@@ -126,8 +126,8 @@ export class PermissionDetailsComponent implements OnInit {
         },
       })
       .subscribe({
-        complete: () => {
-          this.rejectPermission();
+        next: (data: string) => {
+          data === 'submit' ? this.rejectPermission() : null;
         },
       });
   }

@@ -15,26 +15,26 @@ export class GradesService {
   getGradesByAssignation(assignationId: number, bimester: number) {
     return this.http.get<ResponseDTO<{ [key: number]: ActivityGradeDTO[] }>>(
       `${this.API_URL}/activityGrade/assignation/${assignationId}/bimester/${bimester}`,
-      { withCredentials: true },
+      { withCredentials: true }
     );
   }
   saveGradesBy(activityGradeDTO: ActivityGradeDTO[]) {
     return this.http.post<ResponseDTO<string>>(
       `${this.API_URL}/activityGrade`,
       activityGradeDTO,
-      { withCredentials: true },
+      { withCredentials: true }
     );
   }
   getGradesByStudentIdAndYear(studentId: number, year: number) {
     return this.http.get<ResponseDTO<{ [key: number]: GradesDTO[] }>>(
       `${this.API_URL}/grades`,
-      { params: { studentId: studentId, year: year }, withCredentials: true },
+      { params: { studentId: studentId, year: year }, withCredentials: true }
     );
   }
   getGradesByStudentIdAndAssignationAndBimester(
     studentId: number,
     assignationId: number,
-    bimester: number,
+    bimester: number
   ) {
     return this.http.get<ResponseDTO<ActivityGradeDTO[]>>(
       `${this.API_URL}/grades/activities`,
@@ -45,7 +45,7 @@ export class GradesService {
           bimester: bimester,
         },
         withCredentials: true,
-      },
+      }
     );
   }
 }

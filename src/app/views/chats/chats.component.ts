@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ChatComponent } from '../../components/chat/chat.component';
 import { ChatListComponent } from '../../components/chat-list/chat-list.component';
 import { UserDataService } from '../../service/user-data.service';
@@ -24,6 +24,9 @@ export class ChatsComponent implements OnInit {
     this.activeRoute.params.subscribe({
       next: params => {
         this.receiverId = params['receiverId'];
+        if (this.receiverId) {
+          this.showChat = true;
+        }
       },
     });
 

@@ -28,10 +28,8 @@ export class ModalComponent {
   @Output() submitEvent = new EventEmitter();
   constructor(private elementRef: ElementRef) {
     this.content = null;
-    console.log(this.data);
   }
   close() {
-    console.log(this.isClosable);
     if (this.isClosable !== false) {
       this.elementRef.nativeElement.remove();
       this.closeEvent.emit();

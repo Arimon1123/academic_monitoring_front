@@ -84,10 +84,10 @@ export class StudentGradesComponent implements OnInit {
         bimester: number;
         assignationId: number;
       }[] = [];
-      let notaFinal = 0;
+      let finalGrade = 0;
       for (let i = 0; i < grades[key].length; i++) {
         const grade = grades[key][i];
-        notaFinal += grade.total_grade;
+        finalGrade += grade.total_grade;
         subjectGrades.push({
           grade: grade.total_grade,
           bimester: grade.bimester,
@@ -104,7 +104,7 @@ export class StudentGradesComponent implements OnInit {
         }
       }
       subjectGrades.push({
-        grade: notaFinal / grades[key].length,
+        grade: Math.ceil(finalGrade / 4),
         bimester: 0,
         assignationId: 0,
       });

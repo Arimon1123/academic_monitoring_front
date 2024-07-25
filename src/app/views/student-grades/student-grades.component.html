@@ -77,11 +77,11 @@
                   ]"
                       [ngClass]="{ 'text-red-500': grades.grade < 51 }"
                     >
-                      {{ grades.grade }}
+                      {{ grades.grade | round}}
                     </a>
                   } @else {
                     <a class="inline-block w-full h-full">
-                      {{ grades.grade | round }}
+                      {{ grades.grade | round}}
                     </a>
                   }
                 </td>

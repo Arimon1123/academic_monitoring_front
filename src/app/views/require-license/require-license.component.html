@@ -91,12 +91,14 @@
     </div>
     <span>Adjuntar archivos</span>
     <div class="flex flex-col my-2 w-full">
-      <app-image-input
-        [images]="images"
-        [maxFile]="5"
-        [multiple]="true"
-        (uploadImageEvent)="updateImages($event)"
-      ></app-image-input>
+      <div class="w-fit">
+        <app-image-input
+          [images]="images"
+          [maxFile]="5"
+          [multiple]="true"
+          (uploadImageEvent)="updateImages($event)"
+        ></app-image-input>
+      </div>
       <app-image-carrousel
         [images]="images"
         (deleteImageEvent)="updateImages($event)"
@@ -105,7 +107,8 @@
 
     <div class="flex w-full justify-end">
       <button
-        class="border rounded-md w-fit bg-primary text-white hover:bg-blue-700 transition-colors p-1"
+        class="border rounded-md w-fit bg-primary text-white hover:bg-blue-700 transition-colors p-1 disabled:opacity-65 disabled:hover:bg-primary disabled:cursor-not-allowed"
+        [disabled]="permissionForm.invalid"
       >
         Enviar solicitud
       </button>
