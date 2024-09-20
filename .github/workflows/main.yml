@@ -1,0 +1,28 @@
+name: Build Spring Boot App
+
+on:
+  push:
+    branches:
+      - main  # Cambia esto si tu rama principal tiene otro nombre
+  pull_request:
+    branches:
+      - main  # Cambia esto si tu rama principal tiene otro nombre
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'  # Cambia esto si usas otra versión de Java
+
+    - name: Build with Maven
+      run: mvn clean install
+
+    - name: Run tests
+      run: mvn test
